@@ -8,7 +8,7 @@ TypeA.GetProperty("String").SetValue(instA, "xxx");
 System.Console.WriteLine(instA.String);
 throw new Exception("testAOT");
 
-public class ClassA{
+public  partial class ClassA{
 	public string String{get;set;} = "String";
 	public int Int{get;set;} = 1;
 	public bool Bool{get;set;} = true;

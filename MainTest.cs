@@ -1,4 +1,5 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿#if false
+// See https://aka.ms/new-console-template for more information
 /*
 cd Ngaq.Test
 dotnet publish -c Release -r win-x64
@@ -6,17 +7,17 @@ dotnet publish -c Release -r win-x64
  */
 
 
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using Ngaq.Core.Infra;
-using Ngaq.Core.Model.Po.Kv;
-using Ngaq.Core.Model.Po.Learn_;
-using Ngaq.Core.Model.Po.Word;
-using Ngaq.Local.Db;
-using Ngaq.Local.Db.TswG;
-using Ngaq.Local.Sql;
-using Tsinswreng.CsSqlHelper;
-using Tsinswreng.CsSqlHelper.Sqlite;
+// using System.Runtime.CompilerServices;
+// using System.Runtime.InteropServices;
+// using Ngaq.Core.Infra;
+// using Ngaq.Core.Model.Po.Kv;
+// using Ngaq.Core.Model.Po.Learn_;
+// using Ngaq.Core.Model.Po.Word;
+// using Ngaq.Local.Db;
+// using Ngaq.Local.Db.TswG;
+// using Ngaq.Local.Sql;
+// using Tsinswreng.CsSqlHelper;
+// using Tsinswreng.CsSqlHelper.Sqlite;
 
 
 // var DbPath = "E:/TestNgaq.Sqlite";
@@ -35,11 +36,7 @@ using Tsinswreng.CsSqlHelper.Sqlite;
 
 
 
-LocalTblMgrIniter.Inst.Init();
-ITblMgr TblMgr = SqliteTblMgr.Inst;
-System.Console.WriteLine(
-	TblMgr.SqlMkSchema()
-);
+
 
 // var d = DictCtx.GetTypeDictT<PoWord>();
 // foreach(var (k,v) in d){
@@ -72,7 +69,7 @@ System.Console.WriteLine(
 
 
 
-throw new Exception("AOT");
+//throw new Exception("AOT");
 
 
 // interface I{
@@ -90,3 +87,5 @@ throw new Exception("AOT");
 // 		((I)c).M();
 // 	}
 // }
+
+#endif
