@@ -16,7 +16,9 @@ using Tsinswreng.CsTools;
 // ./bin/Release/net9.0/win-x64/publish/Ngaq.Test.exe
 #region Main
 
-await new TestMigrateTsNgaq().Test1();
+new TestLua().Test();
+
+
 throw new Exception("AOT");
 #endregion Main
 
