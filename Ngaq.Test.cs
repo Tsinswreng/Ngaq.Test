@@ -23,6 +23,7 @@ using Ngaq.Local.Domains.Word.Dao;
 using Ngaq.Local.Word.Dao;
 using Ngaq.Test;
 using Ngaq.Test.CsLang;
+using Ngaq.Test.Tools;
 using Ngaq.Test.Try;
 using Ngaq.Test.Word;
 using Tsinswreng.CsPage;
@@ -33,78 +34,10 @@ using Tsinswreng.CsTools;
 using Jn = System.Text.Json.Nodes.JsonNode;
 #region Main
 
-for(var i = 0; i < 10; i++){
-	await new TryBatch().Try(default);
-	System.Console.WriteLine("----");
-}
+new TestToolYaml().TryYamlStrToDict();
 
+throw new Exception("AOT");
 
-//await new TryBatch().TestNull(default);
-
-
-//new TryLua().Try();
-
-//new TryInitExtnProp().Try();
-
-// var a = new IdDel();
-// obj o = a;
-// IdDel? b = (IdDel?)o;
-// System.Console.WriteLine(b);
-
-//await TryReadAllWords(default);
-
-// for(var i = 0; i < 10; i++){
-// 	await TryReadAllWords4(default);
-// 	await TryReadAllWords3(default);
-// 	System.Console.WriteLine(i+"----");
-// }
-
-/*
-2026_0117_101028 BatchCollector batch=500、batch=900旹更慢
-13258
-2143
-13304
-989
-13258
-1843
-13304
-940
-13258
-1800
-13304
-919
-13258
-1850
-13304
-949
-13258
-1838
-13304
-978
-13258
-1798
-13304
-917
-13258
-1851
-13304
-896
-13258
-1811
-13304
-970
-13258
-1818
-13304
-930
-13258
-1820
-13304
-933
- */
-
-
-//throw new Exception("AOT");
 #endregion Main
 
 
