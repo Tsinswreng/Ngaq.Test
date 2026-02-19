@@ -8,8 +8,8 @@ namespace Ngaq.Test.Word;
 
 public class TestWord{
 	public async Task TestSoftDelJnWordsByIds(){
-		var SvcWord = GetSvc<ISvcWord>();
-		var UserCtxMgr = GetSvc<IUserCtxMgr>();
+		var SvcWord = GetRSvc<ISvcWord>();
+		var UserCtxMgr = GetRSvc<IUserCtxMgr>();
 		var User = UserCtxMgr.GetUserCtx();
 		await SvcWord.SoftDelJnWordsByIds(User, [IdWord.FromLow64Base("1cQ0oCAGxMzXNui7hE-ff")], default);
 	}
@@ -28,8 +28,8 @@ public class TestWord{
 	}
 
 	public async Task TestGetChangedWordsAfterTime(){
-		var SvcWord = GetSvc<ISvcWord>()!;
-		var UserCtxMgr = GetSvc<IUserCtxMgr>()!;
+		var SvcWord = GetRSvc<ISvcWord>()!;
+		var UserCtxMgr = GetRSvc<IUserCtxMgr>()!;
 		var User = UserCtxMgr.GetUserCtx();
 		var PageQry = new PageQry{
 			PageIdx = 0,

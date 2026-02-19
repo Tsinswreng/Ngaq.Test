@@ -2,6 +2,7 @@ using Ngaq.Core.Infra;
 using Ngaq.Core.Infra.Errors;
 using Ngaq.Core.Shared.Kv.Models;
 using Ngaq.Core.Tools;
+using Tsinswreng.CsErr;
 
 namespace Ngaq.Test;
 
