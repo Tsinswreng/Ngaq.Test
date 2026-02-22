@@ -34,7 +34,7 @@ using Tsinswreng.CsTools;
 using Jn = System.Text.Json.Nodes.JsonNode;
 #region Main
 
-new TestToolYaml().TryYamlStrToDict();
+new TestToolYaml().Run();
 
 throw new Exception("AOT");
 
