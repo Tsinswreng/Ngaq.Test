@@ -51,7 +51,7 @@ public class TryBatch {
 		// var Ctx = await Mkr.MkTxnDbFnCtx(Ct);
 		var Ctx = new DbFnCtx();
 		var fnPageAll = await RepoWord.FnPageAll(Ctx, Ct);
-		var pageQry = PageQry.SlctAll();
+		var pageQry = PageQry.SlctI64Max();
 		var allWordsPage = await fnPageAll(pageQry, Ct);
 		var allWords = await allWordsPage.DataAsyE.OrEmpty().ToListAsync(Ct);
 

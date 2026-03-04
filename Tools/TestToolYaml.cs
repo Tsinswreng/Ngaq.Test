@@ -69,5 +69,41 @@ System.Console.WriteLine(dict);
 System.Console.WriteLine(ToolJson.DictToJson(dict));
 	}
 
+	public void Run2(){
+{
+	var yaml =
+"""
+a: |+
+  
+  
+  1
+""";
+	var dict = ToolYaml.YamlStrToDict(yaml);
+	System.Console.WriteLine(dict["a"]);
+}
+{
+	var yaml =
+"""
+a: |+
+
+
+  1
+""";
+	var dict = ToolYaml.YamlStrToDict(yaml);
+	System.Console.WriteLine(dict["a"]);
+}
+{
+	var yaml =
+"""
+a: |+
+  
+
+  1
+""";
+	var dict = ToolYaml.YamlStrToDict(yaml);
+	System.Console.WriteLine(dict["a"]);
+}
+	}
+
 }
 

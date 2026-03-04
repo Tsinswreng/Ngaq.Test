@@ -14,6 +14,7 @@ using Ngaq.Core.Shared.User.Models.Po;
 using Ngaq.Core.Shared.User.Models.Po.User;
 using Ngaq.Core.Shared.Word.Models;
 using Ngaq.Core.Shared.Word.Models.Dto;
+using Ngaq.Core.Shared.Word.Models.Po.Word;
 using Ngaq.Core.Tools;
 using Ngaq.Core.Word.Svc;
 using Ngaq.Local;
@@ -34,7 +35,12 @@ using Tsinswreng.CsTools;
 using Jn = System.Text.Json.Nodes.JsonNode;
 #region Main
 
-new TestToolYaml().Run();
+//new TestToolYaml().Run();
+Program.Init();
+await new TryRepoBat{
+	SvcProvdr = Program.SvcProvider
+}.Run(default);
+
 
 throw new Exception("AOT");
 
@@ -51,7 +57,7 @@ static async Task<nil> TryReadAllWords3(CT Ct){
 		IncludeDeleted = true,
 	}, Ct);
 	var sw = Stopwatch.StartNew();
-	var r = await fnPage(userCtxMgr.GetUserCtx(), PageQry.SlctAll(), Ct);
+	var r = await fnPage(userCtxMgr.GetUserCtx(), PageQry.SlctI64Max(), Ct);
 	var listPage = await r.ToListPage(Ct);
 	sw.Stop();
 	//2026_0115_213956
@@ -70,7 +76,7 @@ static async Task<nil> TryReadAllWords4(CT Ct){
 		IncludeDeleted = true,
 	}, Ct);
 	var sw = Stopwatch.StartNew();
-	var r = await fnPage(userCtxMgr.GetUserCtx(), PageQry.SlctAll(), Ct);
+	var r = await fnPage(userCtxMgr.GetUserCtx(), PageQry.SlctI64Max(), Ct);
 	var listPage = await r.ToListPage(Ct);
 	sw.Stop();
 	//2026_0115_213956
@@ -83,7 +89,7 @@ static async Task<nil> TryReadAllWords2(CT Ct){
 	var svcWord = Program.GetRSvc<ISvcWord>();
 	var userCtxMgr = Program.GetRSvc<IFrontendUserCtxMgr>();
 	var sw = Stopwatch.StartNew();
-	var r = await svcWord.PageWord(userCtxMgr.GetUserCtx(), PageQry.SlctAll(), Ct);
+	var r = await svcWord.PageWord(userCtxMgr.GetUserCtx(), PageQry.SlctI64Max(), Ct);
 	var listPage = await r.ToListPage(Ct);
 	sw.Stop();
 	//2026_0115_213956
@@ -119,10 +125,11 @@ internal partial class Program{
 	// static async Task Main(string[] args){
 
 	// }
-	static Program(){
+	public static void Init(){
 		Di();
 		InitApp();
 	}
+	
 	public static ServiceProvider SvcProvider = null!;
 	public static nil Di(){
 		var svc = new ServiceCollection();
@@ -146,3 +153,5 @@ internal partial class Program{
 	}
 
 }
+
+
