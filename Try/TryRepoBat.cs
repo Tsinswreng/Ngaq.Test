@@ -35,7 +35,7 @@ allIds.Count: 13304
 
  */
 public async Task Run(CT Ct){
-	var RepoWord = SvcProvdr.GetRequiredService<IAppRepo<PoWord, IdWord>>();
+	var RepoWord = SvcProvdr.GetRequiredService<IRepo<PoWord, IdWord>>();
 	var Ctx = new DbFnCtx();
 	var fnPageAll = await RepoWord.FnPageAll(Ctx, Ct);
 	var all = await fnPageAll(PageQry.SlctI64Max(), Ct);

@@ -23,7 +23,7 @@ namespace Ngaq.Test;
 
 public class TryBatch {
 	public async Task TestNull(CT Ct) {
-		var RepoWord = Program.GetRSvc<IAppRepo<PoWord, IdWord>>();
+		var RepoWord = Program.GetRSvc<IRepo<PoWord, IdWord>>();
 		//var Mkr = Program.GetRSvc<IMkrDbFnCtx>();
 		// var Ctx = await Mkr.MkTxnDbFnCtx(Ct);
 		var Ctx = new DbFnCtx();
@@ -44,7 +44,7 @@ public class TryBatch {
 	}
 
 	public async Task Try(CT Ct) {
-		var RepoWord = Program.GetRSvc<IAppRepo<PoWord, IdWord>>();
+		var RepoWord = Program.GetRSvc<IRepo<PoWord, IdWord>>();
 
 		// 先用這個把所有PoWord查出來
 		// var Mkr = Program.GetRSvc<IMkrDbFnCtx>();

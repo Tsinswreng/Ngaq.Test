@@ -12,6 +12,7 @@ using Ngaq.Core.Shared.Base.Models.Po;
 using Ngaq.Core.Shared.Kv.Models;
 using Ngaq.Core.Shared.User.Models.Po;
 using Ngaq.Core.Shared.User.Models.Po.User;
+using Ngaq.Core.Shared.User.UserCtx;
 using Ngaq.Core.Shared.Word.Models;
 using Ngaq.Core.Shared.Word.Models.Dto;
 using Ngaq.Core.Shared.Word.Models.Po.Word;
@@ -37,14 +38,34 @@ using Jn = System.Text.Json.Nodes.JsonNode;
 
 //new TestToolYaml().Run();
 Program.Init();
-await new TryRepoBat{
-	SvcProvdr = Program.SvcProvider
-}.Run(default);
 
-
+await TryNeoBat(default);
 throw new Exception("AOT");
 
 #endregion Main
+
+static async Task<nil> TryNeoBat(CT Ct){
+	var DaoWord = Program.GetRSvc<DaoWord>();
+	var Ctx = new DbFnCtx();
+	var userIdU128 = UInt128.Parse("019ADCE46AB10B07CAA1F62B8C6EB306", System.Globalization.NumberStyles.HexNumber);
+	var userCtxMgr = Program.GetRSvc<IFrontendUserCtxMgr>();
+	var User = userCtxMgr.GetUserCtx();
+	var HeadLangs = new List<Head_Lang>{
+		new Head_Lang("peer", "english"),
+		new Head_Lang("leak", "english"),
+		new Head_Lang("_notExist", "english"),
+		new Head_Lang("shaft", "english"),
+		new Head_Lang("たのむ", "japanese"),
+		new Head_Lang("くま", "japanese"),
+		
+	};
+	var r = await DaoWord.BatSlctIdByOwnerHeadLangWithDel_New(Ctx, User, HeadLangs, Ct);
+	await foreach(var e in r){
+		var s = e?.ToString()?? "null";
+		System.Console.WriteLine(s);
+	}
+	return NIL;
+}
 
 
 static async Task<nil> TryReadAllWords3(CT Ct){
