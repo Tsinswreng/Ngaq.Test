@@ -11,7 +11,6 @@
    在 Program.<<Main>$>d__0.MoveNext() 在 E:\_code\CsNgaq\Ngaq.Test\Ngaq.Test.cs 中: 第 37 行
 #endif
 using System.Diagnostics;
-using Ngaq.Core.Model.Po.Word;
 using Ngaq.Core.Shared.Word.Models.Po.Word;
 using Ngaq.Local.Db.TswG;
 

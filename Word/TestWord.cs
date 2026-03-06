@@ -1,8 +1,8 @@
 using System.Globalization;
 using Ngaq.Core.Shared.User.UserCtx;
-using Ngaq.Core.Model.Po.Word;
 using Ngaq.Core.Word.Svc;
 using Tsinswreng.CsPage;
+using Ngaq.Core.Shared.Word.Models.Po.Word;
 
 namespace Ngaq.Test.Word;
 
