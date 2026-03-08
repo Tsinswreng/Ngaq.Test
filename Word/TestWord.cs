@@ -3,6 +3,7 @@ using Ngaq.Core.Shared.User.UserCtx;
 using Ngaq.Core.Word.Svc;
 using Tsinswreng.CsPage;
 using Ngaq.Core.Shared.Word.Models.Po.Word;
+using Ngaq.Core.Infra.IF;
 
 namespace Ngaq.Test.Word;
 

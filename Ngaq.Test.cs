@@ -24,6 +24,7 @@ using Ngaq.Local.Di;
 using Ngaq.Local.Domains.Word.Dao;
 using Ngaq.Local.Word.Dao;
 using Ngaq.Test;
+using Ngaq.Test.CsSqlHelper.Integration.Repo;
 using Ngaq.Test.CsLang;
 using Ngaq.Test.Tools;
 using Ngaq.Test.Try;
@@ -34,13 +35,12 @@ using Tsinswreng.CsTools;
 //dotnet publish -c Release -r win-x64
 // ./bin/Release/net10.0/win-x64/publish/Ngaq.Test.exe
 using Jn = System.Text.Json.Nodes.JsonNode;
+#pragma warning disable CS8321
 #region Main
 
 //new TestToolYaml().Run();
 Program.Init();
-
-await TryNeoBat(default);
-throw new Exception("AOT");
+await Program.GetRSvc<TestBatSlctAggById>().Run(default);
 
 #endregion Main
 
@@ -130,7 +130,7 @@ SELECT W.Id as WId, WP.Id as WpId, WL.Id as WlId from Word W
 LEFT JOIN WordProp WP on W.Id = WP.WordId
 LEFT JOIN WordLearn WL on W.Id = WL.WordId
 """;
-var Cmd = await Ctx.PrepareToDispose(SqlCmdMkr, Sql, Ct);
+var Cmd = await SqlCmdMkr.Prepare(Ctx, Sql, Ct);
 var sw = Stopwatch.StartNew();
 var R = await Cmd.All1d(Ct);
 sw.Stop();
@@ -158,6 +158,7 @@ internal partial class Program{
 			.SetupCore()
 			.SetupLocal()//TODO 改成按需API調用
 			.SetupLocalFrontend()
+			.SetupTest()
 		;
 		SvcProvider = svc.BuildServiceProvider();
 		return NIL;

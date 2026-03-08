@@ -43,7 +43,7 @@ public async Task Run(CT Ct){
 	var sw = Stopwatch.StartNew();
 	{
 		sw.Restart();
-		var r = await RepoWord.SlctManyInIds(Ctx, allIds, Ct);
+		var r = await RepoWord.SlctManyInIdsWithDel(Ctx, allIds, Ct);
 		var list = await r.ToListAsync(Ct);
 		sw.Stop();
 		Console.WriteLine($"SlctManyInIds: {sw.ElapsedMilliseconds}ms");

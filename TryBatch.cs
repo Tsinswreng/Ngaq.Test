@@ -11,6 +11,7 @@
    在 Program.<<Main>$>d__0.MoveNext() 在 E:\_code\CsNgaq\Ngaq.Test\Ngaq.Test.cs 中: 第 37 行
 #endif
 using System.Diagnostics;
+using Ngaq.Core.Infra.IF;
 using Ngaq.Core.Shared.Word.Models.Po.Word;
 using Ngaq.Local.Db.TswG;
 
@@ -35,7 +36,7 @@ public class TryBatch {
 			new IdWord().ToString(),
 		};
 		var ids = IdStrs.Select(x=>IdWord.FromLow64Base(x));
-		var R = await RepoWord.SlctManyInIds(Ctx, ids, Ct);
+		var R = await RepoWord.SlctManyInIdsWithDel(Ctx, ids, Ct);
 		var RList = await R.ToListAsync();//預期有6個元素、但實際只有3個、new IdWord()的位置預期應爲null
 		foreach (var r in RList) {
 			System.Console.WriteLine(r==null?"null":r.Head);
@@ -63,7 +64,7 @@ public class TryBatch {
 		var testIds = allWords.Select(x=>x.Id);
 		// 測試 BatchSlctById 性能
 		var sw = Stopwatch.StartNew();
-		var inResult = await RepoWord.SlctManyInIds(Ctx, testIds, Ct);
+		var inResult = await RepoWord.SlctManyInIdsWithDel(Ctx, testIds, Ct);
 		var inResults = await inResult.ToListAsync();
 		sw.Stop();
 		var inTime = sw.ElapsedMilliseconds;
