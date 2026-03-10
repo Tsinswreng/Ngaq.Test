@@ -13,25 +13,26 @@ using Ngaq.Core.Shared.Word.Models.Po.Learn;
 using Ngaq.Core.Shared.Word.Models.Po.Word;
 using Ngaq.Local.Word.Dao;
 using Tsinswreng.CsSqlHelper;
+using Tsinswreng.CsTest;
 
-public partial class TestRepo{
-	protected JnWord MkJnWord(IdUser Owner){
+public partial class TestRepo {
+	protected JnWord MkJnWord(IdUser Owner) {
 		var head = new IdWord().ToString();
-		var po = new PoWord{
+		var po = new PoWord {
 			Id = new IdWord(),
 			Owner = Owner,
 			Head = head,
 			Lang = "__AggTest__",
 			StoredAt = Tempus.Now(),
 		};
-		var prop1 = new PoWordProp{
+		var prop1 = new PoWordProp {
 			Id = new IdWordProp(),
 			KType = EKvType.Str,
 			KStr = "test_k",
 			VType = EKvType.Str,
 			VStr = "test_v_" + head,
 		};
-		var learn1 = new PoWordLearn{
+		var learn1 = new PoWordLearn {
 			Id = new IdWordLearn(),
 			LearnResult = ELearn.Add,
 		};
@@ -40,21 +41,21 @@ public partial class TestRepo{
 
 	protected async Task<nil> HardDelByWordIds(
 		IDbFnCtx Ctx
-		,IList<IdWord> ids
-		,CT Ct
-	){
-		if(ids.Count == 0){
+		, IList<IdWord> Ids
+		, CT Ct
+	) {
+		if (Ids.Count == 0) {
 			return NIL;
 		}
 
 		async Task delByIn<TPo>(
-			ITable<TPo> tbl
-			,str codeCol
-		) where TPo:new(){
-			var ps = tbl.NumParams((u64)ids.Count);
-			var sql = $"DELETE FROM {tbl.Qt(tbl.DbTblName)} WHERE {tbl.QtCol(codeCol)} IN ({str.Join(",", ps)})";
+			ITable<TPo> Tbl
+			, str CodeCol
+		) where TPo : new() {
+			var ps = Tbl.NumParams((u64)Ids.Count);
+			var sql = $"DELETE FROM {Tbl.Qt(Tbl.DbTblName)} WHERE {Tbl.QtCol(CodeCol)} IN ({str.Join(",", ps)})";
 			var cmd = await SqlCmdMkr.Prepare(Ctx, sql, Ct);
-			var arg = ArgDict.Mk(tbl).AddManyT(ps, ids, codeCol);
+			var arg = ArgDict.Mk(Tbl).AddManyT(ps, Ids, CodeCol);
 			await cmd.Args(arg).All1d(Ct);
 		}
 
@@ -68,50 +69,64 @@ public partial class TestRepo{
 		return NIL;
 	}
 
-	public async Task<nil> Run(CT Ct){
+	async Task<obj?> TestBatSlctAggById(obj? Obj, CT Ct) {
 		var insertedIds = new List<IdWord>();
-		var Ctx = new DbFnCtx();
-		try{
+		var ctx = new DbFnCtx();
+		try {
 			var owner = new IdUser();
 			var jn1 = MkJnWord(owner);
 			var jn2 = MkJnWord(owner);
 			insertedIds.Add(jn1.Word.Id);
 			insertedIds.Add(jn2.Word.Id);
 
-			var ins = await DaoWord.FnInsertJnWords(Ctx, Ct);
+			var ins = await DaoWord.FnInsertJnWords(ctx, Ct);
 			await ins([jn1, jn2], Ct);
 
-			var queryIds = new List<IdWord>{
+			var queryIds = new List<IdWord> {
 				insertedIds[0],
 				new IdWord(),
 				insertedIds[1],
 			};
-			var gotAsy = await RepoWord.BatSlctAggById<JnWord>(Ctx, queryIds, Ct);
+			var gotAsy = await RepoWord.BatSlctAggById<JnWord>(ctx, queryIds, Ct);
 			var got = await gotAsy.ToListAsync(Ct);
 
-
-			if(got.Count != queryIds.Count){
+			if (got.Count != queryIds.Count) {
 				throw new Exception($"count mismatch. expected={queryIds.Count}, got={got.Count}");
 			}
-			if(got[0] is null || got[0]!.Word.Id != insertedIds[0]){
+			if (got[0] is null || got[0]!.Word.Id != insertedIds[0]) {
 				throw new Exception("first aggregate not matched");
 			}
-			if(got[1] is not null){
+			if (got[1] is not null) {
 				throw new Exception("middle aggregate should be null");
 			}
-			if(got[2] is null || got[2]!.Word.Id != insertedIds[1]){
+			if (got[2] is null || got[2]!.Word.Id != insertedIds[1]) {
 				throw new Exception("third aggregate not matched");
 			}
-			if(got[0]!.Props.Count == 0 || got[2]!.Learns.Count == 0){
+			if (got[0]!.Props.Count == 0 || got[2]!.Learns.Count == 0) {
 				throw new Exception("aggregate assets not loaded");
 			}
 
-			//System.Console.WriteLine("TestBatSlctAggById.Run OK");
-			return NIL;
+			return null;
 		}
-		finally{
-			await HardDelByWordIds(Ctx, insertedIds, Ct);
+		finally {
+			await HardDelByWordIds(ctx, insertedIds, Ct);
 		}
+	}
+
+	public async Task<nil> Run(CT Ct) {
+		var fixture = new TestFixture("Repo Tests");
+
+		fixture.Register(nameof(TestBatSlctAggById), (Obj) => TestBatSlctAggById(Obj, Ct));
+
+		var runner = new TestRunner();
+		var report = await runner.Run(fixture, Ct);
+		Console.WriteLine(report.ToString());
+
+		if (!report.AllPassed) {
+			throw new Exception("Tests failed");
+		}
+
+		return NIL;
 	}
 }
 
