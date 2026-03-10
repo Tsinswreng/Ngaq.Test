@@ -69,7 +69,7 @@ public partial class TestRepo {
 		return NIL;
 	}
 
-	async Task<obj?> TestBatSlctAggById(obj? Obj, CT Ct) {
+	public async Task<obj?> TestBatSlctAggById(obj? Obj, CT Ct) {
 		var insertedIds = new List<IdWord>();
 		var ctx = new DbFnCtx();
 		try {
@@ -111,22 +111,6 @@ public partial class TestRepo {
 		finally {
 			await HardDelByWordIds(ctx, insertedIds, Ct);
 		}
-	}
-
-	public async Task<nil> Run(CT Ct) {
-		var fixture = new TestFixture("Repo Tests");
-
-		fixture.Register(nameof(TestBatSlctAggById), (Obj) => TestBatSlctAggById(Obj, Ct));
-
-		var runner = new TestRunner();
-		var report = await runner.Run(fixture, Ct);
-		Console.WriteLine(report.ToString());
-
-		if (!report.AllPassed) {
-			throw new Exception("Tests failed");
-		}
-
-		return NIL;
 	}
 }
 

@@ -32,10 +32,10 @@ using Tsinswreng.CsSqlHelper;
 using Tsinswreng.CsTools;
 public class Try{
 static async Task<nil> TryNeoBat(CT Ct){
-	var DaoWord = Program.GetRSvc<DaoWord>();
+	var DaoWord = NgaqTest.GetRSvc<DaoWord>();
 	var Ctx = new DbFnCtx();
 	var userIdU128 = UInt128.Parse("019ADCE46AB10B07CAA1F62B8C6EB306", System.Globalization.NumberStyles.HexNumber);
-	var userCtxMgr = Program.GetRSvc<IFrontendUserCtxMgr>();
+	var userCtxMgr = NgaqTest.GetRSvc<IFrontendUserCtxMgr>();
 	var User = userCtxMgr.GetUserCtx();
 	var HeadLangs = new List<Head_Lang>{
 		new Head_Lang("peer", "english"),
@@ -55,11 +55,11 @@ static async Task<nil> TryNeoBat(CT Ct){
 }
 
 static async Task<nil> TryReadAllWords3(CT Ct){
-	var daoWord = Program.GetRSvc<DaoWord>();
-	var mkrDbFnCtx = Program.GetRSvc<IMkrDbFnCtx>();
+	var daoWord = NgaqTest.GetRSvc<DaoWord>();
+	var mkrDbFnCtx = NgaqTest.GetRSvc<IMkrDbFnCtx>();
 	//var Ctx = await mkrDbFnCtx.MkTxnDbFnCtx(Ct);
 	var Ctx = new DbFnCtx();//sqlite 純查詢 勿開事務
-	var userCtxMgr = Program.GetRSvc<IFrontendUserCtxMgr>();
+	var userCtxMgr = NgaqTest.GetRSvc<IFrontendUserCtxMgr>();
 	var fnPage = await daoWord.FnPageWords(Ctx, new OptQry{
 		IncludeDeleted = true,
 	}, Ct);
@@ -74,11 +74,11 @@ static async Task<nil> TryReadAllWords3(CT Ct){
 }
 
 static async Task<nil> TryReadAllWords4(CT Ct){
-	var daoWord = Program.GetRSvc<DaoWord>();
-	var mkrDbFnCtx = Program.GetRSvc<IMkrDbFnCtx>();
+	var daoWord = NgaqTest.GetRSvc<DaoWord>();
+	var mkrDbFnCtx = NgaqTest.GetRSvc<IMkrDbFnCtx>();
 	//var Ctx = await mkrDbFnCtx.MkTxnDbFnCtx(Ct);
 	var Ctx = new DbFnCtx();//sqlite 純查詢 勿開事務
-	var userCtxMgr = Program.GetRSvc<IFrontendUserCtxMgr>();
+	var userCtxMgr = NgaqTest.GetRSvc<IFrontendUserCtxMgr>();
 	var fnPage = await daoWord.FnPageWordsOld(Ctx, new OptQry{
 		IncludeDeleted = true,
 	}, Ct);
@@ -93,8 +93,8 @@ static async Task<nil> TryReadAllWords4(CT Ct){
 }
 
 static async Task<nil> TryReadAllWords2(CT Ct){
-	var svcWord = Program.GetRSvc<ISvcWord>();
-	var userCtxMgr = Program.GetRSvc<IFrontendUserCtxMgr>();
+	var svcWord = NgaqTest.GetRSvc<ISvcWord>();
+	var userCtxMgr = NgaqTest.GetRSvc<IFrontendUserCtxMgr>();
 	var sw = Stopwatch.StartNew();
 	var r = await svcWord.PageWord(userCtxMgr.GetUserCtx(), PageQry.SlctI64Max(), Ct);
 	var listPage = await r.ToListPage(Ct);
@@ -107,8 +107,8 @@ static async Task<nil> TryReadAllWords2(CT Ct){
 
 //
 static async Task<nil> TryReadAllWords(CT Ct){
-	var SqlCmdMkr = Program.GetRSvc<ISqlCmdMkr>();
-	var DbCtxMkr = Program.GetRSvc<IMkrDbFnCtx>();
+	var SqlCmdMkr = NgaqTest.GetRSvc<ISqlCmdMkr>();
+	var DbCtxMkr = NgaqTest.GetRSvc<IMkrDbFnCtx>();
 	var Ctx = await DbCtxMkr.MkTxnDbFnCtx(Ct);
 var Sql =
 """
