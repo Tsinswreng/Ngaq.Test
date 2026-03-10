@@ -14,17 +14,7 @@ using Ngaq.Core.Shared.Word.Models.Po.Word;
 using Ngaq.Local.Word.Dao;
 using Tsinswreng.CsSqlHelper;
 
-public class TestBatSlctAggById(
-	DaoWord DaoWord
-	,IRepo<PoWord, IdWord> RepoWord
-	,ITblMgr TblMgr
-	,ISqlCmdMkr SqlCmdMkr
-){
-	protected DaoWord DaoWord{get;set;} = DaoWord;
-	protected IRepo<PoWord, IdWord> RepoWord{get;set;} = RepoWord;
-	protected ITblMgr TblMgr{get;set;} = TblMgr;
-	protected ISqlCmdMkr SqlCmdMkr{get;set;} = SqlCmdMkr;
-
+public partial class TestRepo{
 	protected JnWord MkJnWord(IdUser Owner){
 		var head = new IdWord().ToString();
 		var po = new PoWord{
@@ -99,6 +89,7 @@ public class TestBatSlctAggById(
 			var gotAsy = await RepoWord.BatSlctAggById<JnWord>(Ctx, queryIds, Ct);
 			var got = await gotAsy.ToListAsync(Ct);
 
+
 			if(got.Count != queryIds.Count){
 				throw new Exception($"count mismatch. expected={queryIds.Count}, got={got.Count}");
 			}
@@ -115,7 +106,7 @@ public class TestBatSlctAggById(
 				throw new Exception("aggregate assets not loaded");
 			}
 
-			System.Console.WriteLine("TestBatSlctAggById.Run OK");
+			//System.Console.WriteLine("TestBatSlctAggById.Run OK");
 			return NIL;
 		}
 		finally{

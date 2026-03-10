@@ -5,7 +5,7 @@ namespace Ngaq.Test;
 
 public static class DiTest{
 	public static IServiceCollection SetupTest(this IServiceCollection z){
-		z.AddScoped<TestBatSlctAggById>();
+		z.AddScoped<TestRepo>();
 		return z;
 	}
 }

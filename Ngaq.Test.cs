@@ -40,7 +40,7 @@ using Jn = System.Text.Json.Nodes.JsonNode;
 
 //new TestToolYaml().Run();
 Program.Init();
-await Program.GetRSvc<TestBatSlctAggById>().Run(default);
+await Program.GetRSvc<TestRepo>().Run(default);
 
 #endregion Main
 
