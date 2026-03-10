@@ -55,10 +55,10 @@ public partial class NgaqTest{
 		_ = AppIniter.Inst.Init(default).Result;
 		return NIL;
 	}
-	public T GetRSvc<T>()
+	public static T GetRSvc<T>()
 		where T : class
 	{
-		return SvcProvider.GetRequiredService<T>();
+		return NgaqTest.Inst.SvcProvider.GetRequiredService<T>();
 	}
 
 }
