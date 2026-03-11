@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Ngaq.Core;
+using Ngaq.Local.Di;
 using Ngaq.Local.Test;
 using Tsinswreng.CsTest;
 
@@ -8,6 +10,11 @@ internal class Program{
 	public static IServiceCollection SvcColct = new ServiceCollection();
 	public static IServiceProvider SvcProvdr = null!;
 	public static async Task Main(string[] args){
+		SvcColct
+			.SetupCore()
+			.SetupLocal()
+			.SetupLocalFrontend();
+
 		var mgr = WindowsTestMgr.Inst;
 		SvcProvdr = mgr.InitSvc(SvcColct);
 		await mgr.TestNode.RunTests();
