@@ -6,10 +6,10 @@ namespace Ngaq.Windows.Test;
 
 internal class Program{
 	public static IServiceCollection SvcColct = new ServiceCollection();
-	public static IServiceProvider SvcProvdr = SvcColct.BuildServiceProvider();
+	public static IServiceProvider SvcProvdr = null!;
 	public static async Task Main(string[] args){
 		var mgr = WindowsTestMgr.Inst;
-		mgr.InitSvc(SvcColct, SvcProvdr);
+		SvcProvdr = mgr.InitSvc(SvcColct);
 		await mgr.TestNode.RunTests();
 	}
 }
