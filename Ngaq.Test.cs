@@ -19,9 +19,6 @@ NgaqTest.Inst.Init();
 
 #endregion Main
 
-public class AppDiMgr:DiMgr{
-	public static AppDiMgr Inst = new AppDiMgr();
-}
 
 public partial class NgaqTest{
 	public static NgaqTest Inst = new();
