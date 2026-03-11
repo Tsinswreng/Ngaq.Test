@@ -3,18 +3,15 @@ using Tsinswreng.CsTest;
 
 namespace Ngaq.Local.Test.Domains.Word;
 
-public partial class TestISvcWord:I_RegisterTests{
+public partial class TestISvcWord:ITester{
 	ISvcWord SvcWord;
-	//ITestMgr Test;
 	public TestISvcWord(
 		ISvcWord SvcWord
-		//,ITestMgr Test
 	){
 		this.SvcWord = SvcWord;
-		//this.Test = Test;
 	}
 	
-	public ITestNode RegisterTests(ITestNode? Test){
+	public ITestNode RegisterTestsInto(ITestNode? Test){
 		Test??=new TestNode();
 		var R = Test.MkFnRegisterTest(typeof(TestISvcWord), typeof(ISvcWord));
 		
