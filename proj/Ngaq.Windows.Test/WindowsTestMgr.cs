@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using Ngaq.Local.Test;
 using Tsinswreng.CsTest;
 
@@ -10,4 +11,5 @@ public class WindowsTestMgr:DiEtTestMgr{
 		this.RegisterSubMgr(LocalTestMgr.Inst);
 		return Test;
 	}
+
 }
