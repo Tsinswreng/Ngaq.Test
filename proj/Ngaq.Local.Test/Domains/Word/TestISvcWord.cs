@@ -13,6 +13,7 @@ public partial class TestISvcWord:ITester{
 	
 	public ITestNode RegisterTestsInto(ITestNode? Test){
 		Test??=new TestNode();
+		
 		var register = Test.MkTestFnRegister(typeof(TestISvcWord), typeof(ISvcWord));
 		var R = register.Register;
 		R("FailedOnPurpose", async(o)=>{

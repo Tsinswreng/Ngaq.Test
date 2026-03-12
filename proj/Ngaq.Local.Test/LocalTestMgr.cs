@@ -1,4 +1,5 @@
 using Ngaq.Local.Test.Domains.Word;
+using Ngaq.Local.Test.CsSql.Repo;
 using Tsinswreng.CsTest;
 
 namespace Ngaq.Local.Test;
@@ -10,6 +11,7 @@ public class LocalTestMgr:DiEtTestMgr{
 		Test = this.TestNode;
 		this.RegisterTester<TestISvcWord>();
 		this.RegisterTester<TestDaoWord>();
+		this.RegisterTester<TestRepo>();
 		return Test;
 	}
 }
