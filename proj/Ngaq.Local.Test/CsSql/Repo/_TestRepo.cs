@@ -16,6 +16,7 @@ public partial class TestRepo : ITester{
 		RegisterSlctManyInIdsWithDel(Register);
 		RegisterBatSlctById(Register);
 		RegisterBatInsert(Register);
+		RegisterBatUpd(Register);
 		return Test;
 	}
 
