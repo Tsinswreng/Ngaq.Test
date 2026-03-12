@@ -14,6 +14,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="../../../Tsinswreng.CsTest/proj/Tsinswreng.CsTest/Tsinswreng.CsTest.csproj" />
+		<ProjectReference Include="../../../Tsinswreng.CsSql/proj/Tsinswreng.CsSql/Tsinswreng.CsSql.csproj" />
 		<ProjectReference Include="../../../Tsinswreng.AvlnTools/proj/Tsinswreng.AvlnTools/Tsinswreng.AvlnTools.csproj" />
 		<ProjectReference Include="../../../Tsinswreng.CsCore/proj/Tsinswreng.CsCore/Tsinswreng.CsCore.csproj" />
 		<ProjectReference Include="../../../Tsinswreng.CsTools/proj/Tsinswreng.CsTools/Tsinswreng.CsTools.csproj" />

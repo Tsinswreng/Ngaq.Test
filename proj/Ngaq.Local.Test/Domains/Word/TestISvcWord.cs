@@ -13,8 +13,8 @@ public partial class TestISvcWord:ITester{
 	
 	public ITestNode RegisterTestsInto(ITestNode? Test){
 		Test??=new TestNode();
-		var R = Test.MkFnRegisterTest(typeof(TestISvcWord), typeof(ISvcWord));
-		
+		var register = Test.MkTestFnRegister(typeof(TestISvcWord), typeof(ISvcWord));
+		var R = register.Register;
 		R("FailedOnPurpose", async(o)=>{
 			System.Console.WriteLine("\n1\n");
 			throw new Exception("Failed on purpose");
