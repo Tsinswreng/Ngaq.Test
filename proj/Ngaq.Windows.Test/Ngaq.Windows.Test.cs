@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Ngaq.Core;
+using Ngaq.Local;
 using Ngaq.Local.Di;
 using Ngaq.Local.Test;
 using Tsinswreng.CsTest;
@@ -14,11 +15,14 @@ internal class Program{
 			.SetupCore()
 			.SetupLocal()
 			.SetupLocalFrontend();
+		AppIniter.Inst.Sp = SvcProvdr;
+		_ = AppIniter.Inst.Init(default).Result;
 
 		var mgr = WindowsTestMgr.Inst;
 		SvcProvdr = mgr.InitSvc(SvcColct);
-		await mgr.TestNode.RunTests();
+		ITestExecutor executor = new TreeTestExecutor();
+		await executor.RunEtPrint(mgr.TestNode);
+		
 	}
 }
-
 

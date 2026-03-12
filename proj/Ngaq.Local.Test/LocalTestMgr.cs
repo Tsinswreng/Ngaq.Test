@@ -8,8 +8,8 @@ public class LocalTestMgr:DiEtTestMgr{
 	public static LocalTestMgr Inst = new();
 	public override ITestNode RegisterTestsInto(ITestNode? Test){
 		Test = this.TestNode;
-		this.RegisterTesterType<TestISvcWord>();
-		this.RegisterTesterType<TestDaoWord>();
+		this.RegisterTester<TestISvcWord>();
+		this.RegisterTester<TestDaoWord>();
 		return Test;
 	}
 }

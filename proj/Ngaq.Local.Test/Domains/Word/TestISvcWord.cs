@@ -16,7 +16,12 @@ public partial class TestISvcWord:ITester{
 		var R = Test.MkFnRegisterTest(typeof(TestISvcWord), typeof(ISvcWord));
 		
 		R("FailedOnPurpose", async(o)=>{
+			System.Console.WriteLine("\n1\n");
 			throw new Exception("Failed on purpose");
+			return NIL;
+		});
+		R("2026_0312_095035", async(o)=>{
+			System.Console.WriteLine("\n2026_0312_095035\n");
 			return NIL;
 		});
 		return Test;
