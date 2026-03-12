@@ -14,12 +14,14 @@ internal class Program{
 		SvcColct
 			.SetupCore()
 			.SetupLocal()
-			.SetupLocalFrontend();
-		AppIniter.Inst.Sp = SvcProvdr;
-		_ = AppIniter.Inst.Init(default).Result;
-
+			.SetupLocalFrontend()
+		;
+		
 		var mgr = WindowsTestMgr.Inst;
 		SvcProvdr = mgr.InitSvc(SvcColct);
+		
+		AppIniter.Inst.Sp = SvcProvdr;
+		_ = AppIniter.Inst.Init(default).Result;
 		ITestExecutor executor = new TreeTestExecutor();
 		await executor.RunEtPrint(mgr.TestNode);
 		
