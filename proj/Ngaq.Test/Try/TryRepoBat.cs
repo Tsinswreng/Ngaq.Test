@@ -12,7 +12,7 @@ using Ngaq.Local.Db.TswG;
 using Ngaq.Local.Word.Dao;
 using Tsinswreng.CsCore;
 using Tsinswreng.CsPage;
-using Tsinswreng.CsSqlHelper;
+using Tsinswreng.CsSql;
 namespace Ngaq.Test.Try;
 
 public class TryRepoBat{

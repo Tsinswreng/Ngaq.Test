@@ -1,6 +1,6 @@
 namespace Ngaq.Test.Nodes;
 
-using Ngaq.Test.CsSqlHelper.Integration.Repo;
+using Ngaq.Test.CsSql.Integration.Repo;
 using Tsinswreng.CsTest;
 
 /// <summary>

@@ -10,9 +10,9 @@ public class RootTestNode : TestNodeBase {
 	
 	public RootTestNode() {
 		// 组织结构：按功能模块分组
-		var csSqlHelper = new TestGroupNode("CsSqlHelper");
-		csSqlHelper.AddChild(new RepoTestNode());
-		AddChild(csSqlHelper);
+		var CsSql = new TestGroupNode("CsSql");
+		CsSql.AddChild(new RepoTestNode());
+		AddChild(CsSql);
 		
 		AddChild(new WordTestNode());
 		AddChild(new JsonTestNode());

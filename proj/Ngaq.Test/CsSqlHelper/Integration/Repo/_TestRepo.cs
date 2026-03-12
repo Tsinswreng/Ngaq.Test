@@ -1,4 +1,4 @@
-namespace Ngaq.Test.CsSqlHelper.Integration.Repo;
+namespace Ngaq.Test.CsSql.Integration.Repo;
 
 using Ngaq.Core.Model.Po.Kv;
 using Ngaq.Core.Model.Po.Learn_;
@@ -12,7 +12,7 @@ using Ngaq.Core.Shared.Word.Models.Po.Kv;
 using Ngaq.Core.Shared.Word.Models.Po.Learn;
 using Ngaq.Core.Shared.Word.Models.Po.Word;
 using Ngaq.Local.Word.Dao;
-using Tsinswreng.CsSqlHelper;
+using Tsinswreng.CsSql;
 public partial class TestRepo(
 	DaoWord DaoWord
 	,IRepo<PoWord, IdWord> RepoWord

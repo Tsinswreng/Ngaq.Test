@@ -5,8 +5,8 @@
    在 Microsoft.Data.Sqlite.SqliteConnection.BeginTransaction(IsolationLevel isolationLevel, Boolean deferred)
    在 Microsoft.Data.Sqlite.SqliteConnection.BeginTransaction(IsolationLevel isolationLevel)
    在 Microsoft.Data.Sqlite.SqliteConnection.BeginDbTransaction(IsolationLevel isolationLevel)
-   在 Tsinswreng.CsSqlHelper.Sqlite.SqliteCmdMkr.<MkTxn>d__8.MoveNext() 在 E:\_code\CsNgaq\Tsinswreng.CsSqlHelper\proj\Tsinswreng.CsSqlHelper.Sqlite\SqliteCmdMkr.cs 中: 第 107 行
-   在 Tsinswreng.CsSqlHelper.IMkrDbFnCtx.<MkTxnDbFnCtx>d__3.MoveNext() 在 E:\_code\CsNgaq\Tsinswreng.CsSqlHelper\proj\Tsinswreng.CsSqlHelper\IDbFnCtxMkr.cs 中: 第 12 行
+   在 Tsinswreng.CsSql.Sqlite.SqliteCmdMkr.<MkTxn>d__8.MoveNext() 在 E:\_code\CsNgaq\Tsinswreng.CsSql\proj\Tsinswreng.CsSql.Sqlite\SqliteCmdMkr.cs 中: 第 107 行
+   在 Tsinswreng.CsSql.IMkrDbFnCtx.<MkTxnDbFnCtx>d__3.MoveNext() 在 E:\_code\CsNgaq\Tsinswreng.CsSql\proj\Tsinswreng.CsSql\IDbFnCtxMkr.cs 中: 第 12 行
    在 Ngaq.Test.TryBatch.<Try>d__1.MoveNext() 在 E:\_code\CsNgaq\Ngaq.Test\TryBatch.cs 中: 第 51 行
    在 Program.<<Main>$>d__0.MoveNext() 在 E:\_code\CsNgaq\Ngaq.Test\Ngaq.Test.cs 中: 第 37 行
 #endif
@@ -17,7 +17,7 @@ using Ngaq.Local.Db.TswG;
 
 using Tsinswreng.CsCore;
 using Tsinswreng.CsPage;
-using Tsinswreng.CsSqlHelper;
+using Tsinswreng.CsSql;
 
 namespace Ngaq.Test;
 

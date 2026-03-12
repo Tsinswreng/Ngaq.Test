@@ -22,13 +22,13 @@ using Ngaq.Local.Di;
 using Ngaq.Local.Domains.Word.Dao;
 using Ngaq.Local.Word.Dao;
 using Ngaq.Test;
-using Ngaq.Test.CsSqlHelper.Integration.Repo;
+using Ngaq.Test.CsSql.Integration.Repo;
 using Ngaq.Test.CsLang;
 using Ngaq.Test.Tools;
 using Ngaq.Test.Try;
 using Ngaq.Test.Word;
 using Tsinswreng.CsPage;
-using Tsinswreng.CsSqlHelper;
+using Tsinswreng.CsSql;
 using Tsinswreng.CsTools;
 public class Try{
 static async Task<nil> TryNeoBat(CT Ct){
