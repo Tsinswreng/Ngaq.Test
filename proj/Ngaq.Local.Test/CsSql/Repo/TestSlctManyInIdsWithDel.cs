@@ -7,7 +7,9 @@ namespace Ngaq.Local.Test.CsSql.Repo;
 public partial class TestRepo{
 	void RegisterSlctManyInIdsWithDel(ITestNode Node){
 		var register = Node.MkTestFnRegister(
-			typeof(TestRepo), [typeof(IRepo<PoKv, IdKv>)], [nameof(Repo.SlctManyInIdsWithDel)]
+			typeof(TestRepo)
+			,[typeof(IRepo<PoKv, IdKv>)]
+			,[nameof(IRepo<PoKv, IdKv>.SlctManyInIdsWithDel)]
 		);
 		var R = register.Register;
 		R("SlctManyInIdsWithDel_EmptyIds_ReturnsEmpty", async(o)=>{
@@ -31,10 +33,5 @@ public partial class TestRepo{
 			}
 			return NIL;
 		});
-	}
-	void RegisterSlctManyInIdsWithDel(ITestFnRegister Register){
-		var R = Register.Register;
-
-		
 	}
 }

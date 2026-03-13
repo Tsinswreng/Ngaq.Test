@@ -11,9 +11,15 @@ public partial class TestRepo{
 	readonly List<PoKv> _delInIdEnts = new();
 	readonly List<IdKv> _delInIdIds = new();
 
-	void RegisterDelInId(ITestFnRegister Register){
-		var R = Register.Register;
+	void RegisterDelInId(ITestNode Node){
+		var register = Node.MkTestFnRegister(
+			typeof(TestRepo)
+			,[typeof(IRepo<PoKv, IdKv>)]
+			,[]
+		);
+		var R = register.Register;
 		
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatInsert)];
 		R("DelInId_Insert_Multi", async(o)=>{
 			var Ctx = new DbFnCtx();
 			var ents = new List<PoKv>();
@@ -41,6 +47,10 @@ public partial class TestRepo{
 			return NIL;
 		});
 
+		register.TesteeFnNames = [
+			nameof(IRepo<PoKv, IdKv>.SoftDelInId)
+			,nameof(IRepo<PoKv, IdKv>.BatSlctById)
+		];
 		R("SoftDelInId", async(o)=>{
 			if(_delInIdIds.Count == 0){
 				throw new Exception("DelInId_Insert_Multi not executed or no ids recorded");
@@ -68,6 +78,10 @@ public partial class TestRepo{
 			return NIL;
 		});
 
+		register.TesteeFnNames = [
+			nameof(IRepo<PoKv, IdKv>.HardDelInId)
+			,nameof(IRepo<PoKv, IdKv>.BatSlctById)
+		];
 		R("HardDelInId", async(o)=>{
 			if(_delInIdIds.Count == 0){
 				throw new Exception("DelInId_Insert_Multi not executed or no ids recorded");
@@ -86,6 +100,10 @@ public partial class TestRepo{
 			return NIL;
 		});
 
+		register.TesteeFnNames = [
+			nameof(IRepo<PoKv, IdKv>.BatHardDelById)
+			,nameof(IRepo<PoKv, IdKv>.BatSlctById)
+		];
 		R("DelInId_Cleanup_HardDelete", async(o)=>{
 			if(_delInIdIds.Count == 0){
 				return NIL;

@@ -13,12 +13,11 @@ public partial class TestRepo : ITester{
 		Test??=new TestNode();
 		Test.Ordered = true;
 		
-		var Register = Test.MkTestFnRegister(typeof(TestRepo), typeof(IRepo<PoKv, IdKv>));
-		RegisterSlctManyInIdsWithDel(Register);
-		RegisterBatSlctById(Register);
-		RegisterBatInsert(Register);
-		RegisterBatUpd(Register);
-		RegisterDelInId(Register);
+		RegisterSlctManyInIdsWithDel(Test);
+		RegisterBatSlctById(Test);
+		RegisterBatInsert(Test);
+		RegisterBatUpd(Test);
+		RegisterDelInId(Test);
 		return Test;
 	}
 

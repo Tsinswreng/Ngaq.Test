@@ -14,9 +14,15 @@ public partial class TestRepo{
 	readonly List<PoKv> _batInsertEnts = new();
 	readonly List<IdKv> _batInsertIds = new();
 
-	void RegisterBatInsert(ITestFnRegister Register){
-		var R = Register.Register;
+	void RegisterBatInsert(ITestNode Node){
+		var register = Node.MkTestFnRegister(
+			typeof(TestRepo)
+			,[typeof(IRepo<PoKv, IdKv>)]
+			,[]
+		);
+		var R = register.Register;
 
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatInsert)];
 		R("BatInsert_Insert_Multi", async(o)=>{
 			var Ctx = new DbFnCtx();
 			var ents = new List<PoKv>();
@@ -44,6 +50,7 @@ public partial class TestRepo{
 			return NIL;
 		});
 
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatSlctById)];
 		R("BatInsert_Verify_BatSlctById", async(o)=>{
 			if(_batInsertIds.Count == 0){
 				throw new Exception("BatInsert_Insert_Multi not executed or no ids recorded");
@@ -74,6 +81,7 @@ public partial class TestRepo{
 			return NIL;
 		});
 
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.SlctManyInIdsWithDel)];
 		R("BatInsert_Verify_SlctManyInIdsWithDel", async(o)=>{
 			if(_batInsertIds.Count == 0){
 				throw new Exception("BatInsert_Insert_Multi not executed or no ids recorded");
@@ -101,6 +109,10 @@ public partial class TestRepo{
 			return NIL;
 		});
 
+		register.TesteeFnNames = [
+			nameof(IRepo<PoKv, IdKv>.BatHardDelById)
+			,nameof(IRepo<PoKv, IdKv>.BatSlctById)
+		];
 		R("BatInsert_Cleanup_HardDelete", async(o)=>{
 			if(_batInsertIds.Count == 0){
 				return NIL;

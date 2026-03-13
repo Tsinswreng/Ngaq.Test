@@ -10,9 +10,15 @@ public partial class TestRepo{
 	readonly List<PoKv> _batUpdEnts = new();
 	readonly List<IdKv> _batUpdIds = new();
 
-	void RegisterBatUpd(ITestFnRegister Register){
-		var R = Register.Register;
+	void RegisterBatUpd(ITestNode Node){
+		var register = Node.MkTestFnRegister(
+			typeof(TestRepo)
+			,[typeof(IRepo<PoKv, IdKv>)]
+			,[]
+		);
+		var R = register.Register;
 
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatInsert)];
 		R("BatUpd_Insert_Multi", async(o)=>{
 			var Ctx = new DbFnCtx();
 			var ents = new List<PoKv>();
@@ -40,6 +46,10 @@ public partial class TestRepo{
 			return NIL;
 		});
 
+		register.TesteeFnNames = [
+			nameof(IRepo<PoKv, IdKv>.BatUpdById)
+			,nameof(IRepo<PoKv, IdKv>.BatSlctById)
+		];
 		R("BatUpd_ById", async(o)=>{
 			if(_batUpdIds.Count == 0){
 				throw new Exception("BatUpd_Insert_Multi not executed or no ids recorded");
@@ -86,6 +96,10 @@ public partial class TestRepo{
 			return NIL;
 		});
 
+		register.TesteeFnNames = [
+			nameof(IRepo<PoKv, IdKv>.BatUpdByCodeDict)
+			,nameof(IRepo<PoKv, IdKv>.BatSlctById)
+		];
 		R("BatUpd_ByCodeDict", async(o)=>{
 			if(_batUpdIds.Count == 0){
 				throw new Exception("BatUpd_Insert_Multi not executed or no ids recorded");
@@ -123,6 +137,10 @@ public partial class TestRepo{
 			return NIL;
 		});
 
+		register.TesteeFnNames = [
+			nameof(IRepo<PoKv, IdKv>.BatUpdByDbDict)
+			,nameof(IRepo<PoKv, IdKv>.BatSlctById)
+		];
 		R("BatUpd_ByDbDict", async(o)=>{
 			if(_batUpdIds.Count == 0){
 				throw new Exception("BatUpd_Insert_Multi not executed or no ids recorded");
@@ -156,6 +174,10 @@ public partial class TestRepo{
 			return NIL;
 		});
 
+		register.TesteeFnNames = [
+			nameof(IRepo<PoKv, IdKv>.BatHardDelById)
+			,nameof(IRepo<PoKv, IdKv>.BatSlctById)
+		];
 		R("BatUpd_Cleanup_HardDelete", async(o)=>{
 			if(_batUpdIds.Count == 0){
 				return NIL;

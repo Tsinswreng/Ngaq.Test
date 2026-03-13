@@ -5,9 +5,15 @@ using Ngaq.Core.Sys.Models;
 namespace Ngaq.Local.Test.CsSql.Repo;
 
 public partial class TestRepo{
-	void RegisterBatSlctById(ITestFnRegister Register){
-		var R = Register.Register;
+	void RegisterBatSlctById(ITestNode Node){
+		var register = Node.MkTestFnRegister(
+			typeof(TestRepo)
+			,[typeof(IRepo<PoKv, IdKv>)]
+			,[nameof(IRepo<PoKv, IdKv>.BatSlctById)]
+		);
+		var R = register.Register;
 
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatSlctById)];
 		R("BatSlctById_EmptyIds_ReturnsEmpty", async(o)=>{
 			var Ctx = new DbFnCtx();
 			var Result = await Repo.BatSlctById(Ctx, AsyE<IdKv>(), CT.None);
@@ -19,6 +25,7 @@ public partial class TestRepo{
 			return NIL;
 		});
 
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatSlctById)];
 		R("BatSlctById_NonExistIds_ReturnsNulls", async(o)=>{
 			var Ctx = new DbFnCtx();
 			var Id1 = new IdKv();
