@@ -5,9 +5,11 @@ using Ngaq.Core.Sys.Models;
 namespace Ngaq.Local.Test.CsSql.Repo;
 
 public partial class TestRepo{
-	void RegisterSlctManyInIdsWithDel(ITestFnRegister Register){
-		var R = Register.Register;
-
+	void RegisterSlctManyInIdsWithDel(ITestNode Node){
+		var register = Node.MkTestFnRegister(
+			typeof(TestRepo), [typeof(IRepo<PoKv, IdKv>)], [nameof(Repo.SlctManyInIdsWithDel)]
+		);
+		var R = register.Register;
 		R("SlctManyInIdsWithDel_EmptyIds_ReturnsEmpty", async(o)=>{
 			var Ctx = new DbFnCtx();
 			var Result = await Repo.SlctManyInIdsWithDel(Ctx, AsyE<IdKv>(), CT.None);
@@ -29,5 +31,10 @@ public partial class TestRepo{
 			}
 			return NIL;
 		});
+	}
+	void RegisterSlctManyInIdsWithDel(ITestFnRegister Register){
+		var R = Register.Register;
+
+		
 	}
 }

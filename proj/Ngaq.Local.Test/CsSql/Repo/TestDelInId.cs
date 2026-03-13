@@ -13,7 +13,7 @@ public partial class TestRepo{
 
 	void RegisterDelInId(ITestFnRegister Register){
 		var R = Register.Register;
-
+		
 		R("DelInId_Insert_Multi", async(o)=>{
 			var Ctx = new DbFnCtx();
 			var ents = new List<PoKv>();

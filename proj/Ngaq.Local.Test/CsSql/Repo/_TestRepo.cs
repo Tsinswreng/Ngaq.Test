@@ -12,6 +12,7 @@ public partial class TestRepo : ITester{
 	public ITestNode RegisterTestsInto(ITestNode? Test){
 		Test??=new TestNode();
 		Test.Ordered = true;
+		
 		var Register = Test.MkTestFnRegister(typeof(TestRepo), typeof(IRepo<PoKv, IdKv>));
 		RegisterSlctManyInIdsWithDel(Register);
 		RegisterBatSlctById(Register);
