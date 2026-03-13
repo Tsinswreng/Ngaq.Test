@@ -17,6 +17,7 @@ public partial class TestRepo : ITester{
 		RegisterBatSlctById(Register);
 		RegisterBatInsert(Register);
 		RegisterBatUpd(Register);
+		RegisterDelInId(Register);
 		return Test;
 	}
 
