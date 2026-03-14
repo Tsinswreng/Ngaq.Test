@@ -1,4 +1,5 @@
 namespace Ngaq.Test.Try;
+
 using System.Diagnostics;
 using System.Net.WebSockets;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +16,6 @@ using Ngaq.Core.Shared.Word.Models;
 using Ngaq.Core.Shared.Word.Models.Dto;
 using Ngaq.Core.Shared.Word.Models.Po.Word;
 using Ngaq.Core.Tools;
-using Ngaq.Core.Word.Svc;
 using Ngaq.Local;
 using Ngaq.Local.Db.TswG;
 using Ngaq.Local.Di;
@@ -30,6 +30,8 @@ using Ngaq.Test.Word;
 using Tsinswreng.CsPage;
 using Tsinswreng.CsSql;
 using Tsinswreng.CsTools;
+using Ngaq.Core.Shared.Word.Svc;
+
 public class Try{
 static async Task<nil> TryNeoBat(CT Ct){
 	var DaoWord = NgaqTest.GetRSvc<DaoWord>();

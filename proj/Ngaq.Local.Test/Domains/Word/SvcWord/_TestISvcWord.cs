@@ -1,4 +1,4 @@
-using Ngaq.Core.Word.Svc;
+using Ngaq.Core.Shared.Word.Svc;
 using Tsinswreng.CsTest;
 
 namespace Ngaq.Local.Test.Domains.Word;
