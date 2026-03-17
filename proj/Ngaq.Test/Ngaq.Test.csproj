@@ -15,7 +15,7 @@
 	<ItemGroup>
 		<ProjectReference Include="../Ngaq.Core/Ngaq.Core.csproj" />
 		<ProjectReference Include="../Ngaq.Local/Ngaq.Local.csproj" />
-		<ProjectReference Include="../Tsinswreng.CsTest/proj/Tsinswreng.CsTest/Tsinswreng.CsTest.csproj" />
+		<ProjectReference Include="../Tsinswreng.CsTreeTest/proj/Tsinswreng.CsTreeTest/Tsinswreng.CsTreeTest.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
