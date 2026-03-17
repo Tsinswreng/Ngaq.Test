@@ -1,6 +1,6 @@
 using Ngaq.Core.Word.Svc;
 using Ngaq.Local.Word.Dao;
-using Tsinswreng.CsTest;
+using Tsinswreng.CsTreeTest;
 
 namespace Ngaq.Local.Test.Domains.Word;
 

@@ -1,5 +1,5 @@
 using Ngaq.Core.Shared.Word.Svc;
-using Tsinswreng.CsTest;
+using Tsinswreng.CsTreeTest;
 
 namespace Ngaq.Local.Test.Domains.Word;
 

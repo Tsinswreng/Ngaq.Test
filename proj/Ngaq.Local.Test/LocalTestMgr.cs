@@ -1,6 +1,6 @@
 using Ngaq.Local.Test.Domains.Word;
 using Ngaq.Local.Test.CsSql.Repo;
-using Tsinswreng.CsTest;
+using Tsinswreng.CsTreeTest;
 
 namespace Ngaq.Local.Test;
 

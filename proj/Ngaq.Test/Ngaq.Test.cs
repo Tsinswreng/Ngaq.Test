@@ -5,7 +5,7 @@ using Ngaq.Core;
 using Ngaq.Local;
 using Ngaq.Local.Di;
 using Ngaq.Test;
-using Tsinswreng.CsTest;
+using Tsinswreng.CsTreeTest;
 //dotnet publish -c Release -r win-x64
 // ./bin/Release/net10.0/win-x64/publish/Ngaq.Test.exe
 #pragma warning disable CS8321
@@ -15,7 +15,7 @@ using Tsinswreng.CsTest;
 NgaqTest.Inst.Init();
 
 
-// 或运行指定节点: var node = Tsinswreng.CsTest.TestNodeRunner.FindNodeByName(root, "Repo Tests"); if (node is not null) await Tsinswreng.CsTest.TestNodeRunner.RunNode(node, default);
+// 或运行指定节点: var node = Tsinswreng.CsTreeTest.TestNodeRunner.FindNodeByName(root, "Repo Tests"); if (node is not null) await Tsinswreng.CsTreeTest.TestNodeRunner.RunNode(node, default);
 
 #endregion Main
 

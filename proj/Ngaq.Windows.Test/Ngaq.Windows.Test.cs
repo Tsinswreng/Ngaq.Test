@@ -3,7 +3,7 @@ using Ngaq.Core;
 using Ngaq.Local;
 using Ngaq.Local.Di;
 using Ngaq.Local.Test;
-using Tsinswreng.CsTest;
+using Tsinswreng.CsTreeTest;
 
 namespace Ngaq.Windows.Test;
 
