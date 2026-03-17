@@ -18,7 +18,7 @@ internal class Program{
 		;
 		
 		var mgr = WindowsTestMgr.Inst;
-		SvcProvdr = mgr.InitSvc(SvcColct);
+		SvcProvdr = mgr.InitSvc(SvcColct, sc => sc.BuildServiceProvider());
 		
 		AppIniter.Inst.Sp = SvcProvdr;
 		_ = AppIniter.Inst.Init(default).Result;
