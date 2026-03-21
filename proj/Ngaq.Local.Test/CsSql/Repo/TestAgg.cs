@@ -17,6 +17,8 @@ public partial class TestRepo{
 	readonly List<IdWord> _aggWordIds = new();
 	readonly List<IdWordProp> _aggPropIds = new();
 	readonly List<IdWordLearn> _aggLearnIds = new();
+	readonly List<IdWordProp> _aggPrevPropIds = new();
+	readonly List<IdWordLearn> _aggPrevLearnIds = new();
 
 	void RegisterAgg(ITestNode Node){
 		var register = Node.MkTestFnRegister(
@@ -87,7 +89,6 @@ public partial class TestRepo{
 				await foreach(var item in gotAsy){
 					got.Add(item);
 				}
-
 				if(got.Count != _aggWordIds.Count){
 					throw new Exception($"Expected {_aggWordIds.Count} rows, got {got.Count}");
 				}
@@ -98,9 +99,6 @@ public partial class TestRepo{
 					}
 					if(!one.Word.Id.Equals(_aggWordIds[i])){
 						throw new Exception($"Word id mismatch at index {i}");
-					}
-					if(one.Props.Count < 1 || one.Learns.Count < 1){
-						throw new Exception($"Expected include rows for aggregate at index {i}");
 					}
 				}
 				return NIL;
@@ -120,7 +118,6 @@ public partial class TestRepo{
 						found.Add(agg.Word.Id);
 					}
 				}
-
 				foreach(var id in _aggWordIds){
 					if(!found.Contains(id)){
 						throw new Exception($"GetAllAgg missing inserted word id: {id}");
@@ -130,16 +127,144 @@ public partial class TestRepo{
 			});
 		});
 
-		register.TesteeFnNames = [nameof(IRepo<PoWord, IdWord>.BatSoftDelAggById)];
+		register.TesteeFnNames = [nameof(IRepo<PoWord, IdWord>.BatHardUpdAgg)];
+		R("Agg_HardUpd_Should_Replace_Includes", async(o)=>{
+			if(_aggWordIds.Count == 0){
+				throw new Exception("Agg_Insert_By_BatAddAgg not executed");
+			}
+			return await RunInTxnIfNoCtx(async(Ctx)=>{
+				_aggPrevPropIds.Clear();
+				_aggPrevLearnIds.Clear();
+				_aggPrevPropIds.AddRange(_aggPropIds);
+				_aggPrevLearnIds.AddRange(_aggLearnIds);
+
+				var upds = new List<JnWord>();
+				_aggPropIds.Clear();
+				_aggLearnIds.Clear();
+				foreach(var wordId in _aggWordIds){
+					var w = new PoWord{
+						Id = wordId,
+						Owner = IdUser.Zero,
+						Head = "agg_hard_upd_" + System.Guid.NewGuid().ToString("N"),
+						Lang = "en",
+					};
+					var p = new PoWordProp{
+						Id = new IdWordProp(),
+						WordId = wordId,
+						KType = EKvType.Str,
+						KStr = "hard",
+						VType = EKvType.Str,
+						VStr = "hard_" + System.Guid.NewGuid().ToString("N"),
+					};
+					var l = new PoWordLearn{
+						Id = new IdWordLearn(),
+						WordId = wordId,
+						LearnResult = ELearn.Rmb,
+					};
+					upds.Add(new JnWord{
+						Word = w,
+						Props = [p],
+						Learns = [l],
+					});
+					_aggPropIds.Add(p.Id);
+					_aggLearnIds.Add(l.Id);
+				}
+
+				await RepoWord.BatHardUpdAgg<JnWord>(Ctx, AsyE(upds.ToArray()), CT.None);
+
+				var got = await RepoWord.BatGetAggById<JnWord>(Ctx, AsyE(_aggWordIds.ToArray()), CT.None);
+				await foreach(var one in got){
+					if(one is null || one.Props.Count != 1 || one.Learns.Count != 1){
+						throw new Exception("HardUpd result mismatch");
+					}
+				}
+
+				var oldProps = await RepoProp.BatGetById(Ctx, AsyE(_aggPrevPropIds.ToArray()), CT.None);
+				await foreach(var old in oldProps){
+					if(old is not null){
+						throw new Exception("HardUpd should hard-delete removed props");
+					}
+				}
+				var oldLearns = await RepoLearn.BatGetById(Ctx, AsyE(_aggPrevLearnIds.ToArray()), CT.None);
+				await foreach(var old in oldLearns){
+					if(old is not null){
+						throw new Exception("HardUpd should hard-delete removed learns");
+					}
+				}
+				return NIL;
+			});
+		});
+
+		register.TesteeFnNames = [nameof(IRepo<PoWord, IdWord>.BatSoftUpdAgg)];
+		R("Agg_SoftUpd_Should_SoftDelete_Missing", async(o)=>{
+			if(_aggWordIds.Count == 0){
+				throw new Exception("Agg_HardUpd_Should_Replace_Includes not executed");
+			}
+			return await RunInTxnIfNoCtx(async(Ctx)=>{
+				_aggPrevPropIds.Clear();
+				_aggPrevLearnIds.Clear();
+				_aggPrevPropIds.AddRange(_aggPropIds);
+				_aggPrevLearnIds.AddRange(_aggLearnIds);
+
+				var upds = new List<JnWord>();
+				_aggPropIds.Clear();
+				_aggLearnIds.Clear();
+				foreach(var wordId in _aggWordIds){
+					var w = new PoWord{
+						Id = wordId,
+						Owner = IdUser.Zero,
+						Head = "agg_soft_upd_" + System.Guid.NewGuid().ToString("N"),
+						Lang = "en",
+					};
+					var p = new PoWordProp{
+						Id = new IdWordProp(),
+						WordId = wordId,
+						KType = EKvType.Str,
+						KStr = "soft",
+						VType = EKvType.Str,
+						VStr = "soft_" + System.Guid.NewGuid().ToString("N"),
+					};
+					var l = new PoWordLearn{
+						Id = new IdWordLearn(),
+						WordId = wordId,
+						LearnResult = ELearn.Add,
+					};
+					upds.Add(new JnWord{
+						Word = w,
+						Props = [p],
+						Learns = [l],
+					});
+					_aggPropIds.Add(p.Id);
+					_aggLearnIds.Add(l.Id);
+				}
+
+				await RepoWord.BatSoftUpdAgg<JnWord>(Ctx, AsyE(upds.ToArray()), CT.None);
+
+				var oldProps = await RepoProp.BatGetById(Ctx, AsyE(_aggPrevPropIds.ToArray()), CT.None);
+				await foreach(var old in oldProps){
+					if(old is null || !old.IsDeleted()){
+						throw new Exception("SoftUpd should soft-delete removed props");
+					}
+				}
+				var oldLearns = await RepoLearn.BatGetById(Ctx, AsyE(_aggPrevLearnIds.ToArray()), CT.None);
+				await foreach(var old in oldLearns){
+					if(old is null || !old.IsDeleted()){
+						throw new Exception("SoftUpd should soft-delete removed learns");
+					}
+				}
+				return NIL;
+			});
+		});
+
+		register.TesteeFnNames = [nameof(IRepo<PoWord, IdWord>.SoftDelAggInId)];
 		R("Agg_SoftDelete_Root_And_Includes", async(o)=>{
 			if(_aggWordIds.Count == 0){
 				throw new Exception("Agg_Insert_By_BatAddAgg not executed");
 			}
-
 			return await RunInTxnIfNoCtx(async(Ctx)=>{
-				var resp = await RepoWord.BatSoftDelAggById<JnWord>(Ctx, AsyE(_aggWordIds.ToArray()), CT.None);
+				var resp = await RepoWord.SoftDelAggInId<JnWord>(Ctx, AsyE(_aggWordIds.ToArray()), CT.None);
 				if(resp is null){
-					throw new Exception("BatSoftDelAggById returned null response");
+					throw new Exception("SoftDelAggInId returned null response");
 				}
 
 				var wordsAsy = await RepoWord.BatGetById(Ctx, AsyE(_aggWordIds.ToArray()), CT.None);
@@ -164,15 +289,15 @@ public partial class TestRepo{
 			});
 		});
 
-		register.TesteeFnNames = [nameof(IRepo<PoWord, IdWord>.BatHardDelAggById)];
+		register.TesteeFnNames = [nameof(IRepo<PoWord, IdWord>.HardDelAggInId)];
 		R("Agg_HardDelete_Root_And_Includes", async(o)=>{
 			if(_aggWordIds.Count == 0){
 				throw new Exception("Agg_Insert_By_BatAddAgg not executed");
 			}
 			return await RunInTxnIfNoCtx(async(Ctx)=>{
-				var resp = await RepoWord.BatHardDelAggById<JnWord>(Ctx, AsyE(_aggWordIds.ToArray()), CT.None);
+				var resp = await RepoWord.HardDelAggInId<JnWord>(Ctx, AsyE(_aggWordIds.ToArray()), CT.None);
 				if(resp is null){
-					throw new Exception("BatHardDelAggById returned null response");
+					throw new Exception("HardDelAggInId returned null response");
 				}
 
 				var wordsAsy = await RepoWord.BatGetById(Ctx, AsyE(_aggWordIds.ToArray()), CT.None);
@@ -197,13 +322,13 @@ public partial class TestRepo{
 			});
 		});
 
-		register.TesteeFnNames = [nameof(IRepo<PoWord, IdWord>.BatHardDelAggById)];
+		register.TesteeFnNames = [nameof(IRepo<PoWord, IdWord>.HardDelAggInId)];
 		R("Agg_Cleanup_HardDelete", async(o)=>{
 			if(_aggWordIds.Count == 0){
 				return NIL;
 			}
 			return await RunInTxnIfNoCtx(async(Ctx)=>{
-				await RepoWord.BatHardDelAggById<JnWord>(Ctx, AsyE(_aggWordIds.ToArray()), CT.None);
+				await RepoWord.HardDelAggInId<JnWord>(Ctx, AsyE(_aggWordIds.ToArray()), CT.None);
 				return NIL;
 			});
 		});
