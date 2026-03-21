@@ -10,16 +10,19 @@ using Ngaq.Core.Model.Po.Learn_;
 namespace Ngaq.Local.Test.CsSql.Repo;
 
 public partial class TestRepo : ITester{
+	ISqlCmdMkr SqlCmdMkr;
 	IRepo<PoKv, IdKv> Repo;
 	IRepo<PoWord, IdWord> RepoWord;
 	IRepo<PoWordProp, IdWordProp> RepoProp;
 	IRepo<PoWordLearn, IdWordLearn> RepoLearn;
 	public TestRepo(
-		IRepo<PoKv, IdKv> Repo
+		ISqlCmdMkr SqlCmdMkr
+		,IRepo<PoKv, IdKv> Repo
 		,IRepo<PoWord, IdWord> RepoWord
 		,IRepo<PoWordProp, IdWordProp> RepoProp
 		,IRepo<PoWordLearn, IdWordLearn> RepoLearn
 	){
+		this.SqlCmdMkr = SqlCmdMkr;
 		this.Repo = Repo;
 		this.RepoWord = RepoWord;
 		this.RepoProp = RepoProp;
@@ -41,5 +44,9 @@ public partial class TestRepo : ITester{
 
 	static async IAsyncEnumerable<T> AsyE<T>(params T[] Items){
 		foreach(var I in Items) yield return I;
+	}
+
+	Task<TRtn> RunInTxnIfNoCtx<TRtn>(Func<IDbFnCtx, Task<TRtn>> Fn){
+		return SqlCmdMkr.RunInTxnIfNoCtx(null, CT.None, Fn);
 	}
 }

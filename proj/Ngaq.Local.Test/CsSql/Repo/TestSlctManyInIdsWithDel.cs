@@ -13,25 +13,27 @@ public partial class TestRepo{
 		);
 		var R = register.Register;
 		R("SlctManyInIdsWithDel_EmptyIds_ReturnsEmpty", async(o)=>{
-			var Ctx = new DbFnCtx();
-			var Result = await Repo.GetManyInIdsWithDel(Ctx, AsyE<IdKv>(), CT.None);
-			var List = new List<PoKv?>();
-			await foreach(var Item in Result) List.Add(Item);
-			if(List.Count != 0){
-				throw new Exception($"Expected empty, got {List.Count}");
-			}
-			return NIL;
+			return await RunInTxnIfNoCtx(async(Ctx)=>{
+				var Result = await Repo.GetManyInIdsWithDel(Ctx, AsyE<IdKv>(), CT.None);
+				var List = new List<PoKv?>();
+				await foreach(var Item in Result) List.Add(Item);
+				if(List.Count != 0){
+					throw new Exception($"Expected empty, got {List.Count}");
+				}
+				return NIL;
+			});
 		});
 
 		R("SlctManyInIdsWithDel_NonExistIds_ReturnsEmpty", async(o)=>{
-			var Ctx = new DbFnCtx();
-			var Result = await Repo.GetManyInIdsWithDel(Ctx, AsyE(new IdKv(), new IdKv()), CT.None);
-			var List = new List<PoKv?>();
-			await foreach(var Item in Result) List.Add(Item);
-			if(List.Count != 0){
-				throw new Exception($"Expected empty for non-existent ids, got {List.Count}");
-			}
-			return NIL;
+			return await RunInTxnIfNoCtx(async(Ctx)=>{
+				var Result = await Repo.GetManyInIdsWithDel(Ctx, AsyE(new IdKv(), new IdKv()), CT.None);
+				var List = new List<PoKv?>();
+				await foreach(var Item in Result) List.Add(Item);
+				if(List.Count != 0){
+					throw new Exception($"Expected empty for non-existent ids, got {List.Count}");
+				}
+				return NIL;
+			});
 		});
 	}
 }

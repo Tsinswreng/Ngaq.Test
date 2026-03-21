@@ -24,30 +24,31 @@ public partial class TestRepo{
 
 		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatAdd)];
 		R("BatInsert_Insert_Multi", async(o)=>{
-			var Ctx = new DbFnCtx();
-			var ents = new List<PoKv>();
-			for(var i = 0; i < 3; i++){
-				var e = new PoKv{
-					Id = new IdKv(),
-					Owner = IdUser.Zero,
-					KType = EKvType.Str,
-					KStr = "bat_insert_k_" + System.Guid.NewGuid().ToString("N"),
-					VType = EKvType.Str,
-					VStr = "bat_insert_v_" + System.Guid.NewGuid().ToString("N"),
-				};
-				ents.Add(e);
-			}
+			return await RunInTxnIfNoCtx(async(Ctx)=>{
+				var ents = new List<PoKv>();
+				for(var i = 0; i < 3; i++){
+					var e = new PoKv{
+						Id = new IdKv(),
+						Owner = IdUser.Zero,
+						KType = EKvType.Str,
+						KStr = "bat_insert_k_" + System.Guid.NewGuid().ToString("N"),
+						VType = EKvType.Str,
+						VStr = "bat_insert_v_" + System.Guid.NewGuid().ToString("N"),
+					};
+					ents.Add(e);
+				}
 
-			var resp = await Repo.BatAdd(Ctx, AsyE(ents.ToArray()), CT.None);
-			if(resp is null){
-				throw new Exception("BatInsert returned null response");
-			}
+				var resp = await Repo.BatAdd(Ctx, AsyE(ents.ToArray()), CT.None);
+				if(resp is null){
+					throw new Exception("BatInsert returned null response");
+				}
 
-			_batInsertEnts.Clear();
-			_batInsertIds.Clear();
-			_batInsertEnts.AddRange(ents);
-			_batInsertIds.AddRange(ents.Select(x=>x.Id));
-			return NIL;
+				_batInsertEnts.Clear();
+				_batInsertIds.Clear();
+				_batInsertEnts.AddRange(ents);
+				_batInsertIds.AddRange(ents.Select(x=>x.Id));
+				return NIL;
+			});
 		});
 
 		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatGetById)];
@@ -56,29 +57,30 @@ public partial class TestRepo{
 				throw new Exception("BatInsert_Insert_Multi not executed or no ids recorded");
 			}
 
-			var Ctx = new DbFnCtx();
-			var result = await Repo.BatGetById(Ctx, AsyE(_batInsertIds.ToArray()), CT.None);
-			var list = new List<PoKv?>();
-			await foreach(var item in result) list.Add(item);
+			return await RunInTxnIfNoCtx(async(Ctx)=>{
+				var result = await Repo.BatGetById(Ctx, AsyE(_batInsertIds.ToArray()), CT.None);
+				var list = new List<PoKv?>();
+				await foreach(var item in result) list.Add(item);
 
-			if(list.Count != _batInsertIds.Count){
-				throw new Exception($"Expected {_batInsertIds.Count} entries, got {list.Count}");
-			}
+				if(list.Count != _batInsertIds.Count){
+					throw new Exception($"Expected {_batInsertIds.Count} entries, got {list.Count}");
+				}
 
-			for(var i = 0; i < list.Count; i++){
-				var got = list[i];
-				if(got is null){
-					throw new Exception($"Expected non-null entity at index {i}");
+				for(var i = 0; i < list.Count; i++){
+					var got = list[i];
+					if(got is null){
+						throw new Exception($"Expected non-null entity at index {i}");
+					}
+					var exp = _batInsertEnts[i];
+					if(!got.Id.Equals(exp.Id)){
+						throw new Exception($"Id mismatch at index {i}");
+					}
+					if(got.KStr != exp.KStr || got.VStr != exp.VStr){
+						throw new Exception($"Value mismatch at index {i}");
+					}
 				}
-				var exp = _batInsertEnts[i];
-				if(!got.Id.Equals(exp.Id)){
-					throw new Exception($"Id mismatch at index {i}");
-				}
-				if(got.KStr != exp.KStr || got.VStr != exp.VStr){
-					throw new Exception($"Value mismatch at index {i}");
-				}
-			}
-			return NIL;
+				return NIL;
+			});
 		});
 
 		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.GetManyInIdsWithDel)];
@@ -87,26 +89,27 @@ public partial class TestRepo{
 				throw new Exception("BatInsert_Insert_Multi not executed or no ids recorded");
 			}
 
-			var Ctx = new DbFnCtx();
-			var result = await Repo.GetManyInIdsWithDel(Ctx, AsyE(_batInsertIds.ToArray()), CT.None);
-			var list = new List<PoKv?>();
-			await foreach(var item in result) list.Add(item);
+			return await RunInTxnIfNoCtx(async(Ctx)=>{
+				var result = await Repo.GetManyInIdsWithDel(Ctx, AsyE(_batInsertIds.ToArray()), CT.None);
+				var list = new List<PoKv?>();
+				await foreach(var item in result) list.Add(item);
 
-			if(list.Count == 0){
-				throw new Exception("Expected non-empty result");
-			}
-
-			var expected = new HashSet<IdKv>(_batInsertIds);
-			foreach(var item in list){
-				if(item is null){
-					throw new Exception("Expected non-null entity");
+				if(list.Count == 0){
+					throw new Exception("Expected non-empty result");
 				}
-				expected.Remove(item.Id);
-			}
-			if(expected.Count != 0){
-				throw new Exception($"Missing {expected.Count} inserted ids in SlctManyInIdsWithDel");
-			}
-			return NIL;
+
+				var expected = new HashSet<IdKv>(_batInsertIds);
+				foreach(var item in list){
+					if(item is null){
+						throw new Exception("Expected non-null entity");
+					}
+					expected.Remove(item.Id);
+				}
+				if(expected.Count != 0){
+					throw new Exception($"Missing {expected.Count} inserted ids in SlctManyInIdsWithDel");
+				}
+				return NIL;
+			});
 		});
 
 		register.TesteeFnNames = [
@@ -118,19 +121,20 @@ public partial class TestRepo{
 				return NIL;
 			}
 
-			var Ctx = new DbFnCtx();
-			var resp = await Repo.BatHardDelById(Ctx, AsyE(_batInsertIds.ToArray()), CT.None);
-			if(resp is null){
-				throw new Exception("BatHardDelById returned null response");
-			}
+			return await RunInTxnIfNoCtx(async(Ctx)=>{
+				var resp = await Repo.BatHardDelById(Ctx, AsyE(_batInsertIds.ToArray()), CT.None);
+				if(resp is null){
+					throw new Exception("BatHardDelById returned null response");
+				}
 
-			var verify = await Repo.BatGetById(Ctx, AsyE(_batInsertIds.ToArray()), CT.None);
-			var list = new List<PoKv?>();
-			await foreach(var item in verify) list.Add(item);
-			if(list.Any(x=>x != null)){
-				throw new Exception("Expected all nulls after hard delete");
-			}
-			return NIL;
+				var verify = await Repo.BatGetById(Ctx, AsyE(_batInsertIds.ToArray()), CT.None);
+				var list = new List<PoKv?>();
+				await foreach(var item in verify) list.Add(item);
+				if(list.Any(x=>x != null)){
+					throw new Exception("Expected all nulls after hard delete");
+				}
+				return NIL;
+			});
 		});
 	}
 }

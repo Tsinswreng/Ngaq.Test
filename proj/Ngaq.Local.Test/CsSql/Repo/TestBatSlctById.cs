@@ -15,31 +15,33 @@ public partial class TestRepo{
 
 		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatGetById)];
 		R("BatSlctById_EmptyIds_ReturnsEmpty", async(o)=>{
-			var Ctx = new DbFnCtx();
-			var Result = await Repo.BatGetById(Ctx, AsyE<IdKv>(), CT.None);
-			var List = new List<PoKv?>();
-			await foreach(var Item in Result) List.Add(Item);
-			if(List.Count != 0){
-				throw new Exception($"Expected empty, got {List.Count}");
-			}
-			return NIL;
+			return await RunInTxnIfNoCtx(async(Ctx)=>{
+				var Result = await Repo.BatGetById(Ctx, AsyE<IdKv>(), CT.None);
+				var List = new List<PoKv?>();
+				await foreach(var Item in Result) List.Add(Item);
+				if(List.Count != 0){
+					throw new Exception($"Expected empty, got {List.Count}");
+				}
+				return NIL;
+			});
 		});
 
 		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatGetById)];
 		R("BatSlctById_NonExistIds_ReturnsNulls", async(o)=>{
-			var Ctx = new DbFnCtx();
-			var Id1 = new IdKv();
-			var Id2 = new IdKv();
-			var Result = await Repo.BatGetById(Ctx, AsyE(Id1, Id2), CT.None);
-			var List = new List<PoKv?>();
-			await foreach(var Item in Result) List.Add(Item);
-			if(List.Count != 2){
-				throw new Exception($"Expected 2 entries (one per id), got {List.Count}");
-			}
-			if(List.Any(x => x != null)){
-				throw new Exception("Expected all nulls for non-existent IDs");
-			}
-			return NIL;
+			return await RunInTxnIfNoCtx(async(Ctx)=>{
+				var Id1 = new IdKv();
+				var Id2 = new IdKv();
+				var Result = await Repo.BatGetById(Ctx, AsyE(Id1, Id2), CT.None);
+				var List = new List<PoKv?>();
+				await foreach(var Item in Result) List.Add(Item);
+				if(List.Count != 2){
+					throw new Exception($"Expected 2 entries (one per id), got {List.Count}");
+				}
+				if(List.Any(x => x != null)){
+					throw new Exception("Expected all nulls for non-existent IDs");
+				}
+				return NIL;
+			});
 		});
 	}
 }
