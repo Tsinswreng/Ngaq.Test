@@ -22,7 +22,7 @@ public partial class TestRepo{
 		);
 		var R = register.Register;
 
-		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatInsert)];
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatAdd)];
 		R("BatInsert_Insert_Multi", async(o)=>{
 			var Ctx = new DbFnCtx();
 			var ents = new List<PoKv>();
@@ -38,7 +38,7 @@ public partial class TestRepo{
 				ents.Add(e);
 			}
 
-			var resp = await Repo.BatInsert(Ctx, AsyE(ents.ToArray()), CT.None);
+			var resp = await Repo.BatAdd(Ctx, AsyE(ents.ToArray()), CT.None);
 			if(resp is null){
 				throw new Exception("BatInsert returned null response");
 			}
@@ -50,14 +50,14 @@ public partial class TestRepo{
 			return NIL;
 		});
 
-		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatSlctById)];
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatGetById)];
 		R("BatInsert_Verify_BatSlctById", async(o)=>{
 			if(_batInsertIds.Count == 0){
 				throw new Exception("BatInsert_Insert_Multi not executed or no ids recorded");
 			}
 
 			var Ctx = new DbFnCtx();
-			var result = await Repo.BatSlctById(Ctx, AsyE(_batInsertIds.ToArray()), CT.None);
+			var result = await Repo.BatGetById(Ctx, AsyE(_batInsertIds.ToArray()), CT.None);
 			var list = new List<PoKv?>();
 			await foreach(var item in result) list.Add(item);
 
@@ -81,14 +81,14 @@ public partial class TestRepo{
 			return NIL;
 		});
 
-		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.SlctManyInIdsWithDel)];
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.GetManyInIdsWithDel)];
 		R("BatInsert_Verify_SlctManyInIdsWithDel", async(o)=>{
 			if(_batInsertIds.Count == 0){
 				throw new Exception("BatInsert_Insert_Multi not executed or no ids recorded");
 			}
 
 			var Ctx = new DbFnCtx();
-			var result = await Repo.SlctManyInIdsWithDel(Ctx, AsyE(_batInsertIds.ToArray()), CT.None);
+			var result = await Repo.GetManyInIdsWithDel(Ctx, AsyE(_batInsertIds.ToArray()), CT.None);
 			var list = new List<PoKv?>();
 			await foreach(var item in result) list.Add(item);
 
@@ -111,7 +111,7 @@ public partial class TestRepo{
 
 		register.TesteeFnNames = [
 			nameof(IRepo<PoKv, IdKv>.BatHardDelById)
-			,nameof(IRepo<PoKv, IdKv>.BatSlctById)
+			,nameof(IRepo<PoKv, IdKv>.BatGetById)
 		];
 		R("BatInsert_Cleanup_HardDelete", async(o)=>{
 			if(_batInsertIds.Count == 0){
@@ -124,7 +124,7 @@ public partial class TestRepo{
 				throw new Exception("BatHardDelById returned null response");
 			}
 
-			var verify = await Repo.BatSlctById(Ctx, AsyE(_batInsertIds.ToArray()), CT.None);
+			var verify = await Repo.BatGetById(Ctx, AsyE(_batInsertIds.ToArray()), CT.None);
 			var list = new List<PoKv?>();
 			await foreach(var item in verify) list.Add(item);
 			if(list.Any(x=>x != null)){
