@@ -1,5 +1,7 @@
 using Tsinswreng.CsTreeTest;
 using Tsinswreng.CsCore;
+using Ngaq.Core.Infra;
+using Ngaq.Core.Shared.User.Models.Po.User;
 using Ngaq.Core.Shared.Word.Models;
 using Ngaq.Core.Shared.Word.Models.Learn_;
 using Ngaq.Core.Shared.Word.Models.Po.Kv;
@@ -13,11 +15,23 @@ public partial class TestIDictSerializer: ITester{
 		str? Id = null
 		,str Head = "head-default"
 		,str Lang = "en"
+		,str? Owner = null
+		,i64? StoredAtMs = null
+		,i64? BizCreatedAtMs = null
+		,i64? BizUpdatedAtMs = null
+		,i64? DbCreatedAtMs = null
+		,i64? DbUpdatedAtMs = null
 	){
 		return new Dictionary<str, obj?>{
 			[nameof(PoWord.Id)] = Id,
 			[nameof(PoWord.Head)] = Head,
 			[nameof(PoWord.Lang)] = Lang,
+			[nameof(PoWord.Owner)] = Owner,
+			[nameof(PoWord.StoredAt)] = StoredAtMs,
+			[nameof(PoWord.BizCreatedAt)] = BizCreatedAtMs,
+			[nameof(PoWord.BizUpdatedAt)] = BizUpdatedAtMs,
+			[nameof(PoWord.DbCreatedAt)] = DbCreatedAtMs,
+			[nameof(PoWord.DbUpdatedAt)] = DbUpdatedAtMs,
 		};
 	}
 
@@ -65,9 +79,18 @@ public partial class TestIDictSerializer: ITester{
 		R("Deserialize_Should_Map_Dict_To_JnWord_WithNestedLists", async(o)=>{
 			var id = new IdWord();
 			var idSerialized = id.ToString();
+			var owner = new IdUser().ToString();
+			var storedAtMs = Tempus.Now().Value;
+			var bizCreatedAtMs = Tempus.Now().Value - 20;
+			var bizUpdatedAtMs = Tempus.Now().Value - 10;
+			var dbCreatedAtMs = Tempus.Now().Value - 30;
+			var dbUpdatedAtMs = Tempus.Now().Value - 5;
 
 			var src = new Dictionary<str, obj?>{
-				[nameof(JnWord.Word)] = MkWordDict(idSerialized, "alpha", "en"),
+				[nameof(JnWord.Word)] = MkWordDict(
+					idSerialized, "alpha", "en", owner,
+					storedAtMs, bizCreatedAtMs, bizUpdatedAtMs, dbCreatedAtMs, dbUpdatedAtMs
+				),
 				[nameof(JnWord.Props)] = new List<obj?>{
 					MkPropDict(idSerialized, nameof(EKvType.Str), nameof(EKvType.Str))
 				},
@@ -82,6 +105,18 @@ public partial class TestIDictSerializer: ITester{
 			}
 			if(word.Word.Head != "alpha" || word.Word.Lang != "en"){
 				throw new Exception("Word basic fields were not deserialized correctly.");
+			}
+			if(word.Word.Owner.ToString() != owner){
+				throw new Exception("PoWord.Owner(IdUser) was not deserialized correctly from string.");
+			}
+			if(
+				word.Word.StoredAt.Value != storedAtMs
+				|| word.Word.BizCreatedAt.Value != bizCreatedAtMs
+				|| word.Word.BizUpdatedAt.Value != bizUpdatedAtMs
+				|| word.Word.DbCreatedAt.Value != dbCreatedAtMs
+				|| word.Word.DbUpdatedAt.Value != dbUpdatedAtMs
+			){
+				throw new Exception("PoWord.Tempus fields were not deserialized correctly from unix-ms values.");
 			}
 			if(word.Props.Count != 1 || word.Learns.Count != 1){
 				throw new Exception("Nested list fields Props/Learns should each contain one element.");
