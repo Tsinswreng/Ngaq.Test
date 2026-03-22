@@ -83,14 +83,14 @@ public partial class TestRepo{
 			});
 		});
 
-		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.GetManyInIdsWithDel)];
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.GetManyInIdWithDel)];
 		R("BatInsert_Verify_SlctManyInIdsWithDel", async(o)=>{
 			if(_batInsertIds.Count == 0){
 				throw new Exception("BatInsert_Insert_Multi not executed or no ids recorded");
 			}
 
 			return await RunInTxnIfNoCtx(async(Ctx)=>{
-				var result = await Repo.GetManyInIdsWithDel(Ctx, AsyE(_batInsertIds.ToArray()), CT.None);
+				var result = await Repo.GetManyInIdWithDel(Ctx, AsyE(_batInsertIds.ToArray()), CT.None);
 				var list = new List<PoKv?>();
 				await foreach(var item in result) list.Add(item);
 
