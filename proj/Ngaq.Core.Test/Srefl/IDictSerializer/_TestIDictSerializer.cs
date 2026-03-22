@@ -1,7 +1,7 @@
 using Tsinswreng.CsTreeTest;
 using Tsinswreng.CsCore;
 
-namespace Tsinswreng.CsStrAcc.Test.IDictSerializer;
+namespace Tsinswreng.Srefl.Test.IDictSerializer;
 
 public partial class TestIDictSerializer: ITester{
 	

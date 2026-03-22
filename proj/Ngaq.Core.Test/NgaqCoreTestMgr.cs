@@ -1,4 +1,4 @@
-using Tsinswreng.CsStrAcc.Test.IDictSerializer;
+using Tsinswreng.Srefl.Test.IDictSerializer;
 using Tsinswreng.CsTreeTest;
 
 namespace Ngaq.Core.Test;

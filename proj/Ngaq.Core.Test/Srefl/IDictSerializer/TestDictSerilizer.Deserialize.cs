@@ -7,7 +7,7 @@ using Ngaq.Core.Shared.Word.Models.Learn_;
 using Ngaq.Core.Shared.Word.Models.Po.Kv;
 using Ngaq.Core.Shared.Word.Models.Po.Word;
 
-namespace Tsinswreng.CsStrAcc.Test.IDictSerializer;
+namespace Tsinswreng.Srefl.Test.IDictSerializer;
 
 public partial class TestIDictSerializer: ITester{
 
