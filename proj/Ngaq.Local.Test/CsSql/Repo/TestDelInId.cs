@@ -61,7 +61,7 @@ public partial class TestRepo{
 				if(resp is null){
 					throw new Exception("SoftDelInId returned null response");
 				}
-				var verify = await Repo.BatGetById(Ctx, AsyE(_delInIdIds.ToArray()), CT.None);
+				var verify = Repo.BatGetById(Ctx, AsyE(_delInIdIds.ToArray()), CT.None);
 				var list = new List<PoKv?>();
 				await foreach(var item in verify) list.Add(item);
 				if(list.Count != _delInIdIds.Count){
@@ -93,7 +93,7 @@ public partial class TestRepo{
 				if(resp is null){
 					throw new Exception("HardDelInId returned null response");
 				}
-				var verify = await Repo.BatGetById(Ctx, AsyE(_delInIdIds.ToArray()), CT.None);
+				var verify = Repo.BatGetById(Ctx, AsyE(_delInIdIds.ToArray()), CT.None);
 				var list = new List<PoKv?>();
 				await foreach(var item in verify) list.Add(item);
 				if(list.Any(x=>x != null)){
@@ -116,7 +116,7 @@ public partial class TestRepo{
 				if(resp is null){
 					throw new Exception("BatHardDelById returned null response");
 				}
-				var verify = await Repo.BatGetById(Ctx, AsyE(_delInIdIds.ToArray()), CT.None);
+				var verify = Repo.BatGetById(Ctx, AsyE(_delInIdIds.ToArray()), CT.None);
 				var list = new List<PoKv?>();
 				await foreach(var item in verify) list.Add(item);
 				if(list.Any(x=>x != null)){

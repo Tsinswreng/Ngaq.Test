@@ -16,7 +16,7 @@ public partial class TestRepo{
 		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatGetById)];
 		R("BatSlctById_EmptyIds_ReturnsEmpty", async(o)=>{
 			return await RunInTxnIfNoCtx(async(Ctx)=>{
-				var Result = await Repo.BatGetById(Ctx, AsyE<IdKv>(), CT.None);
+				var Result = Repo.BatGetById(Ctx, AsyE<IdKv>(), CT.None);
 				var List = new List<PoKv?>();
 				await foreach(var Item in Result) List.Add(Item);
 				if(List.Count != 0){
@@ -31,7 +31,7 @@ public partial class TestRepo{
 			return await RunInTxnIfNoCtx(async(Ctx)=>{
 				var Id1 = new IdKv();
 				var Id2 = new IdKv();
-				var Result = await Repo.BatGetById(Ctx, AsyE(Id1, Id2), CT.None);
+				var Result = Repo.BatGetById(Ctx, AsyE(Id1, Id2), CT.None);
 				var List = new List<PoKv?>();
 				await foreach(var Item in Result) List.Add(Item);
 				if(List.Count != 2){

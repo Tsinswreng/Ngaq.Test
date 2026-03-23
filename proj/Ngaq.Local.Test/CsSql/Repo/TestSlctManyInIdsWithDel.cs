@@ -14,7 +14,7 @@ public partial class TestRepo{
 		var R = register.Register;
 		R("SlctManyInIdsWithDel_EmptyIds_ReturnsEmpty", async(o)=>{
 			return await RunInTxnIfNoCtx(async(Ctx)=>{
-				var Result = await Repo.GetManyInIdWithDel(Ctx, AsyE<IdKv>(), CT.None);
+				var Result = Repo.GetManyInIdWithDel(Ctx, AsyE<IdKv>(), CT.None);
 				var List = new List<PoKv?>();
 				await foreach(var Item in Result) List.Add(Item);
 				if(List.Count != 0){
@@ -26,7 +26,7 @@ public partial class TestRepo{
 
 		R("SlctManyInIdsWithDel_NonExistIds_ReturnsEmpty", async(o)=>{
 			return await RunInTxnIfNoCtx(async(Ctx)=>{
-				var Result = await Repo.GetManyInIdWithDel(Ctx, AsyE(new IdKv(), new IdKv()), CT.None);
+				var Result = Repo.GetManyInIdWithDel(Ctx, AsyE(new IdKv(), new IdKv()), CT.None);
 				var List = new List<PoKv?>();
 				await foreach(var Item in Result) List.Add(Item);
 				if(List.Count != 0){

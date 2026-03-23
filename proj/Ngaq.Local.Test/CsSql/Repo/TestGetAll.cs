@@ -68,7 +68,7 @@ public partial class TestRepo{
 				throw new Exception("GetAll_Insert_Multi not executed");
 			}
 			return await RunInTxnIfNoCtx(async(Ctx)=>{
-				var gotAsy = await Repo.GetAll(Ctx, CT.None);
+				var gotAsy = Repo.GetAll(Ctx, CT.None);
 				var got = new List<PoKv>();
 				await foreach(var item in gotAsy){
 					got.Add(item);

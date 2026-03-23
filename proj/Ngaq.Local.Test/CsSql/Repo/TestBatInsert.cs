@@ -58,7 +58,7 @@ public partial class TestRepo{
 			}
 
 			return await RunInTxnIfNoCtx(async(Ctx)=>{
-				var result = await Repo.BatGetById(Ctx, AsyE(_batInsertIds.ToArray()), CT.None);
+				var result = Repo.BatGetById(Ctx, AsyE(_batInsertIds.ToArray()), CT.None);
 				var list = new List<PoKv?>();
 				await foreach(var item in result) list.Add(item);
 
@@ -90,7 +90,7 @@ public partial class TestRepo{
 			}
 
 			return await RunInTxnIfNoCtx(async(Ctx)=>{
-				var result = await Repo.GetManyInIdWithDel(Ctx, AsyE(_batInsertIds.ToArray()), CT.None);
+				var result = Repo.GetManyInIdWithDel(Ctx, AsyE(_batInsertIds.ToArray()), CT.None);
 				var list = new List<PoKv?>();
 				await foreach(var item in result) list.Add(item);
 
@@ -127,7 +127,7 @@ public partial class TestRepo{
 					throw new Exception("BatHardDelById returned null response");
 				}
 
-				var verify = await Repo.BatGetById(Ctx, AsyE(_batInsertIds.ToArray()), CT.None);
+				var verify = Repo.BatGetById(Ctx, AsyE(_batInsertIds.ToArray()), CT.None);
 				var list = new List<PoKv?>();
 				await foreach(var item in verify) list.Add(item);
 				if(list.Any(x=>x != null)){

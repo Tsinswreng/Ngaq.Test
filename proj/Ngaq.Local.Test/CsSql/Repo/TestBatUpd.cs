@@ -73,7 +73,7 @@ public partial class TestRepo{
 					throw new Exception("BatUpdById returned null response");
 				}
 
-				var verify = await Repo.BatGetById(Ctx, AsyE(_batUpdIds.ToArray()), CT.None);
+				var verify = Repo.BatGetById(Ctx, AsyE(_batUpdIds.ToArray()), CT.None);
 				var list = new List<PoKv?>();
 				await foreach(var item in verify) list.Add(item);
 				if(list.Count != _batUpdIds.Count){
@@ -124,7 +124,7 @@ public partial class TestRepo{
 				if(resp is null){
 					throw new Exception("BatUpdByCodeDict returned null response");
 				}
-				var verify = await Repo.BatGetById(Ctx, AsyE(_batUpdIds.ToArray()), CT.None);
+				var verify = Repo.BatGetById(Ctx, AsyE(_batUpdIds.ToArray()), CT.None);
 				var list = new List<PoKv?>();
 				await foreach(var item in verify) list.Add(item);
 				for(var i = 0; i < list.Count; i++){
@@ -162,7 +162,7 @@ public partial class TestRepo{
 				if(resp is null){
 					throw new Exception("BatUpdByDbDict returned null response");
 				}
-				var verify = await Repo.BatGetById(Ctx, AsyE(_batUpdIds.ToArray()), CT.None);
+				var verify = Repo.BatGetById(Ctx, AsyE(_batUpdIds.ToArray()), CT.None);
 				var list = new List<PoKv?>();
 				await foreach(var item in verify) list.Add(item);
 				for(var i = 0; i < list.Count; i++){
@@ -191,7 +191,7 @@ public partial class TestRepo{
 				if(resp is null){
 					throw new Exception("BatHardDelById returned null response");
 				}
-				var verify = await Repo.BatGetById(Ctx, AsyE(_batUpdIds.ToArray()), CT.None);
+				var verify = Repo.BatGetById(Ctx, AsyE(_batUpdIds.ToArray()), CT.None);
 				var list = new List<PoKv?>();
 				await foreach(var item in verify) list.Add(item);
 				if(list.Any(x=>x != null)){
