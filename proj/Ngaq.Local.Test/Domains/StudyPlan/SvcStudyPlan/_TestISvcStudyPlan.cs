@@ -5,6 +5,7 @@ using Ngaq.Core.Shared.StudyPlan.Models.Po.WeightCalculator;
 using Ngaq.Core.Shared.StudyPlan.Svc;
 using Ngaq.Core.Shared.User.Models.Po.User;
 using Ngaq.Core.Shared.User.UserCtx;
+using Ngaq.Core.Infra;
 using Tsinswreng.CsSql;
 using Tsinswreng.CsTreeTest;
 
@@ -112,6 +113,13 @@ public partial class TestISvcStudyPlan: ITester{
 
 	IUserCtx MkUser(IdUser UserId){
 		return new UserCtx{UserId = UserId};
+	}
+
+	IDbUserCtx MkUserCtx(IdUser UserId){
+		return new DbUserCtx(
+			new DbFnCtx()
+			,MkUser(UserId)
+		);
 	}
 
 	async Task InsertSeedData(){

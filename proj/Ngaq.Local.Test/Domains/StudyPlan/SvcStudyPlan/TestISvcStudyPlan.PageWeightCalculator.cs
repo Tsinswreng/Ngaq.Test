@@ -15,12 +15,12 @@ public partial class TestISvcStudyPlan{
 		register.TesteeFnNames = [nameof(Ngaq.Core.Shared.StudyPlan.Svc.ISvcStudyPlan.PageWeightCalculator)];
 
 		R("PageWeightCalculator_Search_By_UniqName", async(o)=>{
+			var userCtx = MkUserCtx(_ownerA);
 			var req = new ReqPageWeightCalculator{
-				Owner = _ownerA,
 				PageQry = new PageQry{PageIdx = 0, PageSize = 10, WantTotCnt = false},
 				UniqNameSearch = _token + "_wc_a_",
 			};
-			var page = await SvcStudyPlan.PageWeightCalculator(null, req, CT.None);
+			var page = await SvcStudyPlan.PageWeightCalculator(userCtx, req, CT.None);
 			var data = await ToList(page.DataAsyE);
 			if(data.Count != 2){
 				throw new Exception($"PageWeightCalculator search expected 2, got {data.Count}");
@@ -32,8 +32,8 @@ public partial class TestISvcStudyPlan{
 		});
 
 		R("PageWeightCalculator_Paging_Page0_Page1", async(o)=>{
-			var page0 = await SvcStudyPlan.PageWeightCalculator(null, new ReqPageWeightCalculator{
-				Owner = _ownerA,
+			var userCtx = MkUserCtx(_ownerA);
+			var page0 = await SvcStudyPlan.PageWeightCalculator(userCtx, new ReqPageWeightCalculator{
 				PageQry = new PageQry{PageIdx = 0, PageSize = 2, WantTotCnt = false},
 			}, CT.None);
 			var page0Data = await ToList(page0.DataAsyE);
@@ -41,8 +41,7 @@ public partial class TestISvcStudyPlan{
 				throw new Exception($"PageWeightCalculator page0 expected 2, got {page0Data.Count}");
 			}
 
-			var page1 = await SvcStudyPlan.PageWeightCalculator(null, new ReqPageWeightCalculator{
-				Owner = _ownerA,
+			var page1 = await SvcStudyPlan.PageWeightCalculator(userCtx, new ReqPageWeightCalculator{
 				PageQry = new PageQry{PageIdx = 1, PageSize = 2, WantTotCnt = false},
 			}, CT.None);
 			var page1Data = await ToList(page1.DataAsyE);

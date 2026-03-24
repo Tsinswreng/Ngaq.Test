@@ -15,12 +15,12 @@ public partial class TestISvcStudyPlan{
 		register.TesteeFnNames = [nameof(Ngaq.Core.Shared.StudyPlan.Svc.ISvcStudyPlan.PageStudyPlan)];
 
 		R("PageStudyPlan_Search_By_UniqName", async(o)=>{
+			var userCtx = MkUserCtx(_ownerA);
 			var req = new ReqPageStudyPlan{
-				Owner = _ownerA,
 				PageQry = new PageQry{PageIdx = 0, PageSize = 10, WantTotCnt = false},
 				UniqNameSearch = _token + "_sp_a_",
 			};
-			var page = await SvcStudyPlan.PageStudyPlan(null, req, CT.None);
+			var page = await SvcStudyPlan.PageStudyPlan(userCtx, req, CT.None);
 			var data = await ToList(page.DataAsyE);
 			if(data.Count != 2){
 				throw new Exception($"PageStudyPlan search expected 2, got {data.Count}");
@@ -32,8 +32,8 @@ public partial class TestISvcStudyPlan{
 		});
 
 		R("PageStudyPlan_Paging_Page0_Page1", async(o)=>{
-			var page0 = await SvcStudyPlan.PageStudyPlan(null, new ReqPageStudyPlan{
-				Owner = _ownerA,
+			var userCtx = MkUserCtx(_ownerA);
+			var page0 = await SvcStudyPlan.PageStudyPlan(userCtx, new ReqPageStudyPlan{
 				PageQry = new PageQry{PageIdx = 0, PageSize = 2, WantTotCnt = false},
 			}, CT.None);
 			var page0Data = await ToList(page0.DataAsyE);
@@ -41,8 +41,7 @@ public partial class TestISvcStudyPlan{
 				throw new Exception($"PageStudyPlan page0 expected 2, got {page0Data.Count}");
 			}
 
-			var page1 = await SvcStudyPlan.PageStudyPlan(null, new ReqPageStudyPlan{
-				Owner = _ownerA,
+			var page1 = await SvcStudyPlan.PageStudyPlan(userCtx, new ReqPageStudyPlan{
 				PageQry = new PageQry{PageIdx = 1, PageSize = 2, WantTotCnt = false},
 			}, CT.None);
 			var page1Data = await ToList(page1.DataAsyE);
