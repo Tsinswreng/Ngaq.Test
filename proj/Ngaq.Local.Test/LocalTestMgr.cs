@@ -12,6 +12,7 @@ public class LocalTestMgr:DiEtTestMgr{
 		Test = this.TestNode;
 		this.RegisterTester<TestISvcStudyPlan>();
 		this.RegisterTester<TestISvcWord>();
+		this.RegisterTester<TestISvcWordV2>();
 		this.RegisterTester<TestDaoWord>();
 		this.RegisterTester<TestRepo>();
 		return Test;
