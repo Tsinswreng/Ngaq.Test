@@ -88,6 +88,34 @@ public partial class TestRepo{
 			});
 		});
 
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.GetAllWithDel)];
+		R("GetAllWithDel_Should_Include_SoftDeleted", async(o)=>{
+			if(_getAllIds.Count == 0 || _getAllSoftDeletedId is null){
+				throw new Exception("GetAll_Insert_Multi not executed");
+			}
+			return await RunInTxnIfNoCtx(async(Ctx)=>{
+				var gotAsy = Repo.GetAllWithDel(Ctx, CT.None);
+				var got = new List<PoKv>();
+				await foreach(var item in gotAsy){
+					got.Add(item);
+				}
+
+				var gotInserted = got.Where(x=>_getAllIds.Contains(x.Id)).ToList();
+				if(gotInserted.Count != _getAllIds.Count){
+					throw new Exception($"Expected {_getAllIds.Count} inserted rows with deleted included, got {gotInserted.Count}");
+				}
+
+				var deleted = gotInserted.FirstOrDefault(x=>x.Id.Equals(_getAllSoftDeletedId.Value));
+				if(deleted is null){
+					throw new Exception("GetAllWithDel should include soft-deleted row");
+				}
+				if(!deleted.IsDeleted()){
+					throw new Exception("Soft-deleted row should be marked deleted in GetAllWithDel");
+				}
+				return NIL;
+			});
+		});
+
 		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatHardDelById)];
 		R("GetAll_Cleanup_HardDelete", async(o)=>{
 			if(_getAllIds.Count == 0){

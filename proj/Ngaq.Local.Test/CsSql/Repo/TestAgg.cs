@@ -289,6 +289,96 @@ public partial class TestRepo{
 			});
 		});
 
+		register.TesteeFnNames = [nameof(IRepo<PoWord, IdWord>.BatGetAggById)];
+		R("Agg_BatGet_By_Id_NonWithDel_Should_Exclude_SoftDeleted", async(o)=>{
+			if(_aggWordIds.Count == 0){
+				throw new Exception("Agg_SoftDelete_Root_And_Includes not executed");
+			}
+			return await RunInTxnIfNoCtx(async(Ctx)=>{
+				var gotAsy = RepoWord.BatGetAggById<JnWord>(Ctx, AsyE(_aggWordIds.ToArray()), CT.None);
+				var got = new List<JnWord?>();
+				await foreach(var one in gotAsy){
+					got.Add(one);
+				}
+				if(got.Count != _aggWordIds.Count){
+					throw new Exception($"Expected {_aggWordIds.Count} entries, got {got.Count}");
+				}
+				if(got.Any(x=>x is not null)){
+					throw new Exception("BatGetAggById should not return soft-deleted roots");
+				}
+				return NIL;
+			});
+		});
+
+		register.TesteeFnNames = [nameof(IRepo<PoWord, IdWord>.BatGetAggByIdWithDel)];
+		R("Agg_BatGet_By_Id_WithDel_Should_Include_SoftDeleted", async(o)=>{
+			if(_aggWordIds.Count == 0){
+				throw new Exception("Agg_SoftDelete_Root_And_Includes not executed");
+			}
+			return await RunInTxnIfNoCtx(async(Ctx)=>{
+				var gotAsy = RepoWord.BatGetAggByIdWithDel<JnWord>(Ctx, AsyE(_aggWordIds.ToArray()), CT.None);
+				var got = new List<JnWord?>();
+				await foreach(var one in gotAsy){
+					got.Add(one);
+				}
+				if(got.Count != _aggWordIds.Count){
+					throw new Exception($"Expected {_aggWordIds.Count} entries, got {got.Count}");
+				}
+				if(got.Any(x=>x is null)){
+					throw new Exception("BatGetAggByIdWithDel should return soft-deleted roots");
+				}
+				if(got.Any(x=>x is not null && !x.Word.IsDeleted())){
+					throw new Exception("WithDel aggregate root should carry deleted flag");
+				}
+				return NIL;
+			});
+		});
+
+		register.TesteeFnNames = [nameof(IRepo<PoWord, IdWord>.GetAllAgg)];
+		R("Agg_GetAllAgg_NonWithDel_Should_Exclude_SoftDeleted", async(o)=>{
+			if(_aggWordIds.Count == 0){
+				throw new Exception("Agg_SoftDelete_Root_And_Includes not executed");
+			}
+			return await RunInTxnIfNoCtx(async(Ctx)=>{
+				var gotAsy = RepoWord.GetAllAgg<JnWord>(Ctx, CT.None);
+				var found = new HashSet<IdWord>();
+				await foreach(var one in gotAsy){
+					if(_aggWordIds.Contains(one.Word.Id)){
+						found.Add(one.Word.Id);
+					}
+				}
+				if(found.Count != 0){
+					throw new Exception("GetAllAgg should exclude soft-deleted roots");
+				}
+				return NIL;
+			});
+		});
+
+		register.TesteeFnNames = [nameof(IRepo<PoWord, IdWord>.GetAllAggWithDel)];
+		R("Agg_GetAllAgg_WithDel_Should_Include_SoftDeleted", async(o)=>{
+			if(_aggWordIds.Count == 0){
+				throw new Exception("Agg_SoftDelete_Root_And_Includes not executed");
+			}
+			return await RunInTxnIfNoCtx(async(Ctx)=>{
+				var gotAsy = RepoWord.GetAllAggWithDel<JnWord>(Ctx, CT.None);
+				var found = new HashSet<IdWord>();
+				await foreach(var one in gotAsy){
+					if(_aggWordIds.Contains(one.Word.Id)){
+						found.Add(one.Word.Id);
+						if(!one.Word.IsDeleted()){
+							throw new Exception("GetAllAggWithDel should return deleted roots with deleted flag");
+						}
+					}
+				}
+				foreach(var id in _aggWordIds){
+					if(!found.Contains(id)){
+						throw new Exception($"GetAllAggWithDel missing soft-deleted root: {id}");
+					}
+				}
+				return NIL;
+			});
+		});
+
 		register.TesteeFnNames = [nameof(IRepo<PoWord, IdWord>.HardDelAggInId)];
 		R("Agg_HardDelete_Root_And_Includes", async(o)=>{
 			if(_aggWordIds.Count == 0){
