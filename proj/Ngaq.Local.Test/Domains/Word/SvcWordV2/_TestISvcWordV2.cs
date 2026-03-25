@@ -31,15 +31,15 @@ public partial class TestISvcWordV2: ITester{
 		this.RepoLearn = RepoLearn;
 	}
 
-	public ITestNode RegisterTestsInto(ITestNode? Test){
-		Test ??= new TestNode();
+	public ITestNode RegisterTestsInto(ITestNode? Node){
+		Node ??= new TestNode();
+		//Node.Ordered = true;
+		RegisterGetWordsToLearn(Node);
+		RegisterBatAddNewLearnRecord(Node);
+		RegisterBatAddNewWordToLearn(Node);
+		RegisterSoftDelJnWordInId(Node);
 
-		RegisterGetWordsToLearn(Test);
-		RegisterBatAddNewLearnRecord(Test);
-		RegisterBatAddNewWordToLearn(Test);
-		RegisterSoftDelJnWordInId(Test);
-
-		return Test;
+		return Node;
 	}
 
 	Task<TRtn> RunNoTxn<TRtn>(Func<IDbFnCtx, Task<TRtn>> Fn){

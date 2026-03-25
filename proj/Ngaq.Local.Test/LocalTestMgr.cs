@@ -10,6 +10,8 @@ public class LocalTestMgr:DiEtTestMgr{
 	public static LocalTestMgr Inst = new();
 	public override ITestNode RegisterTestsInto(ITestNode? Test){
 		Test = this.TestNode;
+		Test.Ordered = true;
+		Test.IsParallelRecursive = true;  // Recursively disable parallel execution for all db-accessing tests
 		this.RegisterTester<TestISvcStudyPlan>();
 		this.RegisterTester<TestISvcWord>();
 		this.RegisterTester<TestISvcWordV2>();
