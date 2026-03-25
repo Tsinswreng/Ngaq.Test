@@ -41,11 +41,11 @@ public partial class TestISvcWordV2{
 				await SvcWordV2.BatAddNewLearnRecord(MkUserCtx(owner), AsyE(learns), CT.None);
 
 				await RunNoTxn(async(Ctx)=>{
-					var gotLearns = await ToList(RepoLearn.BatGetById(Ctx, AsyE(learns.Select(x=>x.Id).ToArray()), CT.None));
+					var gotLearns = await ToList(RepoLearn.BatGetByIdWithDel(Ctx, AsyE(learns.Select(x=>x.Id).ToArray()), CT.None));
 					if(gotLearns.Count != learns.Length || gotLearns.Any(x=>x is null)){
 						throw new Exception("BatAddNewLearnRecord failed to insert all learn records");
 					}
-					var gotWords = await ToList(RepoWord.BatGetById(Ctx, AsyE(w1.Id, w2.Id), CT.None));
+					var gotWords = await ToList(RepoWord.BatGetByIdWithDel(Ctx, AsyE(w1.Id, w2.Id), CT.None));
 					if(gotWords.Count != 2 || gotWords.Any(x=>x is null)){
 						throw new Exception("failed to load words after BatAddNewLearnRecord");
 					}

@@ -46,7 +46,7 @@ public partial class TestISvcWordV2{
 				await SvcWordV2.SoftDelJnWordInId(MkUserCtx(owner), AsyE(word.Id), CT.None);
 
 				await RunNoTxn(async(Ctx)=>{
-					var gotWord = await ToList(RepoWord.BatGetById(Ctx, AsyE(word.Id), CT.None));
+					var gotWord = await ToList(RepoWord.BatGetByIdWithDel(Ctx, AsyE(word.Id), CT.None));
 					if(gotWord.Count != 1 || gotWord[0] is null || !gotWord[0]!.IsDeleted()){
 						throw new Exception("failed to soft-delete root word");
 					}
@@ -91,7 +91,7 @@ public partial class TestISvcWordV2{
 				});
 				await SvcWordV2.SoftDelJnWordInId(MkUserCtx(owner), AsyE(word.Id, word.Id), CT.None);
 				await RunNoTxn(async(Ctx)=>{
-					var gotWord = await ToList(RepoWord.BatGetById(Ctx, AsyE(word.Id), CT.None));
+					var gotWord = await ToList(RepoWord.BatGetByIdWithDel(Ctx, AsyE(word.Id), CT.None));
 					if(gotWord.Count != 1 || gotWord[0] is null || !gotWord[0]!.IsDeleted()){
 						throw new Exception("duplicated ids soft-delete should still delete the word");
 					}
