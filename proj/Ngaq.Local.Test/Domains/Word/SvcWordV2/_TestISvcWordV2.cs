@@ -1,7 +1,11 @@
 using Ngaq.Core.Infra;
 using Ngaq.Core.Infra.IF;
+using Ngaq.Core.Shared.Kv.Models;
 using Ngaq.Core.Model.Po.Kv;
 using Ngaq.Core.Model.Po.Learn_;
+using Ngaq.Core.Shared.StudyPlan.Models.Po.PreFilter;
+using Ngaq.Core.Shared.StudyPlan.Models.Po.StudyPlan;
+using Ngaq.Core.Shared.StudyPlan.Svc;
 using Ngaq.Core.Shared.User.Models.Po.User;
 using Ngaq.Core.Shared.User.UserCtx;
 using Ngaq.Core.Shared.Word.Models.Po.Kv;
@@ -10,6 +14,7 @@ using Ngaq.Core.Shared.Word.Models.Po.Word;
 using Ngaq.Core.Shared.Word.Svc;
 using Tsinswreng.CsSql;
 using Tsinswreng.CsTreeTest;
+using Ngaq.Core.Sys.Models;
 
 namespace Ngaq.Local.Test.Domains.Word;
 
@@ -18,17 +23,29 @@ public partial class TestISvcWordV2: ITester{
 	readonly IRepo<PoWord, IdWord> RepoWord;
 	readonly IRepo<PoWordProp, IdWordProp> RepoProp;
 	readonly IRepo<PoWordLearn, IdWordLearn> RepoLearn;
+	readonly IRepo<PoKv, IdKv> RepoKv;
+	readonly IRepo<PoStudyPlan, IdStudyPlan> RepoStudyPlan;
+	readonly IRepo<PoPreFilter, IdPreFilter> RepoPreFilter;
+	readonly ISvcStudyPlan SvcStudyPlan;
 
 	public TestISvcWordV2(
 		ISvcWordV2 SvcWordV2
 		,IRepo<PoWord, IdWord> RepoWord
 		,IRepo<PoWordProp, IdWordProp> RepoProp
 		,IRepo<PoWordLearn, IdWordLearn> RepoLearn
+		,IRepo<PoKv, IdKv> RepoKv
+		,IRepo<PoStudyPlan, IdStudyPlan> RepoStudyPlan
+		,IRepo<PoPreFilter, IdPreFilter> RepoPreFilter
+		,ISvcStudyPlan SvcStudyPlan
 	){
 		this.SvcWordV2 = SvcWordV2;
 		this.RepoWord = RepoWord;
 		this.RepoProp = RepoProp;
 		this.RepoLearn = RepoLearn;
+		this.RepoKv = RepoKv;
+		this.RepoStudyPlan = RepoStudyPlan;
+		this.RepoPreFilter = RepoPreFilter;
+		this.SvcStudyPlan = SvcStudyPlan;
 	}
 
 	public ITestNode RegisterTestsInto(ITestNode? Node){

@@ -1,6 +1,12 @@
+using System.Text;
+using Ngaq.Core.Frontend.Kv;
+using Ngaq.Core.Shared.StudyPlan.Models.Po.PreFilter;
+using Ngaq.Core.Shared.StudyPlan.Models.Po.StudyPlan;
 using Ngaq.Core.Shared.Base.Models.Po;
 using Ngaq.Core.Shared.StudyPlan.Models.PreFilter;
 using Ngaq.Core.Shared.User.Models.Po.User;
+using Ngaq.Core.Shared.Word.Models.Po.Kv;
+using Ngaq.Core.Tools;
 using Ngaq.Core.Shared.Word.Models.Po.Word;
 using Ngaq.Core.Shared.Word.Svc;
 using Tsinswreng.CsSql;
@@ -98,6 +104,110 @@ public partial class TestISvcWordV2{
 			finally{
 				await RunNoTxn(async(Ctx)=>{
 					await RepoWord.BatHardDelById(Ctx, AsyE(keep.Id, del.Id), CT.None);
+					return NIL;
+				});
+			}
+		});
+
+		R("GetWordsToLearn_WithExplicitCorePreFilter_Should_FilterByLang", async(o)=>{
+			var owner = new IdUser();
+			var token = "ut_wv2_pf_core_" + Guid.NewGuid().ToString("N");
+			var words = new[]{
+				new PoWord{Id = new IdWord(), Owner = owner, Head = token + "_en_1", Lang = "en"},
+				new PoWord{Id = new IdWord(), Owner = owner, Head = token + "_en_2", Lang = "en"},
+				new PoWord{Id = new IdWord(), Owner = owner, Head = token + "_jp_1", Lang = "jp"},
+			};
+			var preFilter = new PreFilter{
+				CoreFilter = [
+					new FieldsFilter{
+						Fields = [nameof(PoWord.Lang)],
+						Filters = [
+							new FilterItem{
+								Operation = EFilterOperationMode.IncludeAny,
+								ValueType = EValueType.String,
+								Values = ["en"],
+							}
+						],
+					}
+				],
+			};
+
+			try{
+				await RunNoTxn(async(Ctx)=>{
+					await RepoWord.BatAdd(Ctx, AsyE(words), CT.None);
+					return NIL;
+				});
+
+				var got = await ToList(SvcWordV2.GetWordsToLearn(MkUserCtx(owner), preFilter, CT.None));
+				var tokenWords = got.Where(x=>x.Word.Head.StartsWith(token)).ToList();
+				if(tokenWords.Count != 2 || tokenWords.Any(x=>x.Word.Lang != "en")){
+					throw new Exception("explicit core prefilter should keep only matched lang words");
+				}
+				return NIL;
+			}
+			finally{
+				await RunNoTxn(async(Ctx)=>{
+					await RepoWord.BatHardDelById(Ctx, AsyE(words.Select(x=>x.Id).ToArray()), CT.None);
+					return NIL;
+				});
+			}
+		});
+
+		R("GetWordsToLearn_Should_UseCurStudyPlanPreFilter_WhenNoPrefilterArgument", async(o)=>{
+			var owner = new IdUser();
+			var token = "ut_wv2_cur_sp_pf_" + Guid.NewGuid().ToString("N");
+			var words = new[]{
+				new PoWord{Id = new IdWord(), Owner = owner, Head = token + "_en_1", Lang = "en"},
+				new PoWord{Id = new IdWord(), Owner = owner, Head = token + "_jp_1", Lang = "jp"},
+			};
+			var preFilter = new PreFilter{
+				CoreFilter = [
+					new FieldsFilter{
+						Fields = [nameof(PoWord.Lang)],
+						Filters = [
+							new FilterItem{
+								Operation = EFilterOperationMode.IncludeAny,
+								ValueType = EValueType.String,
+								Values = ["jp"],
+							}
+						],
+					}
+				],
+			};
+			var poPreFilter = new PoPreFilter{
+				Id = new IdPreFilter(),
+				Owner = owner,
+				Type = EPreFilterType.Json,
+				Data = Encoding.UTF8.GetBytes(JSON.stringify(preFilter)),
+			};
+			var poStudyPlan = new PoStudyPlan{
+				Id = new IdStudyPlan(),
+				Owner = owner,
+				PreFilterId = poPreFilter.Id,
+			};
+
+			try{
+				await RunNoTxn(async(Ctx)=>{
+					await RepoWord.BatAdd(Ctx, AsyE(words), CT.None);
+					await RepoPreFilter.BatAdd(Ctx, AsyE(poPreFilter), CT.None);
+					await RepoStudyPlan.BatAdd(Ctx, AsyE(poStudyPlan), CT.None);
+					return NIL;
+				});
+
+				await SvcStudyPlan.SetCurStudyPlanId(MkUserCtx(owner), poStudyPlan.Id, CT.None);
+
+				var got = await ToList(SvcWordV2.GetWordsToLearn(MkUserCtx(owner), CT.None));
+				var tokenWords = got.Where(x=>x.Word.Head.StartsWith(token)).ToList();
+				if(tokenWords.Count != 1 || tokenWords[0].Word.Lang != "jp"){
+					throw new Exception("GetWordsToLearn should apply current study-plan prefilter when no prefilter argument");
+				}
+				return NIL;
+			}
+			finally{
+				await RunNoTxn(async(Ctx)=>{
+					await RepoStudyPlan.BatHardDelById(Ctx, AsyE(poStudyPlan.Id), CT.None);
+					await RepoPreFilter.BatHardDelById(Ctx, AsyE(poPreFilter.Id), CT.None);
+					await RepoWord.BatHardDelById(Ctx, AsyE(words.Select(x=>x.Id).ToArray()), CT.None);
 					return NIL;
 				});
 			}
