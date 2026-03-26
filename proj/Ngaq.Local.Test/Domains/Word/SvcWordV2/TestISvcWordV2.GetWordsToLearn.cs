@@ -180,7 +180,7 @@ public partial class TestISvcWordV2{
 				Id = new IdPreFilter(),
 				Owner = owner,
 				Type = EPreFilterType.Json,
-				Data = Encoding.UTF8.GetBytes(JSON.stringify(preFilter)),
+				Data = Encoding.UTF8.GetBytes(JSON.Stringify(preFilter)),
 			};
 			var poStudyPlan = new PoStudyPlan{
 				Id = new IdStudyPlan(),

@@ -24,7 +24,7 @@ public class TestMigrateTsNgaq {
 			var json = JSON.stringify(word);
 
 			var word2 = JSON.parse<JnWord>(json);
-			var json2 = JSON.stringify(word2);
+			var json2 = JSON.Stringify(word2);
 			if(json != json2){
 				throw new Exception($"at pos {i} Json not equal.");
 			}
@@ -36,7 +36,7 @@ public class TestMigrateTsNgaq {
 		var jsonLines = str.Join('\n', jsons);
 		var compressed = SvcWord.CompressGZip(Encoding.UTF8.GetBytes(jsonLines));
 		var textWithBlob = ToolTextWithBlob.Pack(
-			JSON.stringify(wordsPackInfo), compressed
+			JSON.Stringify(wordsPackInfo), compressed
 		);
 		File.WriteAllBytes("./TsNgaq.tb", textWithBlob.ToByteArr());
 

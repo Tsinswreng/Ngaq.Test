@@ -12,7 +12,7 @@ public class TestJson
 		var Kv = new PoKv();
 		Kv.Id = new();
 		System.Console.WriteLine(
-			JSON.stringify(Kv)
+			JSON.Stringify(Kv)
 		);
 
 		// IWebAns<PoKv> Ans = new WebAns<PoKv>();
@@ -21,7 +21,7 @@ public class TestJson
 		Ans.Data = Kv;
 		Ans.Errors??=new List<IAppErrView>();
 		Ans.Errors.Add(AppErr.Mk(ItemsErr.Common.ArgErr, ["UserName"]));
-		var AnsJson = JSON.stringify(Ans);
+		var AnsJson = JSON.Stringify(Ans);
 		System.Console.WriteLine(
 			AnsJson
 		);
