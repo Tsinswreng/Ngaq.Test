@@ -1,5 +1,6 @@
 using System.Text;
 using Ngaq.Core.Frontend.Kv;
+using Ngaq.Core.Shared.Kv.Models;
 using Ngaq.Core.Shared.StudyPlan.Models.Po.PreFilter;
 using Ngaq.Core.Shared.StudyPlan.Models.Po.StudyPlan;
 using Ngaq.Core.Shared.Base.Models.Po;
@@ -9,6 +10,7 @@ using Ngaq.Core.Shared.Word.Models.Po.Kv;
 using Ngaq.Core.Tools;
 using Ngaq.Core.Shared.Word.Models.Po.Word;
 using Ngaq.Core.Shared.Word.Svc;
+using Ngaq.Core.Sys.Models;
 using Tsinswreng.CsSql;
 using Tsinswreng.CsTreeTest;
 
@@ -185,16 +187,20 @@ public partial class TestISvcWordV2{
 				Owner = owner,
 				PreFilterId = poPreFilter.Id,
 			};
+			var poCurStudyPlanKv = new PoKv{
+				Id = new IdKv(),
+				Owner = owner,
+			};
+			poCurStudyPlanKv.SetStrStr(KeysClientKv.CurStudyPlanId+"", poStudyPlan.Id+"");
 
 			try{
 				await RunNoTxn(async(Ctx)=>{
 					await RepoWord.BatAdd(Ctx, AsyE(words), CT.None);
 					await RepoPreFilter.BatAdd(Ctx, AsyE(poPreFilter), CT.None);
 					await RepoStudyPlan.BatAdd(Ctx, AsyE(poStudyPlan), CT.None);
+					await RepoKv.BatAdd(Ctx, AsyE(poCurStudyPlanKv), CT.None);
 					return NIL;
 				});
-
-				await SvcStudyPlan.SetCurStudyPlanId(MkUserCtx(owner), poStudyPlan.Id, CT.None);
 
 				var got = await ToList(SvcWordV2.GetWordsToLearn(MkUserCtx(owner), CT.None));
 				var tokenWords = got.Where(x=>x.Word.Head.StartsWith(token)).ToList();
@@ -205,6 +211,7 @@ public partial class TestISvcWordV2{
 			}
 			finally{
 				await RunNoTxn(async(Ctx)=>{
+					await RepoKv.BatHardDelById(Ctx, AsyE(poCurStudyPlanKv.Id), CT.None);
 					await RepoStudyPlan.BatHardDelById(Ctx, AsyE(poStudyPlan.Id), CT.None);
 					await RepoPreFilter.BatHardDelById(Ctx, AsyE(poPreFilter.Id), CT.None);
 					await RepoWord.BatHardDelById(Ctx, AsyE(words.Select(x=>x.Id).ToArray()), CT.None);
