@@ -28,7 +28,6 @@ public partial class TestISvcStudyPlan{
 			,nameof(Ngaq.Core.Shared.StudyPlan.Svc.ISvcStudyPlan.GetCurBoStudyPlan)
 			,nameof(Ngaq.Core.Shared.StudyPlan.Svc.ISvcStudyPlan.GetCurWeightCalctr)
 		];
-
 		R("CurStudyPlan_SetGet_Id_Roundtrip", async(o)=>{
 			var userCtx = MkUserCtx(_ownerA);
 			var sp = new PoStudyPlan{
@@ -77,7 +76,7 @@ public partial class TestISvcStudyPlan{
 				Owner = _ownerB,
 				UniqName = _token + "_cur_jn_wc_b",
 				Type = EWeightCalculatorType.Js,
-				Data = Encoding.UTF8.GetBytes("'[]'"),
+				Data = Encoding.UTF8.GetBytes("'{\"Results\":[]}'"),
 			};
 			var studyPlan = new PoStudyPlan{
 				Id = new IdStudyPlan(),
@@ -144,7 +143,7 @@ public partial class TestISvcStudyPlan{
 				Owner = _ownerA,
 				UniqName = _token + "_cur_bo_wc_a",
 				Type = EWeightCalculatorType.Js,
-				Data = Encoding.UTF8.GetBytes("'[]'"),
+				Data = Encoding.UTF8.GetBytes("'{\"Results\":[]}'"),
 			};
 			var studyPlan = new PoStudyPlan{
 				Id = new IdStudyPlan(),
@@ -197,7 +196,7 @@ public partial class TestISvcStudyPlan{
 				Owner = _ownerA,
 				UniqName = _token + "_cur_wc_only",
 				Type = EWeightCalculatorType.Js,
-				Data = Encoding.UTF8.GetBytes("'[]'"),
+				Data = Encoding.UTF8.GetBytes("'{\"Results\":[]}'"),
 			};
 			var studyPlan = new PoStudyPlan{
 				Id = new IdStudyPlan(),
@@ -232,7 +231,7 @@ public partial class TestISvcStudyPlan{
 	void RegisterDirectImplementedMethods(ITestNode Node){
 		var register = Node.MkTestFnRegister(
 			typeof(TestISvcStudyPlan)
-			,[typeof(BoStudyPlan), typeof(PreFilter), typeof(WeightCalculator)]
+			,[typeof(BoStudyPlan), typeof(PreFilter), typeof(DfltWeightCalculator)]
 			,[]
 		);
 		var R = register.Register;
@@ -273,7 +272,7 @@ public partial class TestISvcStudyPlan{
 					Id = new IdWeightCalculator(),
 					Owner = _ownerA,
 					Type = EWeightCalculatorType.Js,
-					Data = Encoding.UTF8.GetBytes("'[]'"),
+					Data = Encoding.UTF8.GetBytes("'{\"Results\":[]}'"),
 				},
 			};
 			var bo = new BoStudyPlan();
@@ -290,7 +289,7 @@ public partial class TestISvcStudyPlan{
 		});
 
 		R("WeightCalculator_DictOverload_Should_Run_On_EmptyInput", async(o)=>{
-			var calctr = new WeightCalculator();
+			var calctr = new DfltWeightCalculator();
 			var wr = await calctr.Calc(AsyE<IWordForLearn>(), new Dictionary<str, obj?>{{"Base", 10d}}, CT.None);
 			var data = await ToList((IAsyncEnumerable<IWordWeightResult>)wr.Results!);
 			if(data.Count != 0){
