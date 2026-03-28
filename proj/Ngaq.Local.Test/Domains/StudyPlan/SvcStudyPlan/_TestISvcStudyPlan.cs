@@ -71,6 +71,8 @@ public partial class TestISvcStudyPlan: ITester{
 			,nameof(ISvcStudyPlan.GetCurJnStudyPlan)
 			,nameof(ISvcStudyPlan.GetCurBoStudyPlan)
 			,nameof(ISvcStudyPlan.GetCurWeightCalctr)
+			,nameof(ISvcStudyPlan.EnsureBuiltinStudyPlan)
+			,nameof(ISvcStudyPlan.EnsureCurStudyPlan)
 		];
 
 		R("StudyPlan_Setup_InsertSeedData", async(o)=>{
@@ -87,6 +89,7 @@ public partial class TestISvcStudyPlan: ITester{
 		RegisterBatAddWeightCalculator(Test);
 		RegisterCurStudyPlanApis(Test);
 		RegisterDirectImplementedMethods(Test);
+		RegisterEnsureMethods(Test);
 
 		R("StudyPlan_Cleanup_AllInsertedData", async(o)=>{
 			await CleanupData();
@@ -124,8 +127,8 @@ public partial class TestISvcStudyPlan: ITester{
 
 	IDbUserCtx MkUserCtx(IdUser UserId){
 		return new DbUserCtx(
-			new DbFnCtx()
-			,MkUser(UserId)
+			MkUser(UserId)
+			,new DbFnCtx()
 		);
 	}
 
