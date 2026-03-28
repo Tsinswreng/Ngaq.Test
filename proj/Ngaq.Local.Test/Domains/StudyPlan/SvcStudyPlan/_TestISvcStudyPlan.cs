@@ -8,16 +8,11 @@ using Ngaq.Core.Shared.User.UserCtx;
 using Ngaq.Core.Infra;
 using Tsinswreng.CsSql;
 using Tsinswreng.CsTreeTest;
+using Ngaq.Core.Tools.Json;
 
 namespace Ngaq.Local.Test.Domains.StudyPlan;
 
 public partial class TestISvcStudyPlan: ITester{
-	ISvcStudyPlan SvcStudyPlan;
-	IRepo<PoStudyPlan, IdStudyPlan> RepoStudyPlan;
-	IRepo<PoWeightArg, IdWeightArg> RepoWeightArg;
-	IRepo<PoWeightCalculator, IdWeightCalculator> RepoWeightCalculator;
-	IRepo<PoPreFilter, IdPreFilter> RepoPreFilter;
-
 	IdUser _ownerA = new IdUser();
 	IdUser _ownerB = new IdUser();
 	str _token = "";
@@ -27,18 +22,28 @@ public partial class TestISvcStudyPlan: ITester{
 	readonly List<IdWeightCalculator> _weightCalculatorIds = [];
 	readonly List<IdPreFilter> _preFilterIds = [];
 
+	ISvcStudyPlan SvcStudyPlan;
+	IRepo<PoStudyPlan, IdStudyPlan> RepoStudyPlan;
+	IRepo<PoWeightArg, IdWeightArg> RepoWeightArg;
+	IRepo<PoWeightCalculator, IdWeightCalculator> RepoWeightCalculator;
+	IRepo<PoPreFilter, IdPreFilter> RepoPreFilter;
+	IJsonSerializer JsonS;
+
+
 	public TestISvcStudyPlan(
 		ISvcStudyPlan SvcStudyPlan
 		,IRepo<PoStudyPlan, IdStudyPlan> RepoStudyPlan
 		,IRepo<PoWeightArg, IdWeightArg> RepoWeightArg
 		,IRepo<PoWeightCalculator, IdWeightCalculator> RepoWeightCalculator
 		,IRepo<PoPreFilter, IdPreFilter> RepoPreFilter
+		,IJsonSerializer JsonS
 	){
 		this.SvcStudyPlan = SvcStudyPlan;
 		this.RepoStudyPlan = RepoStudyPlan;
 		this.RepoWeightArg = RepoWeightArg;
 		this.RepoWeightCalculator = RepoWeightCalculator;
 		this.RepoPreFilter = RepoPreFilter;
+		this.JsonS = JsonS;
 	}
 
 	public ITestNode RegisterTestsInto(ITestNode? Test){

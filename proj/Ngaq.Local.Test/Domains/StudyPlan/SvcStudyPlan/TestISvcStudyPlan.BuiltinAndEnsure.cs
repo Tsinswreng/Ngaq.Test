@@ -1,7 +1,9 @@
 using Ngaq.Core.Shared.StudyPlan.Models;
 using Ngaq.Core.Shared.StudyPlan.Svc;
 using Ngaq.Core.Shared.Word.WeightAlgo;
+using Ngaq.Core.Shared.Word.WeightAlgo.Models;
 using Ngaq.Core.Tools;
+using Tsinswreng.CsTools;
 using Tsinswreng.CsTreeTest;
 
 namespace Ngaq.Local.Test.Domains.StudyPlan;
@@ -18,7 +20,17 @@ public partial class TestISvcStudyPlan{
 			nameof(ISvcStudyPlan.GetDfltStudyPlan)
 			,nameof(ISvcStudyPlan.EnsureCurStudyPlan)
 		];
-
+		
+		//人工
+		R("DfltWeightCfgJson",async(o)=>{
+			var cfg = new DfltWeightCfg();
+			var json = JsonS.Stringify(cfg);
+			var dict = ToolJson.JsonStrToDict(json);
+			if(dict is null || dict.Count == 0){
+				throw new Exception("DfltWeightCfgJson: dict should not be null or empty");
+			}
+			return NIL;
+		});
 		R("GetBuiltinStudyPlan_Should_Have_Prefix_And_Defaults", async(o)=>{
 			var userCtx = MkUserCtx(_ownerA);
 			var bo = await SvcStudyPlan.GetDfltStudyPlan(userCtx, CT.None);
