@@ -1,5 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Ngaq.Core;
+using Ngaq.Core.Frontend.User;
+using Ngaq.Core.Infra;
+using Ngaq.Core.Shared.StudyPlan.Svc;
 using Ngaq.Local;
 using Ngaq.Local.Di;
 using Ngaq.Local.Test;
@@ -24,7 +27,6 @@ internal class Program{
 		_ = AppIniter.Inst.Init(default).Result;
 		ITestExecutor executor = new TreeTestExecutor();
 		await executor.RunEtPrint(mgr.TestNode);
-		
 	}
 }
 

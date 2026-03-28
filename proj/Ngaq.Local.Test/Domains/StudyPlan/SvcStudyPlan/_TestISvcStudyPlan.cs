@@ -71,7 +71,7 @@ public partial class TestISvcStudyPlan: ITester{
 			,nameof(ISvcStudyPlan.GetCurJnStudyPlan)
 			,nameof(ISvcStudyPlan.GetCurBoStudyPlan)
 			,nameof(ISvcStudyPlan.GetCurWeightCalctr)
-			,nameof(ISvcStudyPlan.GetBuiltinStudyPlan)
+			,nameof(ISvcStudyPlan.GetDfltStudyPlan)
 			,nameof(ISvcStudyPlan.EnsureCurStudyPlan)
 		];
 
@@ -88,6 +88,7 @@ public partial class TestISvcStudyPlan: ITester{
 		RegisterBatAddWeightArg(Test);
 		RegisterBatAddWeightCalculator(Test);
 		RegisterCurStudyPlanApis(Test);
+		RegisterBuiltinAndEnsureApis(Test);
 		RegisterDirectImplementedMethods(Test);
 		R("StudyPlan_Cleanup_AllInsertedData", async(o)=>{
 			await CleanupData();
