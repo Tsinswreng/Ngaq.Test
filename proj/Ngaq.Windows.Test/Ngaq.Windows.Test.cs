@@ -1,11 +1,21 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿#if false
+dotnet publish -c Release -r win-x64
+./bin/Release/net10.0/win-x64/publish/Ngaq.Windows.Test.exe
+#endif
+
+using System.Text;
+using System.Text.Unicode;
+using Microsoft.Extensions.DependencyInjection;
 using Ngaq.Core;
 using Ngaq.Core.Frontend.User;
 using Ngaq.Core.Infra;
+using Ngaq.Core.Shared.StudyPlan.Models.Po.WeightArg;
 using Ngaq.Core.Shared.StudyPlan.Svc;
+using Ngaq.Core.Tools;
 using Ngaq.Local;
 using Ngaq.Local.Di;
 using Ngaq.Local.Test;
+using Tsinswreng.CsTools;
 using Tsinswreng.CsTreeTest;
 
 namespace Ngaq.Windows.Test;
@@ -29,4 +39,3 @@ internal class Program{
 		await executor.RunEtPrint(mgr.TestNode);
 	}
 }
-

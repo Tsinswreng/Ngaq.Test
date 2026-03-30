@@ -5,9 +5,11 @@
 		<TargetFramework>net10.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<PublishAot>true</PublishAot>
 	</PropertyGroup>
 	
 	<ItemGroup>
+		<ProjectReference Include="../Ngaq.Core.Test/Ngaq.Core.Test.csproj" />
 		<ProjectReference Include="../Ngaq.Local.Test/Ngaq.Local.Test.csproj" />
 	</ItemGroup>
 
