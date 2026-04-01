@@ -11,115 +11,113 @@ public partial class TestTblSetter {
 		var register = Node.MkTestFnRegister(
 			typeof(TestTblSetter)
 			,[typeof(ITblSetter<PoKv>)]
-			,[nameof(ITblSetter<PoKv>.Idx)]
+			,[nameof(ITblSetter<PoKv>.FnSetIdx), nameof(ITblSetter<PoKv>.Idx)]
 			,nameof(TestTblSetter)
 		);
 		var R = register.Register;
 
-		R("Idx_NullOpt_SingleColumn_AddsOneSql", async(o)=>{
+		R("FnSetIdx_Default_NullOpt_MultiColSets_ExactSqlList", async(o)=>{
 			var s = MkTblSetter();
-			s.Tbl.OuterAdditionalSqls.Clear();
+			AssertFnSetIdxPointsToDefault(s, "FnSetIdx_Default_NullOpt_MultiColSets_ExactSqlList");
 			var t = s.Tbl;
 
-			var returned = s.Idx(null, [nameof(PoKv.KStr)]);
-			if(!object.ReferenceEquals(returned, t)){
-				throw new Exception("Idx should return same table instance");
-			}
-			if(t.OuterAdditionalSqls.Count != 1){
-				throw new Exception($"Expected 1 sql, got {t.OuterAdditionalSqls.Count}");
-			}
+			var actual = s.FnSetIdx(
+				null, t,
+				[nameof(PoKv.Owner), nameof(PoKv.KStr)],
+				[nameof(PoKv.KI64)]
+			);
 
-			var sql = NormLf(t.OuterAdditionalSqls[0]);
-			if(!sql.Contains("CREATE INDEX")){
-				throw new Exception("Expected non-unique index SQL");
-			}
-			if(sql.Contains("UNIQUE INDEX")){
-				throw new Exception("Null opt should not create unique index");
-			}
-			if(!sql.Contains(t.QtCol(nameof(PoKv.KStr)))){
-				throw new Exception("Index SQL should contain KStr column");
-			}
+			var expected = new List<str>{
+$"""
+CREATE INDEX "Idx_Kv_Owner_KStr"
+ON "Kv" ("Owner", "KStr")
+""",
+$"""
+CREATE INDEX "Idx_Kv_KI64"
+ON "Kv" ("KI64")
+"""
+			};
+			AssertSqlListExact(actual, expected, "FnSetIdx_Default_NullOpt_MultiColSets_ExactSqlList");
 			return NIL;
 		});
 
-		R("Idx_UniqueAndWhere_OptionsApplied", async(o)=>{
+		R("FnSetIdx_Default_UniqueWhere_ExactSqlList", async(o)=>{
 			var s = MkTblSetter();
-			s.Tbl.OuterAdditionalSqls.Clear();
+			AssertFnSetIdxPointsToDefault(s, "FnSetIdx_Default_UniqueWhere_ExactSqlList");
 			var t = s.Tbl;
 			var where = t.SqlIsNonDel() + " AND " + t.QtCol(nameof(PoKv.KType)) + " = 'Str'";
 
-			s.Idx(
+			var actual = s.FnSetIdx(
 				new OptMkIdx{
 					Unique = true,
 					Where = where
 				},
+				t,
 				[nameof(PoKv.Owner), nameof(PoKv.KStr)]
 			);
 
-			if(t.OuterAdditionalSqls.Count != 1){
-				throw new Exception($"Expected 1 sql, got {t.OuterAdditionalSqls.Count}");
-			}
-			var sql = NormLf(t.OuterAdditionalSqls[0]);
-			if(!sql.Contains("CREATE UNIQUE INDEX")){
-				throw new Exception("Expected unique index SQL");
-			}
-			if(!sql.Contains("\nWHERE " + where)){
-				throw new Exception("WHERE condition from option was not applied");
-			}
+			var expected = new List<str>{
+$"""
+CREATE UNIQUE INDEX "Ux_Kv_Owner_KStr"
+ON "Kv" ("Owner", "KStr")
+WHERE ("DelAt" = 0) AND "KType" = 'Str'
+"""
+			};
+			AssertSqlListExact(actual, expected, "FnSetIdx_Default_UniqueWhere_ExactSqlList");
 			return NIL;
 		});
 
-		R("Idx_MultiColumnSets_AppendsMultipleSqlInOrder", async(o)=>{
+		R("FnSetIdx_Default_EmptyColSets_ReturnsEmptyList", async(o)=>{
 			var s = MkTblSetter();
-			s.Tbl.OuterAdditionalSqls.Clear();
+			AssertFnSetIdxPointsToDefault(s, "FnSetIdx_Default_EmptyColSets_ReturnsEmptyList");
 			var t = s.Tbl;
 
-			s.Idx(
-				null,
-				[nameof(PoKv.Owner), nameof(PoKv.KStr)],
-				[nameof(PoKv.KI64)]
-			);
-			if(t.OuterAdditionalSqls.Count != 2){
-				throw new Exception($"Expected 2 sql, got {t.OuterAdditionalSqls.Count}");
-			}
-
-			var sql0 = NormLf(t.OuterAdditionalSqls[0]);
-			var sql1 = NormLf(t.OuterAdditionalSqls[1]);
-			if(!sql0.Contains(t.QtCol(nameof(PoKv.Owner))) || !sql0.Contains(t.QtCol(nameof(PoKv.KStr)))){
-				throw new Exception("First SQL should index Owner+KStr");
-			}
-			if(!sql1.Contains(t.QtCol(nameof(PoKv.KI64)))){
-				throw new Exception("Second SQL should index KI64");
-			}
+			var actual = s.FnSetIdx(null, t);
+			AssertSqlListExact(actual, [], "FnSetIdx_Default_EmptyColSets_ReturnsEmptyList");
 			return NIL;
 		});
 
-		R("Idx_CustomFnSetIdx_UsesReturnedSqls", async(o)=>{
+		R("Idx_Default_AppendsExactlyFnSetIdxOutput", async(o)=>{
+			var s = MkTblSetter();
+			AssertFnSetIdxPointsToDefault(s, "Idx_Default_AppendsExactlyFnSetIdxOutput");
+			s.Tbl.OuterAdditionalSqls.Clear();
+			var opt = new OptMkIdx{ Unique = true, Where = s.Tbl.SqlIsNonDel() };
+			IEnumerable<str>[] cols = [[nameof(PoKv.Owner), nameof(PoKv.KStr)], [nameof(PoKv.KI64)]];
+			s.Idx(opt, cols);
+			var expected = new List<str>{
+$"""
+CREATE UNIQUE INDEX "Ux_Kv_Owner_KStr"
+ON "Kv" ("Owner", "KStr")
+WHERE ("DelAt" = 0)
+""",
+$"""
+CREATE UNIQUE INDEX "Ux_Kv_KI64"
+ON "Kv" ("KI64")
+WHERE ("DelAt" = 0)
+"""
+			};
+
+			AssertSqlListExact(s.Tbl.OuterAdditionalSqls, expected, "Idx_Default_AppendsExactlyFnSetIdxOutput");
+			return NIL;
+		});
+
+		R("Idx_CustomFnSetIdx_AppendsExactList_ItemByItem", async(o)=>{
 			var s = MkTblSetter();
 			s.Tbl.OuterAdditionalSqls.Clear();
-
-			s.FnSetIdx = (opt, tbl, cols) => {
-				return ["-- idx custom 1", "-- idx custom 2"];
+			var expected = new List<str>{
+				"SQL_A",
+				"SQL_B\nline2",
+				"SQL_C"
 			};
+
+			s.FnSetIdx = (opt, tbl, cols) => expected;
 			s.Idx(null, [nameof(PoKv.KStr)]);
 
-			if(s.Tbl.OuterAdditionalSqls.Count != 2){
-				throw new Exception($"Expected 2 custom sql, got {s.Tbl.OuterAdditionalSqls.Count}");
-			}
-			if(s.Tbl.OuterAdditionalSqls[0] != "-- idx custom 1" || s.Tbl.OuterAdditionalSqls[1] != "-- idx custom 2"){
-				throw new Exception("Custom FnSetIdx output order mismatch");
-			}
-			return NIL;
-		});
-
-		R("Idx_EmptyColSets_NoSqlAdded", async(o)=>{
-			var s = MkTblSetter();
-			s.Tbl.OuterAdditionalSqls.Clear();
-
-			s.Idx(null);
-			if(s.Tbl.OuterAdditionalSqls.Count != 0){
-				throw new Exception($"Expected 0 sql for empty col sets, got {s.Tbl.OuterAdditionalSqls.Count}");
-			}
+			AssertSqlListExact(
+				s.Tbl.OuterAdditionalSqls,
+				expected,
+				"Idx_CustomFnSetIdx_AppendsExactList_ItemByItem"
+			);
 			return NIL;
 		});
 	}

@@ -11,96 +11,120 @@ public partial class TestTblSetter {
 		var register = Node.MkTestFnRegister(
 			typeof(TestTblSetter)
 			,[typeof(ITblSetter<PoKv>)]
-			,[nameof(ITblSetter<PoKv>.IdxExpr)]
+			,[nameof(ITblSetter<PoKv>.FnSetIdx), nameof(ITblSetter<PoKv>.IdxExpr)]
 			,nameof(TestTblSetter)
 		);
 		var R = register.Register;
 
-		R("IdxExpr_SingleMember_AddsOneSql", async(o)=>{
+		R("IdxExpr_SingleMember_AppendsExactFnSetIdxSql", async(o)=>{
 			var s = MkTblSetter();
-			s.Tbl.OuterAdditionalSqls.Clear();
+			AssertFnSetIdxPointsToDefault(s, "IdxExpr_SingleMember_AppendsExactFnSetIdxSql");
 			var t = s.Tbl;
+			t.OuterAdditionalSqls.Clear();
 
 			s.IdxExpr(null, x => x.KStr);
-			if(t.OuterAdditionalSqls.Count != 1){
-				throw new Exception($"Expected 1 sql, got {t.OuterAdditionalSqls.Count}");
-			}
-			var sql = NormLf(t.OuterAdditionalSqls[0]);
-			if(!sql.Contains(t.QtCol(nameof(PoKv.KStr)))){
-				throw new Exception("Index SQL should contain KStr");
-			}
+			var expected = new List<str>{
+$"""
+CREATE INDEX "Idx_Kv_KStr"
+ON "Kv" ("KStr")
+"""
+			};
+
+			AssertSqlListExact(t.OuterAdditionalSqls, expected, "IdxExpr_SingleMember_AppendsExactFnSetIdxSql");
 			return NIL;
 		});
 
-		R("IdxExpr_CompositeExpression_BuildsCompositeIndex", async(o)=>{
+		R("IdxExpr_CompositeExpression_AppendsExactFnSetIdxSql", async(o)=>{
 			var s = MkTblSetter();
-			s.Tbl.OuterAdditionalSqls.Clear();
+			AssertFnSetIdxPointsToDefault(s, "IdxExpr_CompositeExpression_AppendsExactFnSetIdxSql");
 			var t = s.Tbl;
+			t.OuterAdditionalSqls.Clear();
 
 			s.IdxExpr(null, x => new {x.Owner, x.KI64});
-			if(t.OuterAdditionalSqls.Count != 1){
-				throw new Exception($"Expected 1 sql, got {t.OuterAdditionalSqls.Count}");
-			}
-			var sql = NormLf(t.OuterAdditionalSqls[0]);
-			if(!sql.Contains(t.QtCol(nameof(PoKv.Owner))) || !sql.Contains(t.QtCol(nameof(PoKv.KI64)))){
-				throw new Exception("Composite expression should include Owner and KI64");
-			}
+			var expected = new List<str>{
+$"""
+CREATE INDEX "Idx_Kv_Owner_KI64"
+ON "Kv" ("Owner", "KI64")
+"""
+			};
+
+			AssertSqlListExact(t.OuterAdditionalSqls, expected, "IdxExpr_CompositeExpression_AppendsExactFnSetIdxSql");
 			return NIL;
 		});
 
-		R("IdxExpr_MultiExpressions_AppendsMultipleSql", async(o)=>{
+		R("IdxExpr_UniqueWhere_MultiExpressions_ExactSqlList", async(o)=>{
 			var s = MkTblSetter();
-			s.Tbl.OuterAdditionalSqls.Clear();
+			AssertFnSetIdxPointsToDefault(s, "IdxExpr_UniqueWhere_MultiExpressions_ExactSqlList");
 			var t = s.Tbl;
-
-			s.IdxExpr(null, x => x.KStr, x => x.KI64);
-			if(t.OuterAdditionalSqls.Count != 2){
-				throw new Exception($"Expected 2 sql, got {t.OuterAdditionalSqls.Count}");
-			}
-			if(!t.OuterAdditionalSqls[0].Contains(t.QtCol(nameof(PoKv.KStr)))){
-				throw new Exception("First SQL should index KStr");
-			}
-			if(!t.OuterAdditionalSqls[1].Contains(t.QtCol(nameof(PoKv.KI64)))){
-				throw new Exception("Second SQL should index KI64");
-			}
-			return NIL;
-		});
-
-		R("IdxExpr_UniqueAndWhere_OptionsApplied", async(o)=>{
-			var s = MkTblSetter();
-			s.Tbl.OuterAdditionalSqls.Clear();
-			var t = s.Tbl;
-			var where = t.SqlIsNonDel();
+			t.OuterAdditionalSqls.Clear();
+			var opt = new OptMkIdx{
+				Unique = true,
+				Where = t.SqlIsNonDel()
+			};
 
 			s.IdxExpr(
-				new OptMkIdx{
-					Unique = true,
-					Where = where
-				},
-				x => new {x.Owner, x.KStr}
+				opt,
+				x => x.KStr,
+				x => new {x.Owner, x.KI64}
+			);
+			var expected = new List<str>{
+$"""
+CREATE UNIQUE INDEX "Ux_Kv_KStr"
+ON "Kv" ("KStr")
+WHERE ("DelAt" = 0)
+""",
+$"""
+CREATE UNIQUE INDEX "Ux_Kv_Owner_KI64"
+ON "Kv" ("Owner", "KI64")
+WHERE ("DelAt" = 0)
+"""
+			};
+
+			AssertSqlListExact(t.OuterAdditionalSqls, expected, "IdxExpr_UniqueWhere_MultiExpressions_ExactSqlList");
+			return NIL;
+		});
+
+		R("IdxExpr_CustomFnSetIdx_ReceivesParsedColsInOrder", async(o)=>{
+			var s = MkTblSetter();
+			var t = s.Tbl;
+			t.OuterAdditionalSqls.Clear();
+			List<List<str>> captured = [];
+			var expected = new List<str>{"R1", "R2"};
+
+			s.FnSetIdx = (opt, tbl, cols) => {
+				foreach(var colSet in cols){
+					captured.Add(colSet.ToList());
+				}
+				return expected;
+			};
+
+			s.IdxExpr(
+				null,
+				x => x.KStr,
+				x => new {x.Owner, x.KI64}
 			);
 
-			if(t.OuterAdditionalSqls.Count != 1){
-				throw new Exception($"Expected 1 sql, got {t.OuterAdditionalSqls.Count}");
+			AssertSqlListExact(t.OuterAdditionalSqls, expected, "IdxExpr_CustomFnSetIdx_ReceivesParsedColsInOrder");
+			if(captured.Count != 2){
+				throw new Exception($"Expected captured 2 col sets, got {captured.Count}");
 			}
-			var sql = NormLf(t.OuterAdditionalSqls[0]);
-			if(!sql.Contains("CREATE UNIQUE INDEX")){
-				throw new Exception("Expected unique index");
+			if(captured[0].Count != 1 || captured[0][0] != nameof(PoKv.KStr)){
+				throw new Exception("First expression columns mismatch");
 			}
-			if(!sql.Contains("\nWHERE " + where)){
-				throw new Exception("Expected WHERE from options");
+			if(captured[1].Count != 2 || captured[1][0] != nameof(PoKv.Owner) || captured[1][1] != nameof(PoKv.KI64)){
+				throw new Exception("Second expression columns mismatch");
 			}
 			return NIL;
 		});
 
-		R("IdxExpr_EmptyExpressions_NoSqlAdded", async(o)=>{
+		R("IdxExpr_EmptyExpressions_AppendsNoSql", async(o)=>{
 			var s = MkTblSetter();
-			s.Tbl.OuterAdditionalSqls.Clear();
+			AssertFnSetIdxPointsToDefault(s, "IdxExpr_EmptyExpressions_AppendsNoSql");
+			var t = s.Tbl;
+			t.OuterAdditionalSqls.Clear();
 
 			s.IdxExpr(null);
-			if(s.Tbl.OuterAdditionalSqls.Count != 0){
-				throw new Exception($"Expected 0 sql for empty expressions, got {s.Tbl.OuterAdditionalSqls.Count}");
-			}
+			AssertSqlListExact(t.OuterAdditionalSqls, [], "IdxExpr_EmptyExpressions_AppendsNoSql");
 			return NIL;
 		});
 	}
