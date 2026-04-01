@@ -17,8 +17,8 @@ public partial class TestTblSetter : ITester {
 		Test ??= new TestNode();
 		Test.Ordered = true;
 
-		RegisterIdxApis(Test);
-		RegisterColApis(Test);
+		RegisterIdx(Test);
+		RegisterIdxExpr(Test);
 		return Test;
 	}
 
