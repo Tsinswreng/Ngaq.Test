@@ -1,4 +1,3 @@
-using System.Text;
 using Ngaq.Core.Frontend.Kv;
 using Ngaq.Core.Shared.Kv.Models;
 using Ngaq.Core.Shared.StudyPlan.Models.Po.PreFilter;
@@ -180,7 +179,7 @@ public partial class TestISvcWordV2{
 				Id = new IdPreFilter(),
 				Owner = owner,
 				Type = EPreFilterType.Json,
-				Data = Encoding.UTF8.GetBytes(JSON.Stringify(preFilter)),
+				Text = JSON.Stringify(preFilter),
 			};
 			var poStudyPlan = new PoStudyPlan{
 				Id = new IdStudyPlan(),

@@ -9,7 +9,6 @@ using Ngaq.Core.Shared.Word.WeightAlgo;
 using Ngaq.Core.Tools;
 using Ngaq.Core.Word.Models.Weight;
 using Tsinswreng.CsTreeTest;
-using System.Text;
 
 namespace Ngaq.Local.Test.Domains.StudyPlan;
 
@@ -59,7 +58,7 @@ public partial class TestISvcStudyPlan{
 				UniqName = _token + "_cur_jn_pf_b",
 				Type = EPreFilterType.Json,
 				DataSchemaVer = new Version(1, 0),
-				Data = Encoding.UTF8.GetBytes("{\"Version\":\"1.0.0.0\",\"CoreFilter\":[],\"PropFilter\":[]}"),
+				Text = "{\"Version\":\"1.0.0.0\",\"CoreFilter\":[],\"PropFilter\":[]}",
 				BizUpdatedAt = 5201,
 			};
 			var weightArg = new PoWeightArg{
@@ -68,7 +67,7 @@ public partial class TestISvcStudyPlan{
 				UniqName = _token + "_cur_jn_wa_b",
 				Type = EWeightArgType.Json,
 				WeightCalculatorName = "x",
-				Data = Encoding.UTF8.GetBytes("{}"),
+				Text = "{}",
 				BizUpdatedAt = 5202,
 			};
 			var weightCalculator = new PoWeightCalculator{
@@ -76,7 +75,7 @@ public partial class TestISvcStudyPlan{
 				Owner = _ownerB,
 				UniqName = _token + "_cur_jn_wc_b",
 				Type = EWeightCalculatorType.Js,
-				Data = Encoding.UTF8.GetBytes("'{\"Results\":[]}'"),
+				Text = "'{\"Results\":[]}'",
 			};
 			var studyPlan = new PoStudyPlan{
 				Id = new IdStudyPlan(),
@@ -126,7 +125,7 @@ public partial class TestISvcStudyPlan{
 				UniqName = _token + "_cur_bo_pf_a",
 				Type = EPreFilterType.Json,
 				DataSchemaVer = new Version(1, 0),
-				Data = Encoding.UTF8.GetBytes(pfJson),
+				Text = pfJson,
 				BizUpdatedAt = 5301,
 			};
 			var weightArg = new PoWeightArg{
@@ -135,7 +134,7 @@ public partial class TestISvcStudyPlan{
 				UniqName = _token + "_cur_bo_wa_a",
 				Type = EWeightArgType.Json,
 				WeightCalculatorName = _token + "_cur_bo_wc_a",
-				Data = Encoding.UTF8.GetBytes(waJson),
+				Text = waJson,
 				BizUpdatedAt = 5302,
 			};
 			var weightCalculator = new PoWeightCalculator{
@@ -143,7 +142,7 @@ public partial class TestISvcStudyPlan{
 				Owner = _ownerA,
 				UniqName = _token + "_cur_bo_wc_a",
 				Type = EWeightCalculatorType.Js,
-				Data = Encoding.UTF8.GetBytes("'{\"Results\":[]}'"),
+				Text = "'{\"Results\":[]}'",
 			};
 			var studyPlan = new PoStudyPlan{
 				Id = new IdStudyPlan(),
@@ -196,7 +195,7 @@ public partial class TestISvcStudyPlan{
 				Owner = _ownerA,
 				UniqName = _token + "_cur_wc_only",
 				Type = EWeightCalculatorType.Js,
-				Data = Encoding.UTF8.GetBytes("'{\"Results\":[]}'"),
+				Text = "'{\"Results\":[]}'",
 			};
 			var studyPlan = new PoStudyPlan{
 				Id = new IdStudyPlan(),
@@ -241,7 +240,7 @@ public partial class TestISvcStudyPlan{
 			var po = new PoPreFilter{
 				Type = EPreFilterType.Json,
 				DataSchemaVer = new Version(1, 0),
-				Data = Encoding.UTF8.GetBytes(json),
+				Text = json,
 			};
 			var preFilter = new PreFilter();
 			preFilter.FromPo(po);
@@ -259,20 +258,20 @@ public partial class TestISvcStudyPlan{
 					Owner = _ownerA,
 					Type = EPreFilterType.Json,
 					DataSchemaVer = new Version(1, 0),
-					Data = Encoding.UTF8.GetBytes("{\"Version\":\"1.0.0.0\",\"CoreFilter\":[],\"PropFilter\":[]}"),
+					Text = "{\"Version\":\"1.0.0.0\",\"CoreFilter\":[],\"PropFilter\":[]}",
 				},
 				WeightArg = new PoWeightArg{
 					Id = new IdWeightArg(),
 					Owner = _ownerA,
 					Type = EWeightArgType.Json,
 					WeightCalculatorName = "x",
-					Data = Encoding.UTF8.GetBytes("{\"DfltAddBonus\":777}"),
+					Text = "{\"DfltAddBonus\":777}",
 				},
 				WeightCalculator = new PoWeightCalculator{
 					Id = new IdWeightCalculator(),
 					Owner = _ownerA,
 					Type = EWeightCalculatorType.Js,
-					Data = Encoding.UTF8.GetBytes("'{\"Results\":[]}'"),
+					Text = "'{\"Results\":[]}'",
 				},
 			};
 			var bo = new BoStudyPlan();
