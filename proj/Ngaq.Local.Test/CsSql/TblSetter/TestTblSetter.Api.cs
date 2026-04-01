@@ -18,7 +18,7 @@ public partial class TestTblSetter {
 
 		register.TesteeFnNames = [nameof(TblSetter<PoKv>.MkIndexSqlByCodeCols)];
 		R("TblSetter_MkIndexSqlByCodeCols_UniqueAndWhere", async(o)=>{
-			var s = MkTblSetter("TblSetterMkIndex");
+			var s = MkTblSetter();
 			var t = s.Tbl;
 			var idxName = "Ux_CustomOwnerKStr";
 
@@ -50,7 +50,7 @@ AND {t.QtCol(nameof(PoKv.KType))} = 'Str'
 
 		register.TesteeFnNames = [nameof(ITblSetter<PoKv>.Idx)];
 		R("TblSetter_Idx_DefaultFn_AppendsSql_AndReturnsTable", async(o)=>{
-			var s = MkTblSetter("TblSetterIdxDefault");
+			var s = MkTblSetter();
 			s.Tbl.OuterAdditionalSqls.Clear();
 			var t = s.Tbl;
 
@@ -90,7 +90,7 @@ AND {t.QtCol(nameof(PoKv.KType))} = 'Str'
 
 		register.TesteeFnNames = [nameof(ITblSetter<PoKv>.IdxExpr)];
 		R("TblSetter_IdxExpr_CompositeExpression_BuildsCompositeIndex", async(o)=>{
-			var s = MkTblSetter("TblSetterIdxExpr");
+			var s = MkTblSetter();
 			s.Tbl.OuterAdditionalSqls.Clear();
 
 			s.IdxExpr(null, x => x.KStr, x => new {x.Owner, x.KI64});
@@ -108,7 +108,7 @@ AND {t.QtCol(nameof(PoKv.KType))} = 'Str'
 
 		register.TesteeFnNames = [nameof(ITblSetter<PoKv>.FnSetIdx), nameof(ITblSetter<PoKv>.Idx)];
 		R("TblSetter_Idx_UsesCustomFnSetIdx_Output", async(o)=>{
-			var s = MkTblSetter("TblSetterCustomFn");
+			var s = MkTblSetter();
 			s.Tbl.OuterAdditionalSqls.Clear();
 
 			s.FnSetIdx = (opt, tbl, cols) => {
@@ -127,7 +127,7 @@ AND {t.QtCol(nameof(PoKv.KType))} = 'Str'
 
 		register.TesteeFnNames = [nameof(TblSetter<PoKv>.AddIndexByCodeCols)];
 		R("TblSetter_AddIndexByCodeCols_AppendsSql", async(o)=>{
-			var s = MkTblSetter("TblSetterAddIndex");
+			var s = MkTblSetter();
 			s.Tbl.OuterAdditionalSqls.Clear();
 			var idxName = "Idx_TestAdd";
 			var expected = s switch {
@@ -161,7 +161,7 @@ AND {t.QtCol(nameof(PoKv.KType))} = 'Str'
 
 		register.TesteeFnNames = ["Col"];
 		R("TblSetter_Col_ByName_And_ByExpression_PointToSameColumn", async(o)=>{
-			var s = MkTblSetter("TblSetterColApi");
+			var s = MkTblSetter();
 			var byName = s.Col(nameof(PoKv.KStr));
 			var byExpr = s.Col(x => x.KStr);
 
