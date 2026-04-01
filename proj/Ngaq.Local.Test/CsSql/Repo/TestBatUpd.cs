@@ -48,7 +48,7 @@ public partial class TestRepo{
 		});
 
 		register.TesteeFnNames = [
-			nameof(IRepo<PoKv, IdKv>.BatUpdById)
+			nameof(IRepo<PoKv, IdKv>.BatUpd)
 			,nameof(IRepo<PoKv, IdKv>.BatGetByIdWithDel)
 		];
 		R("BatUpd_ById", async(o)=>{
@@ -68,7 +68,7 @@ public partial class TestRepo{
 						VStr = "bat_upd_v2_" + System.Guid.NewGuid().ToString("N"),
 					});
 				}
-				var resp = await Repo.BatUpdById(Ctx, AsyE(upds.ToArray()), CT.None);
+				var resp = await Repo.BatUpd(Ctx, AsyE(upds.ToArray()), CT.None);
 				if(resp is null){
 					throw new Exception("BatUpdById returned null response");
 				}

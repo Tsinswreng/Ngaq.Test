@@ -78,6 +78,15 @@ public partial class TestISvcStudyPlan: ITester{
 			,nameof(ISvcStudyPlan.GetCurWeightCalctr)
 			,nameof(ISvcStudyPlan.GetDfltStudyPlan)
 			,nameof(ISvcStudyPlan.EnsureCurStudyPlan)
+			,nameof(ISvcStudyPlan.BatUpdPreFilter)
+			,nameof(ISvcStudyPlan.BatUpdWeightArg)
+			,nameof(ISvcStudyPlan.BatUpdWeightCalculator)
+			,nameof(ISvcStudyPlan.BatUpdStudyPlan)
+			,nameof(ISvcStudyPlan.BatSoftDelPreFilter)
+			,nameof(ISvcStudyPlan.BatSoftDelWeightArg)
+			,nameof(ISvcStudyPlan.BatSoftDelWeightCalculator)
+			,nameof(ISvcStudyPlan.BatSoftDelStudyPlan)
+			,nameof(ISvcStudyPlan.RestoreBuiltinStudyPlan)
 		];
 
 		R("StudyPlan_Setup_InsertSeedData", async(o)=>{
@@ -94,6 +103,7 @@ public partial class TestISvcStudyPlan: ITester{
 		RegisterBatAddWeightCalculator(Test);
 		RegisterCurStudyPlanApis(Test);
 		RegisterBuiltinAndEnsureApis(Test);
+		RegisterUpdateSoftDeleteAndRestoreApis(Test);
 		RegisterDirectImplementedMethods(Test);
 		R("StudyPlan_Cleanup_AllInsertedData", async(o)=>{
 			await CleanupData();
