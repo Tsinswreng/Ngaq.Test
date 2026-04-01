@@ -101,6 +101,7 @@ public partial class TestISvcStudyPlan: ITester{
 		RegisterBatAddPreFilter(Test);
 		RegisterBatAddWeightArg(Test);
 		RegisterBatAddWeightCalculator(Test);
+		RegisterConflictErrCases(Test);
 		RegisterCurStudyPlanApis(Test);
 		RegisterBuiltinAndEnsureApis(Test);
 		RegisterUpdateSoftDeleteAndRestoreApis(Test);

@@ -57,13 +57,12 @@ ON "Kv" ("Owner", "KI64")
 			AssertFnSetIdxPointsToDefault(s, "IdxExpr_UniqueWhere_MultiExpressions_ExactSqlList");
 			var t = s.Tbl;
 			t.OuterAdditionalSqls.Clear();
-			var opt = new OptMkIdx{
-				Unique = true,
-				Where = t.SqlIsNonDel()
-			};
 
 			s.IdxExpr(
-				opt,
+				new OptMkIdx{
+					Unique = true,
+					Where = t.SqlIsNonDel()
+				},
 				x => x.KStr,
 				x => new {x.Owner, x.KI64}
 			);
