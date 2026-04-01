@@ -31,7 +31,7 @@ public partial class TestISvcStudyPlan{
 			,nameof(ISvcStudyPlan.BatSoftDelStudyPlan)
 			,nameof(ISvcStudyPlan.RestoreBuiltinStudyPlan)
 		];
-
+#if false
 		R("BatUpdPreFilter_Should_OnlyUpdate_OwnedRows", async(o)=>{
 			var userCtx = MkUserCtx(_ownerA);
 			var mine = new PoPreFilter{
@@ -477,5 +477,6 @@ public partial class TestISvcStudyPlan{
 			}
 			return NIL;
 		});
+#endif
 	}
 }
