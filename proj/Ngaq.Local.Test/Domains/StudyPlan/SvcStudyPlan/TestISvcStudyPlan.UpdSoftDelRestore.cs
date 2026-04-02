@@ -7,6 +7,8 @@ using Ngaq.Core.Shared.StudyPlan.Models.Po.WeightCalculator;
 using Ngaq.Core.Shared.StudyPlan.Models.Req;
 using Ngaq.Core.Shared.StudyPlan.Svc;
 using Ngaq.Core.Shared.Word.WeightAlgo;
+using Ngaq.Core.Shared.Word.WeightAlgo.Models;
+using Ngaq.Core.Infra.Errors;
 using Tsinswreng.CsPage;
 using Tsinswreng.CsTreeTest;
 
@@ -31,8 +33,8 @@ public partial class TestISvcStudyPlan{
 			,nameof(ISvcStudyPlan.BatSoftDelStudyPlan)
 			,nameof(ISvcStudyPlan.RestoreBuiltinStudyPlan)
 		];
-#if false
-		R("BatUpdPreFilter_Should_OnlyUpdate_OwnedRows", async(o)=>{
+
+		R("BatUpdPreFilter_Should_Throw_PermissionDenied_WhenContainsNonOwnedRows", async(o)=>{
 			var userCtx = MkUserCtx(_ownerA);
 			var mine = new PoPreFilter{
 				Id = new IdPreFilter(),
@@ -59,17 +61,21 @@ public partial class TestISvcStudyPlan{
 			_preFilterIds.Add(mine.Id);
 			_preFilterIds.Add(other.Id);
 
-			mine.Owner = _ownerB;
 			mine.Descr = "after_mine";
-			other.Owner = _ownerA;
+			other.Owner = _ownerA; // forged owner should still be denied by db ownership check
 			other.Descr = "after_other_should_not_apply";
-			await SvcStudyPlan.BatUpdPreFilter(userCtx, AsyE(mine, other), CT.None);
+			try{
+				await SvcStudyPlan.BatUpdPreFilter(userCtx, AsyE(mine, other), CT.None);
+				throw new Exception("BatUpdPreFilter should throw permission denied");
+			}catch(Exception ex){
+				AssertThrowsErrItem(ex, ItemsErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatUpdPreFilter));
+			}
 
 			await RunNoTxn(async(ctx)=>{
 				var gotMine = await RepoPreFilter.BatGetByIdWithDel(ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				var gotOther = await RepoPreFilter.BatGetByIdWithDel(ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
-				if(gotMine is null || gotMine.Descr != "after_mine" || gotMine.Owner != _ownerA){
-					throw new Exception("BatUpdPreFilter should update only owned row and force owner");
+				if(gotMine is null || gotMine.Descr != "before_mine" || gotMine.Owner != _ownerA){
+					throw new Exception("BatUpdPreFilter should not update any row when permission denied");
 				}
 				if(gotOther is null || gotOther.Descr != "before_other" || gotOther.Owner != _ownerB){
 					throw new Exception("BatUpdPreFilter should not update other owner's row");
@@ -79,7 +85,7 @@ public partial class TestISvcStudyPlan{
 			return NIL;
 		});
 
-		R("BatUpdWeightArg_Should_OnlyUpdate_OwnedRows", async(o)=>{
+		R("BatUpdWeightArg_Should_Throw_PermissionDenied_WhenContainsNonOwnedRows", async(o)=>{
 			var userCtx = MkUserCtx(_ownerA);
 			var mine = new PoWeightArg{
 				Id = new IdWeightArg(),
@@ -104,20 +110,24 @@ public partial class TestISvcStudyPlan{
 			_weightArgIds.Add(mine.Id);
 			_weightArgIds.Add(other.Id);
 
-			mine.Owner = _ownerB;
 			mine.Descr = "after_mine";
 			mine.Text = "{\"A\":999}";
-			other.Owner = _ownerA;
+			other.Owner = _ownerA; // forged owner should still be denied by db ownership check
 			other.Descr = "after_other_should_not_apply";
-			await SvcStudyPlan.BatUpdWeightArg(userCtx, AsyE(mine, other), CT.None);
+			try{
+				await SvcStudyPlan.BatUpdWeightArg(userCtx, AsyE(mine, other), CT.None);
+				throw new Exception("BatUpdWeightArg should throw permission denied");
+			}catch(Exception ex){
+				AssertThrowsErrItem(ex, ItemsErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatUpdWeightArg));
+			}
 
 			await RunNoTxn(async(ctx)=>{
 				var gotMine = await RepoWeightArg.BatGetByIdWithDel(ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				var gotOther = await RepoWeightArg.BatGetByIdWithDel(ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
-				if(gotMine is null || gotMine.Descr != "after_mine" || gotMine.Owner != _ownerA){
-					throw new Exception("BatUpdWeightArg should update only owned row and force owner");
+				if(gotMine is null || gotMine.Descr != "" || gotMine.Owner != _ownerA || gotMine.Text != "{\"A\":1}"){
+					throw new Exception("BatUpdWeightArg should not update any row when permission denied");
 				}
-				if(gotOther is null || gotOther.Descr == "after_other_should_not_apply"){
+				if(gotOther is null || gotOther.Descr != "" || gotOther.Text != "{\"B\":2}"){
 					throw new Exception("BatUpdWeightArg should not update other owner's row");
 				}
 				return NIL;
@@ -125,7 +135,7 @@ public partial class TestISvcStudyPlan{
 			return NIL;
 		});
 
-		R("BatUpdWeightCalculator_Should_OnlyUpdate_OwnedRows", async(o)=>{
+		R("BatUpdWeightCalculator_Should_Throw_PermissionDenied_WhenContainsNonOwnedRows", async(o)=>{
 			var userCtx = MkUserCtx(_ownerA);
 			var mine = new PoWeightCalculator{
 				Id = new IdWeightCalculator(),
@@ -146,19 +156,23 @@ public partial class TestISvcStudyPlan{
 			_weightCalculatorIds.Add(mine.Id);
 			_weightCalculatorIds.Add(other.Id);
 
-			mine.Owner = _ownerB;
 			mine.Descr = "after_mine";
-			other.Owner = _ownerA;
+			other.Owner = _ownerA; // forged owner should still be denied by db ownership check
 			other.Descr = "after_other_should_not_apply";
-			await SvcStudyPlan.BatUpdWeightCalculator(userCtx, AsyE(mine, other), CT.None);
+			try{
+				await SvcStudyPlan.BatUpdWeightCalculator(userCtx, AsyE(mine, other), CT.None);
+				throw new Exception("BatUpdWeightCalculator should throw permission denied");
+			}catch(Exception ex){
+				AssertThrowsErrItem(ex, ItemsErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatUpdWeightCalculator));
+			}
 
 			await RunNoTxn(async(ctx)=>{
 				var gotMine = await RepoWeightCalculator.BatGetByIdWithDel(ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				var gotOther = await RepoWeightCalculator.BatGetByIdWithDel(ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
-				if(gotMine is null || gotMine.Descr != "after_mine" || gotMine.Owner != _ownerA){
-					throw new Exception("BatUpdWeightCalculator should update only owned row and force owner");
+				if(gotMine is null || gotMine.Descr != "" || gotMine.Owner != _ownerA){
+					throw new Exception("BatUpdWeightCalculator should not update any row when permission denied");
 				}
-				if(gotOther is null || gotOther.Descr == "after_other_should_not_apply"){
+				if(gotOther is null || gotOther.Descr != ""){
 					throw new Exception("BatUpdWeightCalculator should not update other owner's row");
 				}
 				return NIL;
@@ -166,7 +180,7 @@ public partial class TestISvcStudyPlan{
 			return NIL;
 		});
 
-		R("BatUpdStudyPlan_Should_OnlyUpdate_OwnedRows", async(o)=>{
+		R("BatUpdStudyPlan_Should_Throw_PermissionDenied_WhenContainsNonOwnedRows", async(o)=>{
 			var userCtx = MkUserCtx(_ownerA);
 			var mine = new PoStudyPlan{
 				Id = new IdStudyPlan(),
@@ -187,19 +201,23 @@ public partial class TestISvcStudyPlan{
 			_studyPlanIds.Add(mine.Id);
 			_studyPlanIds.Add(other.Id);
 
-			mine.Owner = _ownerB;
 			mine.Descr = "after_mine";
-			other.Owner = _ownerA;
+			other.Owner = _ownerA; // forged owner should still be denied by db ownership check
 			other.Descr = "after_other_should_not_apply";
-			await SvcStudyPlan.BatUpdStudyPlan(userCtx, AsyE(mine, other), CT.None);
+			try{
+				await SvcStudyPlan.BatUpdStudyPlan(userCtx, AsyE(mine, other), CT.None);
+				throw new Exception("BatUpdStudyPlan should throw permission denied");
+			}catch(Exception ex){
+				AssertThrowsErrItem(ex, ItemsErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatUpdStudyPlan));
+			}
 
 			await RunNoTxn(async(ctx)=>{
 				var gotMine = await RepoStudyPlan.BatGetByIdWithDel(ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				var gotOther = await RepoStudyPlan.BatGetByIdWithDel(ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
-				if(gotMine is null || gotMine.Descr != "after_mine" || gotMine.Owner != _ownerA){
-					throw new Exception("BatUpdStudyPlan should update only owned row and force owner");
+				if(gotMine is null || gotMine.Descr != "before_mine" || gotMine.Owner != _ownerA){
+					throw new Exception("BatUpdStudyPlan should not update any row when permission denied");
 				}
-				if(gotOther is null || gotOther.Descr == "after_other_should_not_apply"){
+				if(gotOther is null || gotOther.Descr != "before_other" || gotOther.Owner != _ownerB){
 					throw new Exception("BatUpdStudyPlan should not update other owner's row");
 				}
 				return NIL;
@@ -207,7 +225,7 @@ public partial class TestISvcStudyPlan{
 			return NIL;
 		});
 
-		R("BatSoftDelPreFilter_Should_OnlyDelete_OwnedRows", async(o)=>{
+		R("BatSoftDelPreFilter_Should_Throw_PermissionDenied_WhenContainsNonOwnedRows", async(o)=>{
 			var userCtx = MkUserCtx(_ownerA);
 			var mine = new PoPreFilter{
 				Id = new IdPreFilter(),
@@ -232,13 +250,19 @@ public partial class TestISvcStudyPlan{
 			_preFilterIds.Add(mine.Id);
 			_preFilterIds.Add(other.Id);
 
-			await SvcStudyPlan.BatSoftDelPreFilter(userCtx, AsyE(mine, other), CT.None);
+			other.Owner = _ownerA; // forged owner should still be denied by db ownership check
+			try{
+				await SvcStudyPlan.BatSoftDelPreFilter(userCtx, AsyE(mine, other), CT.None);
+				throw new Exception("BatSoftDelPreFilter should throw permission denied");
+			}catch(Exception ex){
+				AssertThrowsErrItem(ex, ItemsErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatSoftDelPreFilter));
+			}
 
 			await RunNoTxn(async(ctx)=>{
 				var gotMine = await RepoPreFilter.BatGetByIdWithDel(ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				var gotOther = await RepoPreFilter.BatGetByIdWithDel(ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
-				if(gotMine is null || !gotMine.IsDeleted()){
-					throw new Exception("BatSoftDelPreFilter should delete owned row");
+				if(gotMine is null || gotMine.IsDeleted()){
+					throw new Exception("BatSoftDelPreFilter should not delete any row when permission denied");
 				}
 				if(gotOther is null || gotOther.IsDeleted()){
 					throw new Exception("BatSoftDelPreFilter should not delete other owner's row");
@@ -248,7 +272,7 @@ public partial class TestISvcStudyPlan{
 			return NIL;
 		});
 
-		R("BatSoftDelWeightArg_Should_OnlyDelete_OwnedRows", async(o)=>{
+		R("BatSoftDelWeightArg_Should_Throw_PermissionDenied_WhenContainsNonOwnedRows", async(o)=>{
 			var userCtx = MkUserCtx(_ownerA);
 			var mine = new PoWeightArg{
 				Id = new IdWeightArg(),
@@ -273,13 +297,19 @@ public partial class TestISvcStudyPlan{
 			_weightArgIds.Add(mine.Id);
 			_weightArgIds.Add(other.Id);
 
-			await SvcStudyPlan.BatSoftDelWeightArg(userCtx, AsyE(mine, other), CT.None);
+			other.Owner = _ownerA; // forged owner should still be denied by db ownership check
+			try{
+				await SvcStudyPlan.BatSoftDelWeightArg(userCtx, AsyE(mine, other), CT.None);
+				throw new Exception("BatSoftDelWeightArg should throw permission denied");
+			}catch(Exception ex){
+				AssertThrowsErrItem(ex, ItemsErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatSoftDelWeightArg));
+			}
 
 			await RunNoTxn(async(ctx)=>{
 				var gotMine = await RepoWeightArg.BatGetByIdWithDel(ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				var gotOther = await RepoWeightArg.BatGetByIdWithDel(ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
-				if(gotMine is null || !gotMine.IsDeleted()){
-					throw new Exception("BatSoftDelWeightArg should delete owned row");
+				if(gotMine is null || gotMine.IsDeleted()){
+					throw new Exception("BatSoftDelWeightArg should not delete any row when permission denied");
 				}
 				if(gotOther is null || gotOther.IsDeleted()){
 					throw new Exception("BatSoftDelWeightArg should not delete other owner's row");
@@ -289,7 +319,7 @@ public partial class TestISvcStudyPlan{
 			return NIL;
 		});
 
-		R("BatSoftDelWeightCalculator_Should_OnlyDelete_OwnedRows", async(o)=>{
+		R("BatSoftDelWeightCalculator_Should_Throw_PermissionDenied_WhenContainsNonOwnedRows", async(o)=>{
 			var userCtx = MkUserCtx(_ownerA);
 			var mine = new PoWeightCalculator{
 				Id = new IdWeightCalculator(),
@@ -310,13 +340,19 @@ public partial class TestISvcStudyPlan{
 			_weightCalculatorIds.Add(mine.Id);
 			_weightCalculatorIds.Add(other.Id);
 
-			await SvcStudyPlan.BatSoftDelWeightCalculator(userCtx, AsyE(mine, other), CT.None);
+			other.Owner = _ownerA; // forged owner should still be denied by db ownership check
+			try{
+				await SvcStudyPlan.BatSoftDelWeightCalculator(userCtx, AsyE(mine, other), CT.None);
+				throw new Exception("BatSoftDelWeightCalculator should throw permission denied");
+			}catch(Exception ex){
+				AssertThrowsErrItem(ex, ItemsErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatSoftDelWeightCalculator));
+			}
 
 			await RunNoTxn(async(ctx)=>{
 				var gotMine = await RepoWeightCalculator.BatGetByIdWithDel(ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				var gotOther = await RepoWeightCalculator.BatGetByIdWithDel(ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
-				if(gotMine is null || !gotMine.IsDeleted()){
-					throw new Exception("BatSoftDelWeightCalculator should delete owned row");
+				if(gotMine is null || gotMine.IsDeleted()){
+					throw new Exception("BatSoftDelWeightCalculator should not delete any row when permission denied");
 				}
 				if(gotOther is null || gotOther.IsDeleted()){
 					throw new Exception("BatSoftDelWeightCalculator should not delete other owner's row");
@@ -477,6 +513,6 @@ public partial class TestISvcStudyPlan{
 			}
 			return NIL;
 		});
-#endif
+
 	}
 }
