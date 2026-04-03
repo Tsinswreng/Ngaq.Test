@@ -9,6 +9,7 @@ using Ngaq.Core.Shared.Word.WeightAlgo;
 using Ngaq.Core.Tools;
 using Ngaq.Core.Word.Models.Weight;
 using Tsinswreng.CsTreeTest;
+using Ngaq.Core.Infra.IF;
 
 namespace Ngaq.Local.Test.Domains.StudyPlan;
 
@@ -66,7 +67,7 @@ public partial class TestISvcStudyPlan{
 				Owner = _ownerB,
 				UniqName = _token + "_cur_jn_wa_b",
 				Type = EWeightArgType.Json,
-				WeightCalculatorName = "x",
+				WeightCalculatorId = IdWeightCalculator.Zero,
 				Text = "{}",
 				BizUpdatedAt = 5202,
 			};
@@ -133,7 +134,7 @@ public partial class TestISvcStudyPlan{
 				Owner = _ownerA,
 				UniqName = _token + "_cur_bo_wa_a",
 				Type = EWeightArgType.Json,
-				WeightCalculatorName = _token + "_cur_bo_wc_a",
+				WeightCalculatorId = IdWeightCalculator.Zero,
 				Text = waJson,
 				BizUpdatedAt = 5302,
 			};
@@ -264,7 +265,7 @@ public partial class TestISvcStudyPlan{
 					Id = new IdWeightArg(),
 					Owner = _ownerA,
 					Type = EWeightArgType.Json,
-					WeightCalculatorName = "x",
+					WeightCalculatorId = IdWeightCalculator.Zero,
 					Text = "{\"DfltAddBonus\":777}",
 				},
 				WeightCalculator = new PoWeightCalculator{

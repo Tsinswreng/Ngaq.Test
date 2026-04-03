@@ -37,5 +37,9 @@ internal class Program{
 		_ = AppIniter.Inst.Init(default).Result;
 		ITestExecutor executor = new TreeTestExecutor();
 		await executor.RunEtPrint(mgr.TestNode);
+		
+		// var studyPlan = SvcProvdr.GetRequiredService<ISvcStudyPlan>();
+		// var userCtxMgr = SvcProvdr.GetRequiredService<IFrontendUserCtxMgr>();
+		// await studyPlan.RestoreBuiltinStudyPlan(userCtxMgr.GetDbUserCtx(), default);
 	}
 }

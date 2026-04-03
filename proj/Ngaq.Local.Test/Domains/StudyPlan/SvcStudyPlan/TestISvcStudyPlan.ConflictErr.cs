@@ -1,4 +1,5 @@
 using Ngaq.Core.Infra.Errors;
+using Ngaq.Core.Infra.IF;
 using Ngaq.Core.Shared.StudyPlan.Models.Po.PreFilter;
 using Ngaq.Core.Shared.StudyPlan.Models.Po.StudyPlan;
 using Ngaq.Core.Shared.StudyPlan.Models.Po.WeightArg;
@@ -68,7 +69,7 @@ public partial class TestISvcStudyPlan{
 				Owner = _ownerA,
 				UniqName = _token + "_wa_a_1",
 				Type = EWeightArgType.Json,
-				WeightCalculatorName = _token + "_conflict_add_wa",
+				WeightCalculatorId = IdWeightCalculator.Zero,
 				Text = "{}",
 			};
 			_weightArgIds.Add(row.Id);
@@ -143,7 +144,7 @@ public partial class TestISvcStudyPlan{
 				Owner = _ownerA,
 				UniqName = _token + "_upd_conflict_wa_1",
 				Type = EWeightArgType.Json,
-				WeightCalculatorName = _token + "_upd_conflict_calc",
+				WeightCalculatorId = IdWeightCalculator.Zero,
 				Text = "{\"A\":1}",
 			};
 			var row2 = new PoWeightArg{
@@ -151,7 +152,7 @@ public partial class TestISvcStudyPlan{
 				Owner = _ownerA,
 				UniqName = _token + "_upd_conflict_wa_2",
 				Type = EWeightArgType.Json,
-				WeightCalculatorName = _token + "_upd_conflict_calc",
+				WeightCalculatorId = IdWeightCalculator.Zero,
 				Text = "{\"A\":2}",
 			};
 			await RunNoTxn(async(ctx)=>{

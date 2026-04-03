@@ -11,6 +11,7 @@ using Ngaq.Core.Shared.Word.WeightAlgo.Models;
 using Ngaq.Core.Infra.Errors;
 using Tsinswreng.CsPage;
 using Tsinswreng.CsTreeTest;
+using Ngaq.Core.Infra.IF;
 
 namespace Ngaq.Local.Test.Domains.StudyPlan;
 
@@ -92,7 +93,7 @@ public partial class TestISvcStudyPlan{
 				Owner = _ownerA,
 				UniqName = _token + "_upd_wa_mine",
 				Type = EWeightArgType.Json,
-				WeightCalculatorName = "calc_a",
+				WeightCalculatorId = IdWeightCalculator.Zero,
 				Text = "{\"A\":1}",
 			};
 			var other = new PoWeightArg{
@@ -100,7 +101,7 @@ public partial class TestISvcStudyPlan{
 				Owner = _ownerB,
 				UniqName = _token + "_upd_wa_other",
 				Type = EWeightArgType.Json,
-				WeightCalculatorName = "calc_b",
+				WeightCalculatorId = IdWeightCalculator.Zero,
 				Text = "{\"B\":2}",
 			};
 			await RunNoTxn(async(ctx)=>{
@@ -279,7 +280,7 @@ public partial class TestISvcStudyPlan{
 				Owner = _ownerA,
 				UniqName = _token + "_del_wa_mine",
 				Type = EWeightArgType.Json,
-				WeightCalculatorName = "x",
+				WeightCalculatorId = IdWeightCalculator.Zero,
 				Text = "{}",
 			};
 			var other = new PoWeightArg{
@@ -287,7 +288,7 @@ public partial class TestISvcStudyPlan{
 				Owner = _ownerB,
 				UniqName = _token + "_del_wa_other",
 				Type = EWeightArgType.Json,
-				WeightCalculatorName = "x",
+				WeightCalculatorId = IdWeightCalculator.Zero,
 				Text = "{}",
 			};
 			await RunNoTxn(async(ctx)=>{
@@ -377,7 +378,7 @@ public partial class TestISvcStudyPlan{
 				Owner = _ownerA,
 				UniqName = _token + "_del_sp_wa",
 				Type = EWeightArgType.Json,
-				WeightCalculatorName = _token + "_del_sp_wc",
+				WeightCalculatorId = IdWeightCalculator.Zero,
 				Text = "{}",
 			};
 			var weightCalculator = new PoWeightCalculator{
@@ -440,7 +441,7 @@ public partial class TestISvcStudyPlan{
 				Owner = _ownerA,
 				UniqName = Consts.BuiltinPrefix + DfltWeightCfg.Name,
 				Type = EWeightArgType.Json,
-				WeightCalculatorName = oldCalc.UniqName ?? "",
+				WeightCalculatorId = oldCalc.Id,
 				Text = "{\"Old\":1}",
 				Descr = "old",
 			};
