@@ -86,7 +86,7 @@ public partial class TestISvcWordV2: ITester{
 	}
 
 	IDbUserCtx MkUserCtx(IdUser UserId){
-		return new DbUserCtx(MkUser(UserId), new DbFnCtx());
+		return new DbUserCtx(MkUser(UserId));
 	}
 
 	async Task TryCleanupByHeadOwner(IdUser Owner, str Token){

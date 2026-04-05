@@ -66,20 +66,19 @@ public partial class TestISvcStudyPlan{
 		});
 
 		R("EnsureCurStudyPlan_Should_Create_Builtin_When_None", async(o)=>{
-			var userB = MkUserCtx(_ownerB);
-			var hasBefore = await SvcStudyPlan.GetCurStudyPlanId(userB, CT.None);
+			var hasBefore = await SvcStudyPlan.GetCurStudyPlanId(MkUserCtx(_ownerB), CT.None);
 			if(hasBefore is not null){
 				throw new Exception("EnsureCurStudyPlan: user should have no plan before ensure");
 			}
 
-			var created = await SvcStudyPlan.EnsureCurStudyPlan(userB, CT.None);
+			var created = await SvcStudyPlan.EnsureCurStudyPlan(MkUserCtx(_ownerB), CT.None);
 
-			var curId = await SvcStudyPlan.GetCurStudyPlanId(userB, CT.None);
+			var curId = await SvcStudyPlan.GetCurStudyPlanId(MkUserCtx(_ownerB), CT.None);
 			if(curId is null){
 				throw new Exception("EnsureCurStudyPlan should set current plan id");
 			}
 
-			var jn = await SvcStudyPlan.GetCurJnStudyPlan(userB, CT.None);
+			var jn = await SvcStudyPlan.GetCurJnStudyPlan(MkUserCtx(_ownerB), CT.None);
 			if(jn is null){
 				throw new Exception("EnsureCurStudyPlan should create a retrievable plan");
 			}
@@ -95,18 +94,17 @@ public partial class TestISvcStudyPlan{
 		});
 
 		R("EnsureCurStudyPlan_Should_Not_Recreate_When_Exists", async(o)=>{
-			var userCtx = MkUserCtx(_ownerA);
-			var curIdBefore = await SvcStudyPlan.GetCurStudyPlanId(userCtx, CT.None);
+			var curIdBefore = await SvcStudyPlan.GetCurStudyPlanId(MkUserCtx(_ownerA), CT.None);
 			if(curIdBefore is null){
 				throw new Exception("EnsureCurStudyPlan: userA should already have plan from seed data");
 			}
 
-			var created = await SvcStudyPlan.EnsureCurStudyPlan(userCtx, CT.None);
+			var created = await SvcStudyPlan.EnsureCurStudyPlan(MkUserCtx(_ownerA), CT.None);
 			if(created){
 				throw new Exception("EnsureCurStudyPlan should return false when plan already exists");
 			}
 
-			var curIdAfter = await SvcStudyPlan.GetCurStudyPlanId(userCtx, CT.None);
+			var curIdAfter = await SvcStudyPlan.GetCurStudyPlanId(MkUserCtx(_ownerA), CT.None);
 			if(curIdAfter is null || curIdAfter != curIdBefore){
 				throw new Exception("EnsureCurStudyPlan should not change existing plan");
 			}

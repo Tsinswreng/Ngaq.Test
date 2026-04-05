@@ -141,10 +141,7 @@ public partial class TestISvcStudyPlan: ITester{
 	}
 
 	IDbUserCtx MkUserCtx(IdUser UserId){
-		return new DbUserCtx(
-			MkUser(UserId)
-			,new DbFnCtx()
-		);
+		return new DbUserCtx(MkUser(UserId));
 	}
 
 	async Task InsertSeedData(){
