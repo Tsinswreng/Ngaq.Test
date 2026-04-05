@@ -13,7 +13,7 @@ namespace Ngaq.Local.Test.Domains.StudyPlan;
 public partial class TestISvcStudyPlan{
 	static void AssertThrowsErrItem(
 		Exception Ex
-		,IErrItem Expected
+		,IErrNode Expected
 		,str CaseName
 	){
 		if(Ex is not AppErr appErr){
