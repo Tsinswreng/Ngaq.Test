@@ -90,11 +90,26 @@ public partial class TestISvcUserLang{
 			_userLangIds.Add(mine.Id);
 			_userLangIds.Add(other.Id);
 
-			mine.Descr = "after_mine_should_not_apply";
-			other.Owner = _ownerA;
-			other.Descr = "after_other_should_not_apply";
+			var updMine = new PoUserLang{
+				Id = mine.Id,
+				Owner = mine.Owner,
+				UniqName = mine.UniqName,
+				Descr = "after_mine_should_not_apply",
+				RelLangType = mine.RelLangType,
+				RelLang = mine.RelLang,
+				BizUpdatedAt = mine.BizUpdatedAt,
+			};
+			var updOther = new PoUserLang{
+				Id = other.Id,
+				Owner = other.Owner,
+				UniqName = other.UniqName,
+				Descr = "after_other_should_not_apply",
+				RelLangType = other.RelLangType,
+				RelLang = other.RelLang,
+				BizUpdatedAt = other.BizUpdatedAt,
+			};
 			try{
-				await SvcUserLang.BatUpdUserLang(MkUserCtx(_ownerA), AsyE(mine, other), CT.None);
+				await SvcUserLang.BatUpdUserLang(MkUserCtx(_ownerA), AsyE(updMine, updOther), CT.None);
 				throw new Exception("BatUpdUserLang should throw permission denied");
 			}
 			catch(Exception ex){

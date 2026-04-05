@@ -49,6 +49,6 @@ public partial class TestRepo : ITester{
 	}
 
 	Task<TRtn> RunInTxnIfNoCtx<TRtn>(Func<IDbFnCtx, Task<TRtn>> Fn){
-		return SqlCmdMkr.RunInTxnIfNoCtx(null, CT.None, Fn);
+		return SqlCmdMkr.StartTxnIfNoCtx(null, CT.None, Fn);
 	}
 }
