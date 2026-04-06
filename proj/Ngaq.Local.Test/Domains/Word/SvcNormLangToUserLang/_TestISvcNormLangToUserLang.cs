@@ -45,10 +45,10 @@ public partial class TestISvcNormLangToUserLang: ITester{
 		});
 
 		RegisterGetUserLangByNormLang(Node);
+		RegisterPageNormLangToUserLang(Node);
 		RegisterBatAddNormLangToUserLang(Node);
 		RegisterBatUpdNormLangToUserLang(Node);
 		RegisterBatSoftDelNormLangToUserLang(Node);
-		RegisterPageNormLangToUserLang(Node);
 
 		R("SvcNormLangToUserLang_Cleanup_AllInsertedData", async(o)=>{
 			await CleanupData();

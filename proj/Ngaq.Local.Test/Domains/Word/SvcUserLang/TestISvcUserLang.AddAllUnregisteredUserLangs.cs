@@ -64,8 +64,8 @@ public partial class TestISvcUserLang{
 				if(addedB is null){
 					throw new Exception("AddAllUnregisteredUserLangs should add missing language row");
 				}
-				if(addedB.RelLangType != ELangIdentType.Bcp47 || addedB.RelLang != langB){
-					throw new Exception("AddAllUnregisteredUserLangs should map RelLangType/RelLang by default");
+				if(addedB.RelLangType != ELangIdentType.Bcp47 || addedB.RelLang != ""){
+					throw new Exception("AddAllUnregisteredUserLangs should set RelLangType and keep RelLang empty by default");
 				}
 				if(addedB.BizUpdatedAt <= Tempus.Zero){
 					throw new Exception("AddAllUnregisteredUserLangs should touch BizUpdatedAt");
