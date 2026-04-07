@@ -10,6 +10,7 @@ using Ngaq.Core.Shared.User.Models.Po.User;
 using Ngaq.Core.Shared.User.UserCtx;
 using Ngaq.Core.Shared.Word.Models.Po.Kv;
 using Ngaq.Core.Shared.Word.Models.Po.Learn;
+using Ngaq.Core.Shared.Word.Models.Po.NormLangToUserLang;
 using Ngaq.Core.Shared.Word.Models.Po.Word;
 using Ngaq.Core.Shared.Word.Svc;
 using Tsinswreng.CsSql;
@@ -22,6 +23,7 @@ public partial class TestISvcWordV2: ITester{
 	readonly IRepo<PoWord, IdWord> RepoWord;
 	readonly IRepo<PoWordProp, IdWordProp> RepoProp;
 	readonly IRepo<PoWordLearn, IdWordLearn> RepoLearn;
+	readonly IRepo<PoNormLangToUserLang, IdNormLangToUserLang> RepoNormLangToUserLang;
 	readonly IRepo<PoKv, IdKv> RepoKv;
 	readonly IRepo<PoStudyPlan, IdStudyPlan> RepoStudyPlan;
 	readonly IRepo<PoPreFilter, IdPreFilter> RepoPreFilter;
@@ -32,6 +34,7 @@ public partial class TestISvcWordV2: ITester{
 		,IRepo<PoWord, IdWord> RepoWord
 		,IRepo<PoWordProp, IdWordProp> RepoProp
 		,IRepo<PoWordLearn, IdWordLearn> RepoLearn
+		,IRepo<PoNormLangToUserLang, IdNormLangToUserLang> RepoNormLangToUserLang
 		,IRepo<PoKv, IdKv> RepoKv
 		,IRepo<PoStudyPlan, IdStudyPlan> RepoStudyPlan
 		,IRepo<PoPreFilter, IdPreFilter> RepoPreFilter
@@ -41,6 +44,7 @@ public partial class TestISvcWordV2: ITester{
 		this.RepoWord = RepoWord;
 		this.RepoProp = RepoProp;
 		this.RepoLearn = RepoLearn;
+		this.RepoNormLangToUserLang = RepoNormLangToUserLang;
 		this.RepoKv = RepoKv;
 		this.RepoStudyPlan = RepoStudyPlan;
 		this.RepoPreFilter = RepoPreFilter;
@@ -54,6 +58,7 @@ public partial class TestISvcWordV2: ITester{
 		RegisterBatAddNewLearnRecord(Node);
 		RegisterBatAddNewWordToLearn(Node);
 		RegisterSoftDelJnWordInId(Node);
+		RegisterLlmDictWordToJnWord(Node);
 
 		return Node;
 	}
