@@ -1,7 +1,6 @@
 using Tsinswreng.CsTreeTest;
 using Tsinswreng.CsSql;
 using Ngaq.Core.Shared.Kv.Models;
-using Ngaq.Core.Sys.Models;
 using Ngaq.Core.Shared.Word.Models.Po.Word;
 using Ngaq.Core.Shared.Word.Models.Po.Kv;
 using Ngaq.Core.Shared.Word.Models.Po.Learn;

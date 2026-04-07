@@ -14,7 +14,6 @@ using Ngaq.Core.Shared.Word.Models.Po.Word;
 using Ngaq.Core.Shared.Word.Svc;
 using Tsinswreng.CsSql;
 using Tsinswreng.CsTreeTest;
-using Ngaq.Core.Sys.Models;
 
 namespace Ngaq.Local.Test.Domains.Word;
 
