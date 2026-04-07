@@ -15,13 +15,13 @@ public partial class TestISvcNormLangToUserLang{
 		var R = register.Register;
 		register.TesteeFnNames = [nameof(ISvcNormLangToUserLang.PageNormLangToUserLang)];
 
-		R("PageNormLangToUserLang_Should_FilterByOwnerAndUserLang_AndOrderByBizUpdatedAtDesc", async(o)=>{
+		R("PageNormLangToUserLang_Should_FilterByOwnerAndSearchTextOnUserLang_AndOrderByBizUpdatedAtDesc", async(o)=>{
 			var req = new ReqPageNormLangToUserLang{
 				PageQry = new PageQry{
 					PageIdx = 0,
 					PageSize = 20,
 				},
-				UserLang = _token + "_user_",
+				SearchText = _token + "_user_",
 			};
 			var page = await SvcNormLangToUserLang.PageNormLangToUserLang(MkUserCtx(_ownerA), req, CT.None);
 			var rows = await ToList(page.DataAsyE);
@@ -38,6 +38,28 @@ public partial class TestISvcNormLangToUserLang{
 				if(rows[i - 1].BizUpdatedAt < rows[i].BizUpdatedAt){
 					throw new Exception("PageNormLangToUserLang should sort by BizUpdatedAt desc");
 				}
+			}
+			return NIL;
+		});
+
+		R("PageNormLangToUserLang_Should_FilterByOwnerAndSearchTextOnNormLang_AndOrderByBizUpdatedAtDesc", async(o)=>{
+			var req = new ReqPageNormLangToUserLang{
+				PageQry = new PageQry{
+					PageIdx = 0,
+					PageSize = 20,
+				},
+				SearchText = "_fr_fr",
+			};
+			var page = await SvcNormLangToUserLang.PageNormLangToUserLang(MkUserCtx(_ownerA), req, CT.None);
+			var rows = await ToList(page.DataAsyE);
+			if(rows.Count != 1){
+				throw new Exception("PageNormLangToUserLang should return 1 owner row after NormLang search");
+			}
+			if(rows.Any(x=>x.Owner != _ownerA)){
+				throw new Exception("PageNormLangToUserLang should isolate by owner");
+			}
+			if(rows.Any(x=>!x.NormLang.Contains("_fr_fr"))){
+				throw new Exception("PageNormLangToUserLang should apply NormLang search");
 			}
 			return NIL;
 		});

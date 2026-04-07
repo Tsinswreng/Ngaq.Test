@@ -9,7 +9,7 @@ using Ngaq.Core.Shared.Word.Models.Po.Kv;
 using Ngaq.Core.Tools;
 using Ngaq.Core.Shared.Word.Models.Po.Word;
 using Ngaq.Core.Shared.Word.Svc;
-using Ngaq.Core.Sys.Models;
+
 using Tsinswreng.CsSql;
 using Tsinswreng.CsTreeTest;
 
