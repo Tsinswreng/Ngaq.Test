@@ -1,5 +1,6 @@
 using Ngaq.Core.Shared.Sync;
 using Ngaq.Core.Infra;
+using Ngaq.Core.Shared.Word.Models;
 using Tsinswreng.CsTreeTest;
 using Tsinswreng.CsTextWithBlob;
 
@@ -9,11 +10,11 @@ public partial class TestIPacker{
 	void RegisterUnpack(ITestNode Node){
 		var register = Node.MkTestFnRegister(
 			typeof(TestIPacker),
-			[typeof(IPacker<SampleSyncObj>)],
+			[typeof(IPacker<JnWord>)],
 			[]
 		);
 		var R = register.Register;
-		register.TesteeFnNames = [nameof(IPacker<SampleSyncObj>.Unpack)];
+		register.TesteeFnNames = [nameof(IPacker<JnWord>.Unpack)];
 
 		R("Unpack_Should_ParseValidPackedData", async(o)=>{
 			var info = new ObjPackInfo{
@@ -22,8 +23,8 @@ public partial class TestIPacker{
 				ObjVer = new Version(1, 0),
 			};
 			var src = new[]{
-				new SampleSyncObj{I = 10, S = "x"},
-				new SampleSyncObj{I = 20, S = "y"},
+				MkJnWord("gamma", "fr"),
+				MkJnWord("delta", "de"),
 			};
 			var packed = Packer.Pack(AsyE(src), info, CT.None);
 			var ans = Packer.Unpack(packed, CT.None);
@@ -31,7 +32,7 @@ public partial class TestIPacker{
 				throw new Exception("Unpack should succeed for valid packed content");
 			}
 			var got = await ToList(ans.Data);
-			if(got.Count != 2 || got[0].I != 10 || got[1].S != "y"){
+			if(got.Count != 2 || got[0].Word.Head != "gamma" || got[1].Word.Lang != "de"){
 				throw new Exception("Unpack should parse all objects from packed content");
 			}
 			return NIL;
