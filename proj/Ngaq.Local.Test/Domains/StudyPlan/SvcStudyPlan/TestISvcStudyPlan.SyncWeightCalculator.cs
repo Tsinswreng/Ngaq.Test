@@ -1,5 +1,6 @@
 using Ngaq.Core.Shared.StudyPlan.Models.Po.WeightCalculator;
 using Ngaq.Core.Shared.StudyPlan.Svc;
+using Ngaq.Core.Infra;
 using Tsinswreng.CsSql;
 using Tsinswreng.CsTreeTest;
 
@@ -43,6 +44,7 @@ public partial class TestISvcStudyPlan{
 			upd.Type = EWeightCalculatorType.Js;
 			upd.Text = "new_text";
 			upd.Descr = "updated";
+			upd.BizUpdatedAt = Tempus.Now();
 			await SvcStudyPlan.SyncWeightCalculator(ctx, AsyE(add, upd), CT.None);
 
 			await RunNoTxn(async(db)=>{

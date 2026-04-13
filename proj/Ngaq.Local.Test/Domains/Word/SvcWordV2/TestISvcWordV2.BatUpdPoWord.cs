@@ -43,8 +43,8 @@ public partial class TestISvcWordV2{
 					StoredAt = Tempus.FromUnixMs(2000),
 				};
 				var rtn = await SvcWordV2.BatUpdPoWord(MkUserCtx(owner), AsyE(upd), CT.None);
-				var ids = await ToList(rtn);
-				if(ids.Count != 1 || ids[0] != word.Id){
+				var rows = await ToList(rtn);
+				if(rows.Count != 1 || rows[0] is null || rows[0]!.FinalId != word.Id){
 					throw new Exception("BatUpdPoWord should return original id when (Id,Head,Lang) unchanged");
 				}
 
@@ -95,8 +95,8 @@ public partial class TestISvcWordV2{
 					Lang = dst.Lang,
 					StoredAt = Tempus.FromUnixMs(3000),
 				};
-				var ids = await ToList(await SvcWordV2.BatUpdPoWord(MkUserCtx(owner), AsyE(upd), CT.None));
-				if(ids.Count != 1 || ids[0] != dst.Id){
+				var rows = await ToList(await SvcWordV2.BatUpdPoWord(MkUserCtx(owner), AsyE(upd), CT.None));
+				if(rows.Count != 1 || rows[0] is null || rows[0]!.FinalId != dst.Id){
 					throw new Exception("BatUpdPoWord should return merged target id when (Head,Lang) conflicts");
 				}
 

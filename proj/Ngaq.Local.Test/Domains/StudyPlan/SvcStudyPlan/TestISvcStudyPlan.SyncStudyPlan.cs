@@ -3,6 +3,7 @@ using Ngaq.Core.Shared.StudyPlan.Models.Po.StudyPlan;
 using Ngaq.Core.Shared.StudyPlan.Models.Po.WeightArg;
 using Ngaq.Core.Shared.StudyPlan.Models.Po.WeightCalculator;
 using Ngaq.Core.Shared.StudyPlan.Svc;
+using Ngaq.Core.Infra;
 using Tsinswreng.CsSql;
 using Tsinswreng.CsTreeTest;
 
@@ -79,6 +80,7 @@ public partial class TestISvcStudyPlan{
 			upd.PreFilterId = pf.Id;
 			upd.WeightArgId = wa.Id;
 			upd.WeightCalculatorId = wc.Id;
+			upd.BizUpdatedAt = Tempus.Now();
 			await SvcStudyPlan.SyncStudyPlan(ctx, AsyE(add, upd), CT.None);
 
 			await RunNoTxn(async(db)=>{
@@ -100,3 +102,4 @@ public partial class TestISvcStudyPlan{
 		});
 	}
 }
+

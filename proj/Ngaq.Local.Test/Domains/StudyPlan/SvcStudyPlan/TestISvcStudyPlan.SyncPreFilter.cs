@@ -1,5 +1,6 @@
 using Ngaq.Core.Shared.StudyPlan.Models.Po.PreFilter;
 using Ngaq.Core.Shared.StudyPlan.Svc;
+using Ngaq.Core.Infra;
 using Tsinswreng.CsSql;
 using Tsinswreng.CsTreeTest;
 
@@ -44,6 +45,7 @@ public partial class TestISvcStudyPlan{
 
 			upd.Descr = "updated";
 			upd.Text = "{\"Version\":\"1.0.0.0\",\"CoreFilter\":[{\"Fields\":[\"Lang\"],\"Filters\":[]}],\"PropFilter\":[]}";
+			upd.BizUpdatedAt = Tempus.Now();
 			await SvcStudyPlan.SyncPreFilter(ctx, AsyE(add, upd), CT.None);
 
 			await RunNoTxn(async(db)=>{

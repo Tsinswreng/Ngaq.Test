@@ -5,6 +5,7 @@ using Ngaq.Core.Model.Po.Kv;
 using Ngaq.Core.Shared.Base.Models.Po;
 using Ngaq.Core.Shared.User.Models.Po.User;
 using Ngaq.Core.Shared.Word.Models.Learn_;
+using Ngaq.Core.Shared.Word.Models.Dto;
 using Ngaq.Core.Shared.Word.Models.Po.Kv;
 using Ngaq.Core.Shared.Word.Models.Po.Learn;
 using Ngaq.Core.Shared.Word.Models.Po.Word;
@@ -37,7 +38,7 @@ public partial class TestISvcWordV2{
 
 				var args = new PoWord{Id = word.Id, Owner = owner, Head = word.Head, Lang = word.Lang};
 				var rtn = await ToList(SvcWordV2.BatUpdHeadLang(MkUserCtx(owner), AsyE(args), CT.None));
-				if(rtn.Count != 1 || rtn[0] is not null){
+				if(rtn.Count != 1 || rtn[0] is null || rtn[0]!.FinalId != word.Id || rtn[0]!.Result != EUpdBizIdResult.BizIdAlreadyEqual){
 					throw new Exception("BatUpdHeadLang should return null when (Head,Lang) not changed");
 				}
 				return NIL;
@@ -62,7 +63,7 @@ public partial class TestISvcWordV2{
 
 				var arg = new PoWord{Id = word.Id, Owner = owner, Head = token + "_new", Lang = "en"};
 				var rtn = await ToList(SvcWordV2.BatUpdHeadLang(MkUserCtx(owner), AsyE(arg), CT.None));
-				if(rtn.Count != 1 || rtn[0] is not null){
+				if(rtn.Count != 1 || rtn[0] is null || rtn[0]!.FinalId != word.Id || rtn[0]!.Result != EUpdBizIdResult.DataOfBizIdNotExist){
 					throw new Exception("BatUpdHeadLang should return null when id remains unchanged");
 				}
 
@@ -111,7 +112,7 @@ public partial class TestISvcWordV2{
 
 				var arg = new PoWord{Id = src.Id, Owner = owner, Head = dst.Head, Lang = dst.Lang};
 				var rtn = await ToList(SvcWordV2.BatUpdHeadLang(MkUserCtx(owner), AsyE(arg), CT.None));
-				if(rtn.Count != 1 || rtn[0] != dst.Id){
+				if(rtn.Count != 1 || rtn[0] is null || rtn[0]!.FinalId != dst.Id || rtn[0]!.Result != EUpdBizIdResult.BizIdNotEqual){
 					throw new Exception("BatUpdHeadLang should return target id when merged");
 				}
 
