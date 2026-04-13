@@ -87,6 +87,10 @@ public partial class TestISvcStudyPlan: ITester{
 			,nameof(ISvcStudyPlan.BatSoftDelWeightCalculator)
 			,nameof(ISvcStudyPlan.BatSoftDelStudyPlan)
 			,nameof(ISvcStudyPlan.RestoreBuiltinStudyPlan)
+			,nameof(ISvcStudyPlan.SyncWeightArg)
+			,nameof(ISvcStudyPlan.SyncWeightCalculator)
+			,nameof(ISvcStudyPlan.SyncPreFilter)
+			,nameof(ISvcStudyPlan.SyncStudyPlan)
 		];
 
 		R("StudyPlan_Setup_InsertSeedData", async(o)=>{
@@ -106,6 +110,10 @@ public partial class TestISvcStudyPlan: ITester{
 		RegisterBuiltinAndEnsureApis(Test);
 		RegisterUpdateSoftDeleteAndRestoreApis(Test);
 		RegisterDirectImplementedMethods(Test);
+		RegisterSyncWeightArg(Test);
+		RegisterSyncWeightCalculator(Test);
+		RegisterSyncPreFilter(Test);
+		RegisterSyncStudyPlan(Test);
 		R("StudyPlan_Cleanup_AllInsertedData", async(o)=>{
 			await CleanupData();
 			return NIL;

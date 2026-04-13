@@ -1,4 +1,5 @@
-﻿using Ngaq.Core.Shared.Word.Models;
+﻿#if false
+using Ngaq.Core.Shared.Word.Models;
 using Ngaq.Core.Infra;
 using Ngaq.Core.Tools;
 using Ngaq.Local.TsNgaq;
@@ -35,10 +36,12 @@ public class TestMigrateTsNgaq {
 		};
 		var jsonLines = str.Join('\n', jsons);
 		var compressed = SvcWord.CompressGZip(Encoding.UTF8.GetBytes(jsonLines));
-		var textWithBlob = ToolTextWithBlob.Pack(
+		var textWithBlob = TextWithBlob.Pack(
 			JSON.Stringify(wordsPackInfo), compressed
 		);
 		File.WriteAllBytes("./TsNgaq.tb", textWithBlob.ToByteArr());
 
 	}
 }
+
+#endif

@@ -59,6 +59,15 @@ public partial class TestISvcWordV2: ITester{
 		RegisterBatAddNewWordToLearn(Node);
 		RegisterSoftDelJnWordInId(Node);
 		RegisterLlmDictWordToJnWord(Node);
+		RegisterBatUpdHeadLang(Node);
+		RegisterBatUpdPoWord(Node);
+		RegisterBatChangeId(Node);
+		RegisterBizSyncJnWordByBizId(Node);
+		RegisterBatSyncByDto(Node);
+		RegisterSyncNoChange(Node);
+		RegisterSyncRemoteIsOlder(Node);
+		RegisterSyncLocalNotExist(Node);
+		RegisterSyncIdNotEqual(Node);
 
 		return Node;
 	}

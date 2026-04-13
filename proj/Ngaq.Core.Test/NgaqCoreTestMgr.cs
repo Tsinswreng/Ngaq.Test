@@ -1,6 +1,7 @@
 using Tsinswreng.Srefl.Test.IDictSerializer;
 using Tsinswreng.CsTreeTest;
 using Ngaq.Core.Test.Tools.Json.IDictJsonSerializer;
+using Ngaq.Core.Test.Sync.IPacker;
 
 namespace Ngaq.Core.Test;
 
@@ -10,6 +11,7 @@ public class NgaqCoreTestMgr:DiEtTestMgr{
 		Test = this.TestNode;
 		this.RegisterTester<TestIDictSerializer>();
 		this.RegisterTester<TestIDictJsonSerializer>();
+		this.RegisterTester<TestIPacker>();
 		return Test;
 	}
 
