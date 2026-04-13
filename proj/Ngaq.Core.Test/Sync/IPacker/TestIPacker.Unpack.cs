@@ -3,6 +3,7 @@ using Ngaq.Core.Infra;
 using Ngaq.Core.Shared.Word.Models;
 using Tsinswreng.CsTreeTest;
 using Tsinswreng.CsTextWithBlob;
+using Tsinswreng.CsTempus;
 
 namespace Ngaq.Core.Test.Sync.IPacker;
 

@@ -6,6 +6,7 @@ using Ngaq.Core.Shared.Word.Models;
 using Ngaq.Core.Shared.Word.Models.Learn_;
 using Ngaq.Core.Shared.Word.Models.Po.Kv;
 using Ngaq.Core.Shared.Word.Models.Po.Word;
+using Tsinswreng.CsTempus;
 
 namespace Tsinswreng.Srefl.Test.IDictSerializer;
 

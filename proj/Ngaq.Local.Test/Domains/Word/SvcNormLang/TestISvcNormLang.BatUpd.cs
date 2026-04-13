@@ -3,6 +3,7 @@ using Ngaq.Core.Infra.Errors;
 using Ngaq.Core.Shared.Dictionary.Models;
 using Ngaq.Core.Shared.Dictionary.Models.Po.NormLang;
 using Ngaq.Core.Shared.Word.Svc;
+using Tsinswreng.CsTempus;
 using Tsinswreng.CsTreeTest;
 
 namespace Ngaq.Local.Test.Domains.Word;

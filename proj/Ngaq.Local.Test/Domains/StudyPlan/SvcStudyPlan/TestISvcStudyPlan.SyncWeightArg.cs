@@ -4,6 +4,7 @@ using Ngaq.Core.Shared.StudyPlan.Svc;
 using Ngaq.Core.Infra;
 using Tsinswreng.CsSql;
 using Tsinswreng.CsTreeTest;
+using Tsinswreng.CsTempus;
 
 namespace Ngaq.Local.Test.Domains.StudyPlan;
 
