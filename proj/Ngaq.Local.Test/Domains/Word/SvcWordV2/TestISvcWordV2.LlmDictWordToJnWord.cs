@@ -36,7 +36,7 @@ public partial class TestISvcWordV2{
 					Term = "hello",
 				},
 				OptLang = new OptLang{
-					SrcLang = new NormLangWithName{
+					SrcLang = new NormLangDetail{
 						Type = ELangIdentType.Bcp47,
 						Code = map.NormLang!,
 					},
@@ -95,7 +95,7 @@ public partial class TestISvcWordV2{
 					Term = "hello",
 				},
 				OptLang = new OptLang{
-					SrcLang = new NormLangWithName{
+					SrcLang = new NormLangDetail{
 						Type = ELangIdentType.Bcp47,
 						Code = token + "_no_map_lang",
 					},
@@ -115,7 +115,7 @@ public partial class TestISvcWordV2{
 				if(ex is not AppErr appErr){
 					throw new Exception("LlmDictWordToJnWord should throw AppErr when mapping is missing");
 				}
-				if(!ReferenceEquals(appErr.Type, ItemsErr.Word.NormLangToUserLangIsNotMapped)){
+				if(!ReferenceEquals(appErr.Type, KeysErr.Word.NormLangToUserLangIsNotMapped)){
 					throw new Exception("LlmDictWordToJnWord should throw NormLangToUserLangIsNotMapped");
 				}
 			}

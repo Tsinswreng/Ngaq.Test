@@ -20,7 +20,7 @@ public class TestJson
 		IWebAns<obj> Ans = new WebAns();
 		Ans.Data = Kv;
 		Ans.Errors??=new List<IAppErrView>();
-		Ans.Errors.Add(AppErr.Mk(ItemsErr.Common.ArgErr, ["UserName"]));
+		Ans.Errors.Add(AppErr.Mk(KeysErr.Common.ArgErr, ["UserName"]));
 		var AnsJson = JSON.Stringify(Ans);
 		System.Console.WriteLine(
 			AnsJson

@@ -69,7 +69,7 @@ public partial class TestISvcStudyPlan{
 				await SvcStudyPlan.BatUpdPreFilter(userCtx, AsyE(mine, other), CT.None);
 				throw new Exception("BatUpdPreFilter should throw permission denied");
 			}catch(Exception ex){
-				AssertThrowsErrItem(ex, ItemsErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatUpdPreFilter));
+				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatUpdPreFilter));
 			}
 
 			await RunNoTxn(async(ctx)=>{
@@ -119,7 +119,7 @@ public partial class TestISvcStudyPlan{
 				await SvcStudyPlan.BatUpdWeightArg(userCtx, AsyE(mine, other), CT.None);
 				throw new Exception("BatUpdWeightArg should throw permission denied");
 			}catch(Exception ex){
-				AssertThrowsErrItem(ex, ItemsErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatUpdWeightArg));
+				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatUpdWeightArg));
 			}
 
 			await RunNoTxn(async(ctx)=>{
@@ -164,7 +164,7 @@ public partial class TestISvcStudyPlan{
 				await SvcStudyPlan.BatUpdWeightCalculator(userCtx, AsyE(mine, other), CT.None);
 				throw new Exception("BatUpdWeightCalculator should throw permission denied");
 			}catch(Exception ex){
-				AssertThrowsErrItem(ex, ItemsErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatUpdWeightCalculator));
+				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatUpdWeightCalculator));
 			}
 
 			await RunNoTxn(async(ctx)=>{
@@ -209,7 +209,7 @@ public partial class TestISvcStudyPlan{
 				await SvcStudyPlan.BatUpdStudyPlan(userCtx, AsyE(mine, other), CT.None);
 				throw new Exception("BatUpdStudyPlan should throw permission denied");
 			}catch(Exception ex){
-				AssertThrowsErrItem(ex, ItemsErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatUpdStudyPlan));
+				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatUpdStudyPlan));
 			}
 
 			await RunNoTxn(async(ctx)=>{
@@ -256,7 +256,7 @@ public partial class TestISvcStudyPlan{
 				await SvcStudyPlan.BatSoftDelPreFilter(userCtx, AsyE(mine, other), CT.None);
 				throw new Exception("BatSoftDelPreFilter should throw permission denied");
 			}catch(Exception ex){
-				AssertThrowsErrItem(ex, ItemsErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatSoftDelPreFilter));
+				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatSoftDelPreFilter));
 			}
 
 			await RunNoTxn(async(ctx)=>{
@@ -303,7 +303,7 @@ public partial class TestISvcStudyPlan{
 				await SvcStudyPlan.BatSoftDelWeightArg(userCtx, AsyE(mine, other), CT.None);
 				throw new Exception("BatSoftDelWeightArg should throw permission denied");
 			}catch(Exception ex){
-				AssertThrowsErrItem(ex, ItemsErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatSoftDelWeightArg));
+				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatSoftDelWeightArg));
 			}
 
 			await RunNoTxn(async(ctx)=>{
@@ -346,7 +346,7 @@ public partial class TestISvcStudyPlan{
 				await SvcStudyPlan.BatSoftDelWeightCalculator(userCtx, AsyE(mine, other), CT.None);
 				throw new Exception("BatSoftDelWeightCalculator should throw permission denied");
 			}catch(Exception ex){
-				AssertThrowsErrItem(ex, ItemsErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatSoftDelWeightCalculator));
+				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatSoftDelWeightCalculator));
 			}
 
 			await RunNoTxn(async(ctx)=>{

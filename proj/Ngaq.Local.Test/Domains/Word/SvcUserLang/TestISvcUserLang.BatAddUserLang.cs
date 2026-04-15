@@ -61,7 +61,7 @@ public partial class TestISvcUserLang{
 				throw new Exception("BatAddUserLang should throw permission denied");
 			}
 			catch(Exception ex){
-				AssertThrowsErrItem(ex, ItemsErr.Common.PermissionDenied, nameof(ISvcUserLang.BatAddUserLang));
+				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcUserLang.BatAddUserLang));
 			}
 			return NIL;
 		});
@@ -94,7 +94,7 @@ public partial class TestISvcUserLang{
 				throw new Exception("BatAddUserLang conflict should throw");
 			}
 			catch(Exception ex){
-				AssertThrowsErrItem(ex, ItemsErr.Common.DataIllegalOrConflict, nameof(ISvcUserLang.BatAddUserLang));
+				AssertThrowsErrItem(ex, KeysErr.Common.DataIllegalOrConflict, nameof(ISvcUserLang.BatAddUserLang));
 			}
 			return NIL;
 		});

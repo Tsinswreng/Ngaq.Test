@@ -57,7 +57,7 @@ public partial class TestISvcStudyPlan{
 				await SvcStudyPlan.BatAddPreFilter(userCtx, AsyE(row), CT.None);
 				throw new Exception("BatAddPreFilter conflict should throw");
 			}catch(Exception ex){
-				AssertThrowsErrItem(ex, ItemsErr.Common.DataIllegalOrConflict, nameof(ISvcStudyPlan.BatAddPreFilter));
+				AssertThrowsErrItem(ex, KeysErr.Common.DataIllegalOrConflict, nameof(ISvcStudyPlan.BatAddPreFilter));
 			}
 			return NIL;
 		});
@@ -78,7 +78,7 @@ public partial class TestISvcStudyPlan{
 				await SvcStudyPlan.BatAddWeightArg(userCtx, AsyE(row), CT.None);
 				throw new Exception("BatAddWeightArg conflict should throw");
 			}catch(Exception ex){
-				AssertThrowsErrItem(ex, ItemsErr.Common.DataIllegalOrConflict, nameof(ISvcStudyPlan.BatAddWeightArg));
+				AssertThrowsErrItem(ex, KeysErr.Common.DataIllegalOrConflict, nameof(ISvcStudyPlan.BatAddWeightArg));
 			}
 			return NIL;
 		});
@@ -97,7 +97,7 @@ public partial class TestISvcStudyPlan{
 				await SvcStudyPlan.BatAddWeightCalculator(userCtx, AsyE(row), CT.None);
 				throw new Exception("BatAddWeightCalculator conflict should throw");
 			}catch(Exception ex){
-				AssertThrowsErrItem(ex, ItemsErr.Common.DataIllegalOrConflict, nameof(ISvcStudyPlan.BatAddWeightCalculator));
+				AssertThrowsErrItem(ex, KeysErr.Common.DataIllegalOrConflict, nameof(ISvcStudyPlan.BatAddWeightCalculator));
 			}
 			return NIL;
 		});
@@ -132,7 +132,7 @@ public partial class TestISvcStudyPlan{
 				await SvcStudyPlan.BatUpdPreFilter(userCtx, AsyE(row1), CT.None);
 				throw new Exception("BatUpdPreFilter conflict should throw");
 			}catch(Exception ex){
-				AssertThrowsErrItem(ex, ItemsErr.Common.DataIllegalOrConflict, nameof(ISvcStudyPlan.BatUpdPreFilter));
+				AssertThrowsErrItem(ex, KeysErr.Common.DataIllegalOrConflict, nameof(ISvcStudyPlan.BatUpdPreFilter));
 			}
 			return NIL;
 		});
@@ -167,7 +167,7 @@ public partial class TestISvcStudyPlan{
 				await SvcStudyPlan.BatUpdWeightArg(userCtx, AsyE(row1), CT.None);
 				throw new Exception("BatUpdWeightArg conflict should throw");
 			}catch(Exception ex){
-				AssertThrowsErrItem(ex, ItemsErr.Common.DataIllegalOrConflict, nameof(ISvcStudyPlan.BatUpdWeightArg));
+				AssertThrowsErrItem(ex, KeysErr.Common.DataIllegalOrConflict, nameof(ISvcStudyPlan.BatUpdWeightArg));
 			}
 			return NIL;
 		});
@@ -198,7 +198,7 @@ public partial class TestISvcStudyPlan{
 				await SvcStudyPlan.BatUpdWeightCalculator(userCtx, AsyE(row1), CT.None);
 				throw new Exception("BatUpdWeightCalculator conflict should throw");
 			}catch(Exception ex){
-				AssertThrowsErrItem(ex, ItemsErr.Common.DataIllegalOrConflict, nameof(ISvcStudyPlan.BatUpdWeightCalculator));
+				AssertThrowsErrItem(ex, KeysErr.Common.DataIllegalOrConflict, nameof(ISvcStudyPlan.BatUpdWeightCalculator));
 			}
 			return NIL;
 		});
@@ -227,7 +227,7 @@ public partial class TestISvcStudyPlan{
 				await SvcStudyPlan.BatUpdStudyPlan(userCtx, AsyE(row1), CT.None);
 				throw new Exception("BatUpdStudyPlan conflict should throw");
 			}catch(Exception ex){
-				AssertThrowsErrItem(ex, ItemsErr.Common.DataIllegalOrConflict, nameof(ISvcStudyPlan.BatUpdStudyPlan));
+				AssertThrowsErrItem(ex, KeysErr.Common.DataIllegalOrConflict, nameof(ISvcStudyPlan.BatUpdStudyPlan));
 			}
 			return NIL;
 		});

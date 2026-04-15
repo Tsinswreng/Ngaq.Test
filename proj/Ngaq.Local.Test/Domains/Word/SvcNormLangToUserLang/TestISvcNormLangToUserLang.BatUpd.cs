@@ -109,7 +109,7 @@ public partial class TestISvcNormLangToUserLang{
 				throw new Exception("BatUpdNormLangToUserLang should throw permission denied");
 			}
 			catch(Exception Ex){
-				AssertThrowsErrItem(Ex, ItemsErr.Common.PermissionDenied, nameof(ISvcNormLangToUserLang.BatUpdNormLangToUserLang));
+				AssertThrowsErrItem(Ex, KeysErr.Common.PermissionDenied, nameof(ISvcNormLangToUserLang.BatUpdNormLangToUserLang));
 			}
 
 			await RunNoTxn(async(Ctx)=>{
@@ -156,7 +156,7 @@ public partial class TestISvcNormLangToUserLang{
 				throw new Exception("BatUpdNormLangToUserLang conflict should throw");
 			}
 			catch(Exception Ex){
-				AssertThrowsErrItem(Ex, ItemsErr.Common.DataIllegalOrConflict, nameof(ISvcNormLangToUserLang.BatUpdNormLangToUserLang));
+				AssertThrowsErrItem(Ex, KeysErr.Common.DataIllegalOrConflict, nameof(ISvcNormLangToUserLang.BatUpdNormLangToUserLang));
 			}
 			return NIL;
 		});

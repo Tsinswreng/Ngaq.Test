@@ -72,7 +72,7 @@ public partial class TestISvcNormLangToUserLang{
 				throw new Exception("BatSoftDelNormLangToUserLang should throw permission denied");
 			}
 			catch(Exception Ex){
-				AssertThrowsErrItem(Ex, ItemsErr.Common.PermissionDenied, nameof(ISvcNormLangToUserLang.BatSoftDelNormLangToUserLang));
+				AssertThrowsErrItem(Ex, KeysErr.Common.PermissionDenied, nameof(ISvcNormLangToUserLang.BatSoftDelNormLangToUserLang));
 			}
 			return NIL;
 		});

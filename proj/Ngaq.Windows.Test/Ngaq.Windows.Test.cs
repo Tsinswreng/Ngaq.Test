@@ -6,15 +6,19 @@ dotnet publish -c Release -r win-x64
 using System.Text;
 using System.Text.Unicode;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Schema;
 using Ngaq.Core;
 using Ngaq.Core.Frontend.User;
 using Ngaq.Core.Infra;
 using Ngaq.Core.Shared.StudyPlan.Models.Po.WeightArg;
 using Ngaq.Core.Shared.StudyPlan.Svc;
+using Ngaq.Core.Shared.Word.Models;
 using Ngaq.Core.Tools;
+using Ngaq.Core.Tools.Json;
 using Ngaq.Local;
 using Ngaq.Local.Di;
 using Ngaq.Local.Test;
+using Tsinswreng.CsTempus;
 using Tsinswreng.CsTools;
 using Tsinswreng.CsTreeTest;
 
@@ -37,7 +41,6 @@ internal class Program{
 		_ = AppIniter.Inst.Init(default).Result;
 		ITestExecutor executor = new TreeTestExecutor();
 		await executor.RunEtPrint(mgr.TestNode);
-		
 		// var studyPlan = SvcProvdr.GetRequiredService<ISvcStudyPlan>();
 		// var userCtxMgr = SvcProvdr.GetRequiredService<IFrontendUserCtxMgr>();
 		// await studyPlan.RestoreBuiltinStudyPlan(userCtxMgr.GetDbUserCtx(), default);

@@ -159,7 +159,7 @@ public partial class TestISvcWordV2{
 				if(ex is not AppErr appErr){
 					throw new Exception("BatUpdHeadLang should throw AppErr for id-not-found");
 				}
-				if(!ReferenceEquals(appErr.Type, ItemsErr.Word.WordOfId__NotFound)){
+				if(!ReferenceEquals(appErr.Type, KeysErr.Word.WordOfId__NotFound)){
 					throw new Exception("BatUpdHeadLang should throw ItemsErr.Word.WordOfId__NotFound");
 				}
 			}
