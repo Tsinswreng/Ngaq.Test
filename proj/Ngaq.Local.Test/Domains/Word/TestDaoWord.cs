@@ -14,7 +14,6 @@ public class TestDaoWord:ITester{
 		Test??=new TestNode();
 		var R = Test.MkFnRegisterTest(typeof(TestDaoWord), typeof(DaoWord));
 		R("2026_0312_095035", async(o)=>{
-			System.Console.WriteLine("\nDao\n");
 			return NIL;
 		});
 		return Test;
