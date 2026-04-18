@@ -2,9 +2,9 @@
 using Ngaq.Core.Shared.Word.Models;
 using Ngaq.Core.Infra;
 using Ngaq.Core.Tools;
-using Ngaq.Local.TsNgaq;
+using Ngaq.Backend.TsNgaq;
 using Ngaq.Core.Shared.Word.Models.Dto;
-using Ngaq.Local.Domains.Word.Svc;
+using Ngaq.Backend.Domains.Word.Svc;
 using System.Text;
 
 namespace Ngaq.Test;

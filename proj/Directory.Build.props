@@ -20,7 +20,7 @@
 		<ProjectReference Include="../../../Tsinswreng.CsTools/proj/Tsinswreng.CsTools/Tsinswreng.CsTools.csproj" />
 		<ProjectReference Include="../../../Tsinswreng.CsCfg/proj/Tsinswreng.CsCfg/Tsinswreng.CsCfg.csproj" />
 		<ProjectReference Include="../../../Ngaq.Core/Ngaq.Core.csproj" />
-		<ProjectReference Include="../../../Ngaq.Local/Ngaq.Local.csproj" />
+		<ProjectReference Include="../../../Ngaq.Backend/Ngaq.Backend.csproj" />
 	</ItemGroup>
 
 

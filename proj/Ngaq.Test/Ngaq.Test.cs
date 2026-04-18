@@ -2,8 +2,8 @@
 //直ᵈ dotnet run 則cwd不對、連不到數據庫
 using Microsoft.Extensions.DependencyInjection;
 using Ngaq.Core;
-using Ngaq.Local;
-using Ngaq.Local.Di;
+using Ngaq.Backend;
+using Ngaq.Backend.Di;
 using Ngaq.Test;
 using Tsinswreng.CsTreeTest;
 //dotnet publish -c Release -r win-x64

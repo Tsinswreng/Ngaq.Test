@@ -13,7 +13,7 @@
 using System.Diagnostics;
 using Ngaq.Core.Infra.IF;
 using Ngaq.Core.Shared.Word.Models.Po.Word;
-using Ngaq.Local.Db.TswG;
+using Ngaq.Backend.Db.TswG;
 
 using Tsinswreng.CsCore;
 using Tsinswreng.CsPage;
