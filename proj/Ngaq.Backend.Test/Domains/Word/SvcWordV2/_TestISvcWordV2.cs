@@ -64,6 +64,7 @@ public partial class TestISvcWordV2: ITester{
 		RegisterBatChangeId(Node);
 		RegisterBizSyncJnWordByBizId(Node);
 		RegisterBatSyncByDto(Node);
+		RegisterMergeWord(Node);
 		RegisterSyncNoChange(Node);
 		RegisterSyncRemoteIsOlder(Node);
 		RegisterSyncLocalNotExist(Node);
