@@ -1,25 +1,17 @@
 ﻿#if false
+測試方法:
++ 直接在Ngaq.Windows.Test中執行 dotnet run (非AOT編譯)
++ 執行以下腳本 在AOT還境下測試
+```bash
 dotnet publish -c Release -r win-x64
 ./bin/Release/net10.0/win-x64/publish/Ngaq.Windows.Test.exe
+```
 #endif
 
-using System.Text;
-using System.Text.Unicode;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Schema;
 using Ngaq.Core;
-using Ngaq.Core.Frontend.User;
-using Ngaq.Core.Infra;
-using Ngaq.Core.Shared.StudyPlan.Models.Po.WeightArg;
-using Ngaq.Core.Shared.StudyPlan.Svc;
-using Ngaq.Core.Shared.Word.Models;
-using Ngaq.Core.Tools;
-using Ngaq.Core.Tools.Json;
 using Ngaq.Backend;
 using Ngaq.Backend.Di;
-using Ngaq.Backend.Test;
-using Tsinswreng.CsTempus;
-using Tsinswreng.CsTools;
 using Tsinswreng.CsTreeTest;
 
 namespace Ngaq.Windows.Test;
@@ -41,6 +33,7 @@ internal class Program{
 		_ = AppIniter.Inst.Init(default).Result;
 		ITestExecutor executor = new TreeTestExecutor();
 		await executor.RunEtPrint(mgr.TestNode);
+		throw new Exception("Test AOT Exeption Output");
 		// var studyPlan = SvcProvdr.GetRequiredService<ISvcStudyPlan>();
 		// var userCtxMgr = SvcProvdr.GetRequiredService<IFrontendUserCtxMgr>();
 		// await studyPlan.RestoreBuiltinStudyPlan(userCtxMgr.GetDbUserCtx(), default);

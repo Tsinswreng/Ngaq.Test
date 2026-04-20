@@ -47,7 +47,7 @@ public partial class TestISvcWordV2{
 					DiffResult = EDiffByBizIdResultForSync.IdNotEqual,
 					Local = new JnWord{Word = local},
 					Remote = remote,
-					SyncedPoWord = remote,
+					SyncedRoot = remote,
 				};
 				await sync.BatSync_IdNotEqual(MkUserCtx(owner), AsyE(dto), CT.None);
 

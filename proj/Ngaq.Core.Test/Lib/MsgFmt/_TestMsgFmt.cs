@@ -21,7 +21,7 @@ public partial class TestMsgFmt: ITester{
 				var got = MsgFmt.FormatMessage(template, new Dictionary<str, obj?>(){
 					["0"]=4
 				});
-				System.Console.WriteLine(got);
+				//System.Console.WriteLine(got);
 			}
 			
 			

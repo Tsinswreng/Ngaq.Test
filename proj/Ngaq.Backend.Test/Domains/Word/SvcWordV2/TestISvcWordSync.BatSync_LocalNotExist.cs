@@ -35,7 +35,7 @@ public partial class TestISvcWordV2{
 				var dto = new DtoJnWordSyncResult{
 					DiffResult = EDiffByBizIdResultForSync.LocalNotExist,
 					Remote = remote,
-					SyncedPoWord = remote,
+					SyncedRoot = remote,
 				};
 				await sync.BatSync_LocalNotExist(MkUserCtx(owner), AsyE(dto), CT.None);
 

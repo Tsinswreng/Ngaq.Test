@@ -57,13 +57,13 @@ public partial class TestISvcWordV2{
 				var dtoLocalNotExist = new DtoJnWordSyncResult{
 					DiffResult = EDiffByBizIdResultForSync.LocalNotExist,
 					Remote = localNotExistRemote,
-					SyncedPoWord = localNotExistRemote,
+					SyncedRoot = localNotExistRemote,
 				};
 				var dtoIdNotEqual = new DtoJnWordSyncResult{
 					DiffResult = EDiffByBizIdResultForSync.IdNotEqual,
 					Local = new JnWord{Word = idOldRoot},
 					Remote = idNotEqualRemote,
-					SyncedPoWord = idNotEqualRemote,
+					SyncedRoot = idNotEqualRemote,
 				};
 
 				await SvcWordV2.BatSyncByDto(
