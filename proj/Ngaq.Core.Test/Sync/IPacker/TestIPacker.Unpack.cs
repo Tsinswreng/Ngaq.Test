@@ -40,7 +40,7 @@ public partial class TestIPacker{
 		});
 
 		R("Unpack_WhenMetaJsonInvalid_Should_ReturnNotOk", async(o)=>{
-			var bad = TextWithStream.PackUtf8("not-json", new MemoryStream([1,2,3,4]));
+			var bad = TextWithStream.MkUtf8("not-json", new MemoryStream([1,2,3,4]));
 			var ans = Packer.Unpack(bad, CT.None);
 			if(ans.Ok){
 				throw new Exception("Unpack should fail when metadata text is invalid json");
@@ -49,3 +49,4 @@ public partial class TestIPacker{
 		});
 	}
 }
+
