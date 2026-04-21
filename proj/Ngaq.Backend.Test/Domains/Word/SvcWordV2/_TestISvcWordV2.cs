@@ -56,7 +56,6 @@ public partial class TestISvcWordV2: ITester{
 		//Node.Ordered = true;
 		RegisterGetWordsToLearn(Node);
 		RegisterBatAddNewLearnRecord(Node);
-		RegisterBatAddNewWordToLearn(Node);
 		RegisterSoftDelJnWordInId(Node);
 		RegisterLlmDictWordToJnWord(Node);
 		RegisterBatUpdHeadLang(Node);
