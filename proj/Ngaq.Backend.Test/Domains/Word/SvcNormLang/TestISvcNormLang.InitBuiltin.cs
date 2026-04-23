@@ -40,7 +40,7 @@ public partial class TestISvcNormLang{
 				MkUserCtx(_ownerInit),
 				new ReqPageNormLang{
 					PageQry = new PageQry{PageIdx = 0, PageSize = 20},
-					Code = "en-US",
+					SearchText = "en-US",
 				},
 				CT.None
 			);

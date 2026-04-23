@@ -21,7 +21,7 @@ public partial class TestISvcNormLang{
 					PageIdx = 0,
 					PageSize = 20,
 				},
-				Code = _token + "_",
+				SearchText = _token + "_",
 			};
 			var page = await SvcNormLang.PageNormLang(MkUserCtx(_ownerA), req, CT.None);
 			var rows = await ToList(page.DataAsyE);
