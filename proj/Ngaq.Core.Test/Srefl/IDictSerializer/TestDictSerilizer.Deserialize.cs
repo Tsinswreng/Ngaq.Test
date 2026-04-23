@@ -81,11 +81,11 @@ public partial class TestIDictSerializer: ITester{
 			var id = new IdWord();
 			var idSerialized = id.ToString();
 			var owner = new IdUser().ToString();
-			var storedAtMs = Tempus.Now().Value;
-			var bizCreatedAtMs = Tempus.Now().Value - 20;
-			var bizUpdatedAtMs = Tempus.Now().Value - 10;
-			var dbCreatedAtMs = Tempus.Now().Value - 30;
-			var dbUpdatedAtMs = Tempus.Now().Value - 5;
+			var storedAtMs = UnixMs.Now().Value;
+			var bizCreatedAtMs = UnixMs.Now().Value - 20;
+			var bizUpdatedAtMs = UnixMs.Now().Value - 10;
+			var dbCreatedAtMs = UnixMs.Now().Value - 30;
+			var dbUpdatedAtMs = UnixMs.Now().Value - 5;
 
 			var src = new Dictionary<str, obj?>{
 				[nameof(JnWord.Word)] = MkWordDict(

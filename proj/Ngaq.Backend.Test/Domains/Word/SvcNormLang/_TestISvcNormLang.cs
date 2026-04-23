@@ -82,7 +82,7 @@ public partial class TestISvcNormLang : ITester{
 				Type = ELangIdentType.Bcp47,
 				Code = _token + "_zh_hant_tw",
 				NativeName = "seed_a1",
-				BizUpdatedAt = Tempus.FromUnixMs(1101),
+				BizUpdatedAt = UnixMs.FromUnixMs(1101),
 			},
 			new PoNormLang{
 				Id = new IdNormLang(),
@@ -90,7 +90,7 @@ public partial class TestISvcNormLang : ITester{
 				Type = ELangIdentType.Bcp47,
 				Code = _token + "_en_us",
 				NativeName = "seed_a2",
-				BizUpdatedAt = Tempus.FromUnixMs(1102),
+				BizUpdatedAt = UnixMs.FromUnixMs(1102),
 			},
 			new PoNormLang{
 				Id = new IdNormLang(),
@@ -98,7 +98,7 @@ public partial class TestISvcNormLang : ITester{
 				Type = ELangIdentType.Bcp47,
 				Code = _token + "_other_search",
 				NativeName = "seed_a3",
-				BizUpdatedAt = Tempus.FromUnixMs(1103),
+				BizUpdatedAt = UnixMs.FromUnixMs(1103),
 			},
 			new PoNormLang{
 				Id = new IdNormLang(),
@@ -106,7 +106,7 @@ public partial class TestISvcNormLang : ITester{
 				Type = ELangIdentType.Bcp47,
 				Code = _token + "_de_de",
 				NativeName = "seed_b1",
-				BizUpdatedAt = Tempus.FromUnixMs(1104),
+				BizUpdatedAt = UnixMs.FromUnixMs(1104),
 			},
 		};
 

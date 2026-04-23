@@ -31,11 +31,11 @@ public partial class TestAppJsonSerializer: ITester{
 				Owner = owner,
 				Head = "alpha",
 				Lang = "en",
-				StoredAt = Tempus.FromUnixMs(t + 1),
-				BizCreatedAt = Tempus.FromUnixMs(t + 2),
-				BizUpdatedAt = Tempus.FromUnixMs(t + 3),
-				DbCreatedAt = Tempus.FromUnixMs(t + 4),
-				DbUpdatedAt = Tempus.FromUnixMs(t + 5),
+				StoredAt = UnixMs.FromUnixMs(t + 1),
+				BizCreatedAt = UnixMs.FromUnixMs(t + 2),
+				BizUpdatedAt = UnixMs.FromUnixMs(t + 3),
+				DbCreatedAt = UnixMs.FromUnixMs(t + 4),
+				DbUpdatedAt = UnixMs.FromUnixMs(t + 5),
 			},
 			Props = [
 				new PoWordProp{
@@ -44,15 +44,15 @@ public partial class TestAppJsonSerializer: ITester{
 					KStr = "mean",
 					VType = EKvType.Str,
 					VStr = "value",
-					BizCreatedAt = Tempus.FromUnixMs(t + 10),
+					BizCreatedAt = UnixMs.FromUnixMs(t + 10),
 				}
 			],
 			Learns = [
 				new PoWordLearn{
 					WordId = wordId,
 					LearnResult = learnResult,
-					BizCreatedAt = Tempus.FromUnixMs(t),
-					BizUpdatedAt = Tempus.FromUnixMs(t + 20),
+					BizCreatedAt = UnixMs.FromUnixMs(t),
+					BizUpdatedAt = UnixMs.FromUnixMs(t + 20),
 				}
 			]
 		};

@@ -20,18 +20,18 @@ public partial class TestIDictJsonSerializer: ITester{
 	){
 		var id = new IdWord();
 		var owner = new IdUser();
-		var now = Tempus.Now().Value;
+		var now = UnixMs.Now().Value;
 		return new JnWord{
 			Word = new PoWord{
 				Id = id,
 				Owner = owner,
 				Head = head,
 				Lang = lang,
-				StoredAt = Tempus.FromUnixMs(now),
-				BizCreatedAt = Tempus.FromUnixMs(now - 200),
-				BizUpdatedAt = Tempus.FromUnixMs(now - 100),
-				DbCreatedAt = Tempus.FromUnixMs(now - 300),
-				DbUpdatedAt = Tempus.FromUnixMs(now - 50),
+				StoredAt = UnixMs.FromUnixMs(now),
+				BizCreatedAt = UnixMs.FromUnixMs(now - 200),
+				BizUpdatedAt = UnixMs.FromUnixMs(now - 100),
+				DbCreatedAt = UnixMs.FromUnixMs(now - 300),
+				DbUpdatedAt = UnixMs.FromUnixMs(now - 50),
 			},
 			Props = [
 				new PoWordProp{
@@ -58,7 +58,7 @@ public partial class TestIDictJsonSerializer: ITester{
 	){
 		idSerialized ??= new IdWord().ToString();
 		var owner = new IdUser().ToString();
-		var now = Tempus.Now().Value;
+		var now = UnixMs.Now().Value;
 
 		return new Dictionary<str, obj?>{
 			[nameof(JnWord.Word)] = new Dictionary<str, obj?>{

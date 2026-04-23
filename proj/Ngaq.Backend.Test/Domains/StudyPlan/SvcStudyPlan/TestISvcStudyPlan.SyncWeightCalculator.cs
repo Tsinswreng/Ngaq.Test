@@ -45,7 +45,7 @@ public partial class TestISvcStudyPlan{
 			upd.Type = EWeightCalculatorType.Js;
 			upd.Text = "new_text";
 			upd.Descr = "updated";
-			upd.BizUpdatedAt = Tempus.Now();
+			upd.BizUpdatedAt = UnixMs.Now();
 			await SvcStudyPlan.SyncWeightCalculator(ctx, AsyE(add, upd), CT.None);
 
 			await RunNoTxn(async(db)=>{

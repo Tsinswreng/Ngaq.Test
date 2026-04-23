@@ -20,7 +20,7 @@ public partial class TestIPacker{
 		R("Unpack_Should_ParseValidPackedData", async(o)=>{
 			var info = new ObjPackInfo{
 				PayloadTypeObj = "gzip+jsonl",
-				CreatedAt = Tempus.Now(),
+				CreatedAt = UnixMs.Now(),
 				ObjVer = new Version(1, 0),
 			};
 			var src = new[]{

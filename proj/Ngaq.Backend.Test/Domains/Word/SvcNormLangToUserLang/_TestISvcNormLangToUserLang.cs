@@ -81,7 +81,7 @@ public partial class TestISvcNormLangToUserLang: ITester{
 				NormLang = _token + "_zh_hant_tw",
 				UserLang = _token + "_user_zh",
 				Descr = "seed_a1",
-				BizUpdatedAt = Tempus.FromUnixMs(1101),
+				BizUpdatedAt = UnixMs.FromUnixMs(1101),
 			},
 			new PoNormLangToUserLang{
 				Id = new IdNormLangToUserLang(),
@@ -90,7 +90,7 @@ public partial class TestISvcNormLangToUserLang: ITester{
 				NormLang = _token + "_en_us",
 				UserLang = _token + "_user_en",
 				Descr = "seed_a2",
-				BizUpdatedAt = Tempus.FromUnixMs(1102),
+				BizUpdatedAt = UnixMs.FromUnixMs(1102),
 			},
 			new PoNormLangToUserLang{
 				Id = new IdNormLangToUserLang(),
@@ -99,7 +99,7 @@ public partial class TestISvcNormLangToUserLang: ITester{
 				NormLang = _token + "_fr_fr",
 				UserLang = _token + "_other_search",
 				Descr = "seed_a3",
-				BizUpdatedAt = Tempus.FromUnixMs(1103),
+				BizUpdatedAt = UnixMs.FromUnixMs(1103),
 			},
 			new PoNormLangToUserLang{
 				Id = new IdNormLangToUserLang(),
@@ -108,7 +108,7 @@ public partial class TestISvcNormLangToUserLang: ITester{
 				NormLang = _token + "_de_de",
 				UserLang = _token + "_other_owner",
 				Descr = "seed_b1",
-				BizUpdatedAt = Tempus.FromUnixMs(1104),
+				BizUpdatedAt = UnixMs.FromUnixMs(1104),
 			},
 		};
 

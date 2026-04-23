@@ -91,7 +91,7 @@ public partial class TestISvcUserLang: ITester{
 				Descr = "a1",
 				RelLangType = ELangIdentType.Bcp47,
 				RelLang = _token + "_page_a_1",
-				BizUpdatedAt = Tempus.FromUnixMs(1001),
+				BizUpdatedAt = UnixMs.FromUnixMs(1001),
 			},
 			new PoUserLang{
 				Id = new IdUserLang(),
@@ -100,7 +100,7 @@ public partial class TestISvcUserLang: ITester{
 				Descr = "a2",
 				RelLangType = ELangIdentType.Bcp47,
 				RelLang = _token + "_page_a_2",
-				BizUpdatedAt = Tempus.FromUnixMs(1002),
+				BizUpdatedAt = UnixMs.FromUnixMs(1002),
 			},
 			new PoUserLang{
 				Id = new IdUserLang(),
@@ -109,7 +109,7 @@ public partial class TestISvcUserLang: ITester{
 				Descr = "a3",
 				RelLangType = ELangIdentType.Bcp47,
 				RelLang = _token + "_page_a_3_other_search",
-				BizUpdatedAt = Tempus.FromUnixMs(1003),
+				BizUpdatedAt = UnixMs.FromUnixMs(1003),
 			},
 			new PoUserLang{
 				Id = new IdUserLang(),
@@ -118,7 +118,7 @@ public partial class TestISvcUserLang: ITester{
 				Descr = "b1",
 				RelLangType = ELangIdentType.Bcp47,
 				RelLang = _token + "_page_a_4_other_owner",
-				BizUpdatedAt = Tempus.FromUnixMs(1004),
+				BizUpdatedAt = UnixMs.FromUnixMs(1004),
 			},
 		};
 		await RunNoTxn(async(Ctx)=>{

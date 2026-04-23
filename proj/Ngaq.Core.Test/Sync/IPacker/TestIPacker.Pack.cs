@@ -19,7 +19,7 @@ public partial class TestIPacker{
 		R("Pack_Should_OutputTextWithStream_And_BeRoundTripReadable", async(o)=>{
 			var info = new ObjPackInfo{
 				PayloadTypeObj = "gzip+jsonl",
-				CreatedAt = Tempus.Now(),
+				CreatedAt = UnixMs.Now(),
 				ObjVer = new Version(1, 0),
 			};
 			var src = new[]{

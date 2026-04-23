@@ -26,7 +26,7 @@ public partial class TestISvcNormLangToUserLang{
 				NormLang = _token + "_upd_ko_kr",
 				UserLang = _token + "_user_ko_old",
 				Descr = "before_upd",
-				BizUpdatedAt = Tempus.FromUnixMs(2000),
+				BizUpdatedAt = UnixMs.FromUnixMs(2000),
 			};
 			await RunNoTxn(async(Ctx)=>{
 				await RepoNormLangToUserLang.BatAdd(Ctx, AsyE(row), CT.None);
@@ -41,7 +41,7 @@ public partial class TestISvcNormLangToUserLang{
 				NormLang = row.NormLang,
 				UserLang = _token + "_user_ko_new",
 				Descr = "after_upd",
-				BizUpdatedAt = Tempus.FromUnixMs(1),
+				BizUpdatedAt = UnixMs.FromUnixMs(1),
 			};
 			await SvcNormLangToUserLang.BatUpdNormLangToUserLang(MkUserCtx(_ownerA), AsyE(upd), CT.None);
 
@@ -56,7 +56,7 @@ public partial class TestISvcNormLangToUserLang{
 				if(got.Descr != "after_upd"){
 					throw new Exception("BatUpdNormLangToUserLang should update Descr");
 				}
-				if(got.BizUpdatedAt <= Tempus.FromUnixMs(1)){
+				if(got.BizUpdatedAt <= UnixMs.FromUnixMs(1)){
 					throw new Exception("BatUpdNormLangToUserLang should refresh BizUpdatedAt");
 				}
 				return NIL;

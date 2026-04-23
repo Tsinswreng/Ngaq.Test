@@ -27,7 +27,7 @@ public partial class TestISvcUserLang{
 				Descr = "before_upd",
 				RelLangType = ELangIdentType.Bcp47,
 				RelLang = _token + "_upd_a_1",
-				BizUpdatedAt = Tempus.FromUnixMs(1000),
+				BizUpdatedAt = UnixMs.FromUnixMs(1000),
 			};
 			await RunNoTxn(async(Ctx)=>{
 				await RepoUserLang.BatAdd(Ctx, AsyE(row), CT.None);
@@ -42,7 +42,7 @@ public partial class TestISvcUserLang{
 				Descr = "after_upd",
 				RelLangType = row.RelLangType,
 				RelLang = row.RelLang,
-				BizUpdatedAt = Tempus.FromUnixMs(1),
+				BizUpdatedAt = UnixMs.FromUnixMs(1),
 			};
 			await SvcUserLang.BatUpdUserLang(MkUserCtx(_ownerA), AsyE(upd), CT.None);
 
@@ -57,7 +57,7 @@ public partial class TestISvcUserLang{
 				if(got.Descr != "after_upd"){
 					throw new Exception("BatUpdUserLang should update mutable fields");
 				}
-				if(got.BizUpdatedAt <= Tempus.FromUnixMs(1)){
+				if(got.BizUpdatedAt <= UnixMs.FromUnixMs(1)){
 					throw new Exception("BatUpdUserLang should refresh BizUpdatedAt");
 				}
 				return NIL;
@@ -73,7 +73,7 @@ public partial class TestISvcUserLang{
 				Descr = "before_mine",
 				RelLangType = ELangIdentType.Bcp47,
 				RelLang = _token + "_perm_mine",
-				BizUpdatedAt = Tempus.FromUnixMs(1000),
+				BizUpdatedAt = UnixMs.FromUnixMs(1000),
 			};
 			var other = new PoUserLang{
 				Id = new IdUserLang(),
@@ -82,7 +82,7 @@ public partial class TestISvcUserLang{
 				Descr = "before_other",
 				RelLangType = ELangIdentType.Bcp47,
 				RelLang = _token + "_perm_other",
-				BizUpdatedAt = Tempus.FromUnixMs(1000),
+				BizUpdatedAt = UnixMs.FromUnixMs(1000),
 			};
 			await RunNoTxn(async(Ctx)=>{
 				await RepoUserLang.BatAdd(Ctx, AsyE(mine, other), CT.None);

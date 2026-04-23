@@ -81,7 +81,7 @@ public partial class TestISvcStudyPlan{
 			upd.PreFilterId = pf.Id;
 			upd.WeightArgId = wa.Id;
 			upd.WeightCalculatorId = wc.Id;
-			upd.BizUpdatedAt = Tempus.Now();
+			upd.BizUpdatedAt = UnixMs.Now();
 			await SvcStudyPlan.SyncStudyPlan(ctx, AsyE(add, upd), CT.None);
 
 			await RunNoTxn(async(db)=>{

@@ -25,8 +25,8 @@ public partial class TestISvcWordV2{
 		R("BatAddNewLearnRecord_Should_InsertLearns_And_TouchWordBizUpdatedAt", async(o)=>{
 			var owner = new IdUser();
 			var token = "ut_wv2_learn_" + Guid.NewGuid().ToString("N");
-			var w1 = new PoWord{Id = new IdWord(), Owner = owner, Head = token + "_w1", Lang = "en", BizUpdatedAt = Tempus.Zero};
-			var w2 = new PoWord{Id = new IdWord(), Owner = owner, Head = token + "_w2", Lang = "en", BizUpdatedAt = Tempus.Zero};
+			var w1 = new PoWord{Id = new IdWord(), Owner = owner, Head = token + "_w1", Lang = "en", BizUpdatedAt = UnixMs.Zero};
+			var w2 = new PoWord{Id = new IdWord(), Owner = owner, Head = token + "_w2", Lang = "en", BizUpdatedAt = UnixMs.Zero};
 			var learns = new[]{
 				new PoWordLearn{Id = new IdWordLearn(), WordId = w1.Id, LearnResult = ELearn.Add},
 				new PoWordLearn{Id = new IdWordLearn(), WordId = w1.Id, LearnResult = ELearn.Rmb},
@@ -69,7 +69,7 @@ public partial class TestISvcWordV2{
 		R("BatAddNewLearnRecord_WhenInputEmpty_Should_NoOp", async(o)=>{
 			var owner = new IdUser();
 			var token = "ut_wv2_empty_learn_" + Guid.NewGuid().ToString("N");
-			var word = new PoWord{Id = new IdWord(), Owner = owner, Head = token + "_w", Lang = "en", BizUpdatedAt = Tempus.Zero};
+			var word = new PoWord{Id = new IdWord(), Owner = owner, Head = token + "_w", Lang = "en", BizUpdatedAt = UnixMs.Zero};
 			try{
 				await RunNoTxn(async(Ctx)=>{
 					await RepoWord.BatAdd(Ctx, AsyE(word), CT.None);

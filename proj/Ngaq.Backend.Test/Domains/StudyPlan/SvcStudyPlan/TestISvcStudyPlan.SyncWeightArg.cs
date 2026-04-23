@@ -47,7 +47,7 @@ public partial class TestISvcStudyPlan{
 
 			upd.Text = "{\"v\":99}";
 			upd.Descr = "updated";
-			upd.BizUpdatedAt = Tempus.Now();
+			upd.BizUpdatedAt = UnixMs.Now();
 			await SvcStudyPlan.SyncWeightArg(ctx, AsyE(add, upd), CT.None);
 
 			await RunNoTxn(async(db)=>{

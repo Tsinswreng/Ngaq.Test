@@ -53,7 +53,7 @@ public partial class TestISvcWordV2{
 				Owner = owner,
 				Head = head,
 				Lang = "en",
-				BizCreatedAt = Tempus.FromUnixMs(1000),
+				BizCreatedAt = UnixMs.FromUnixMs(1000),
 			};
 			var oldDesc = new PoWordProp{
 				Id = new IdWordProp(),
@@ -62,7 +62,7 @@ public partial class TestISvcWordV2{
 				KStr = KeysProp.Inst.description,
 				VType = EKvType.Str,
 				VStr = token + "_d0",
-				BizCreatedAt = Tempus.FromUnixMs(1000),
+				BizCreatedAt = UnixMs.FromUnixMs(1000),
 			};
 			var remote = new JnWord{
 				Word = new PoWord{
@@ -70,7 +70,7 @@ public partial class TestISvcWordV2{
 					Owner = owner,
 					Head = head,
 					Lang = "en",
-					BizCreatedAt = Tempus.FromUnixMs(3000),
+					BizCreatedAt = UnixMs.FromUnixMs(3000),
 				},
 				Props = [
 					new PoWordProp{

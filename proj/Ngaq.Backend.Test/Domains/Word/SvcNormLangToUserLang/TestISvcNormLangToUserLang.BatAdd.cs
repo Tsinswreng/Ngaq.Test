@@ -26,7 +26,7 @@ public partial class TestISvcNormLangToUserLang{
 				NormLang = _token + "_add_ja_jp",
 				UserLang = _token + "_user_ja",
 				Descr = "before_add",
-				BizUpdatedAt = Tempus.FromUnixMs(1),
+				BizUpdatedAt = UnixMs.FromUnixMs(1),
 			};
 			await SvcNormLangToUserLang.BatAddNormLangToUserLang(MkUserCtx(_ownerA), AsyE(row), CT.None);
 			_ids.Add(row.Id);
@@ -39,7 +39,7 @@ public partial class TestISvcNormLangToUserLang{
 				if(got.Owner != _ownerA){
 					throw new Exception("BatAddNormLangToUserLang should keep checked owner");
 				}
-				if(got.BizUpdatedAt <= Tempus.FromUnixMs(1)){
+				if(got.BizUpdatedAt <= UnixMs.FromUnixMs(1)){
 					throw new Exception("BatAddNormLangToUserLang should touch BizUpdatedAt");
 				}
 				return NIL;

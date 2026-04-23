@@ -31,7 +31,7 @@ public partial class TestISvcWordV2{
 			var packer = new Packer<JnWord>{JsonS = AppJsonSerializer.Inst};
 			var packInfo = new ObjPackInfo{
 				PayloadTypeObj = nameof(GZipLinesUtf8),
-				CreatedAt = Tempus.Now(),
+				CreatedAt = UnixMs.Now(),
 			};
 
 			try{

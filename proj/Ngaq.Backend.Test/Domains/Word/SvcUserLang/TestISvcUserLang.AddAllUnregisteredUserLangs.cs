@@ -68,7 +68,7 @@ public partial class TestISvcUserLang{
 				if(addedB.RelLangType != ELangIdentType.Bcp47 || addedB.RelLang != ""){
 					throw new Exception("AddAllUnregisteredUserLangs should set RelLangType and keep RelLang empty by default");
 				}
-				if(addedB.BizUpdatedAt <= Tempus.Zero){
+				if(addedB.BizUpdatedAt <= UnixMs.Zero){
 					throw new Exception("AddAllUnregisteredUserLangs should touch BizUpdatedAt");
 				}
 				return NIL;

@@ -28,7 +28,7 @@ public partial class TestISvcWordV2{
 				Owner = owner,
 				Head = token + "_h1",
 				Lang = "en",
-				StoredAt = Tempus.FromUnixMs(1000),
+				StoredAt = UnixMs.FromUnixMs(1000),
 			};
 			try{
 				await RunNoTxn(async(Ctx)=>{
@@ -41,7 +41,7 @@ public partial class TestISvcWordV2{
 					Owner = owner,
 					Head = word.Head,
 					Lang = word.Lang,
-					StoredAt = Tempus.FromUnixMs(2000),
+					StoredAt = UnixMs.FromUnixMs(2000),
 				};
 				var rtn = await SvcWordV2.BatUpdPoWord(MkUserCtx(owner), AsyE(upd), CT.None);
 				var rows = await ToList(rtn);
@@ -74,14 +74,14 @@ public partial class TestISvcWordV2{
 				Owner = owner,
 				Head = token + "_src",
 				Lang = "en",
-				StoredAt = Tempus.FromUnixMs(1000),
+				StoredAt = UnixMs.FromUnixMs(1000),
 			};
 			var dst = new PoWord{
 				Id = new IdWord(),
 				Owner = owner,
 				Head = token + "_dst",
 				Lang = "en",
-				StoredAt = Tempus.FromUnixMs(1200),
+				StoredAt = UnixMs.FromUnixMs(1200),
 			};
 			try{
 				await RunNoTxn(async(Ctx)=>{
@@ -94,7 +94,7 @@ public partial class TestISvcWordV2{
 					Owner = owner,
 					Head = dst.Head,
 					Lang = dst.Lang,
-					StoredAt = Tempus.FromUnixMs(3000),
+					StoredAt = UnixMs.FromUnixMs(3000),
 				};
 				var rows = await ToList(await SvcWordV2.BatUpdPoWord(MkUserCtx(owner), AsyE(upd), CT.None));
 				if(rows.Count != 1 || rows[0] is null || rows[0]!.FinalId != dst.Id){

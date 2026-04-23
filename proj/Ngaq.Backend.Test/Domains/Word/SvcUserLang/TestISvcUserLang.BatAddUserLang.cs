@@ -27,7 +27,7 @@ public partial class TestISvcUserLang{
 				Descr = "before_add",
 				RelLangType = ELangIdentType.Bcp47,
 				RelLang = _token + "_add_a_1",
-				BizUpdatedAt = Tempus.FromUnixMs(1),
+				BizUpdatedAt = UnixMs.FromUnixMs(1),
 			};
 			await SvcUserLang.BatAddUserLang(MkUserCtx(_ownerA), AsyE(row), CT.None);
 			_userLangIds.Add(row.Id);
@@ -40,7 +40,7 @@ public partial class TestISvcUserLang{
 				if(got.Owner != _ownerA){
 					throw new Exception("BatAddUserLang should keep checked owner");
 				}
-				if(got.BizUpdatedAt <= Tempus.FromUnixMs(1)){
+				if(got.BizUpdatedAt <= UnixMs.FromUnixMs(1)){
 					throw new Exception("BatAddUserLang should touch BizUpdatedAt");
 				}
 				return NIL;

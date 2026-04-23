@@ -25,7 +25,7 @@ public partial class TestISvcNormLang{
 				Type = ELangIdentType.Bcp47,
 				Code = _token + "_upd_ko_kr",
 				NativeName = "before_upd",
-				BizUpdatedAt = Tempus.FromUnixMs(2000),
+				BizUpdatedAt = UnixMs.FromUnixMs(2000),
 			};
 			await RunNoTxn(async(Ctx)=>{
 				await RepoNormLang.BatAdd(Ctx, AsyE(row), CT.None);
@@ -39,7 +39,7 @@ public partial class TestISvcNormLang{
 				Type = row.Type,
 				Code = row.Code,
 				NativeName = "after_upd",
-				BizUpdatedAt = Tempus.FromUnixMs(1),
+				BizUpdatedAt = UnixMs.FromUnixMs(1),
 			};
 			await SvcNormLang.BatUpdNormLang(MkUserCtx(_ownerA), AsyE(upd), CT.None);
 
@@ -51,7 +51,7 @@ public partial class TestISvcNormLang{
 				if(got.NativeName != "after_upd"){
 					throw new Exception("BatUpdNormLang should update NativeName");
 				}
-				if(got.BizUpdatedAt <= Tempus.FromUnixMs(1)){
+				if(got.BizUpdatedAt <= UnixMs.FromUnixMs(1)){
 					throw new Exception("BatUpdNormLang should refresh BizUpdatedAt");
 				}
 				return NIL;
