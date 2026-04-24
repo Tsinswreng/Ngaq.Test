@@ -75,7 +75,7 @@ public partial class TestISvcStudyPlan{
 				Id = new IdWeightCalculator(),
 				Owner = _ownerB,
 				UniqName = _token + "_cur_jn_wc_b",
-				Type = EWeightCalculatorType.Js,
+				Type = EWeightCalculatorType.JsV1,
 				Text = "'{\"Results\":[]}'",
 			};
 			var studyPlan = new PoStudyPlan{
@@ -142,7 +142,7 @@ public partial class TestISvcStudyPlan{
 				Id = new IdWeightCalculator(),
 				Owner = _ownerA,
 				UniqName = _token + "_cur_bo_wc_a",
-				Type = EWeightCalculatorType.Js,
+				Type = EWeightCalculatorType.JsV1,
 				Text = "'{\"Results\":[]}'",
 			};
 			var studyPlan = new PoStudyPlan{
@@ -195,7 +195,7 @@ public partial class TestISvcStudyPlan{
 				Id = new IdWeightCalculator(),
 				Owner = _ownerA,
 				UniqName = _token + "_cur_wc_only",
-				Type = EWeightCalculatorType.Js,
+				Type = EWeightCalculatorType.JsV1,
 				Text = "'{\"Results\":[]}'",
 			};
 			var studyPlan = new PoStudyPlan{
@@ -271,7 +271,7 @@ public partial class TestISvcStudyPlan{
 				WeightCalculator = new PoWeightCalculator{
 					Id = new IdWeightCalculator(),
 					Owner = _ownerA,
-					Type = EWeightCalculatorType.Js,
+					Type = EWeightCalculatorType.JsV1,
 					Text = "'{\"Results\":[]}'",
 				},
 			};

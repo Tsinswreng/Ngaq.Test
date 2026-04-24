@@ -432,7 +432,7 @@ public partial class TestISvcStudyPlan{
 				Id = new IdWeightCalculator(),
 				Owner = _ownerA,
 				UniqName = Consts.BuiltinPrefix + DfltWeightCalculator.Name,
-				Type = EWeightCalculatorType.Js,
+				Type = EWeightCalculatorType.JsV1,
 				Text = "invalid_old_builtin",
 				Descr = "old",
 			};

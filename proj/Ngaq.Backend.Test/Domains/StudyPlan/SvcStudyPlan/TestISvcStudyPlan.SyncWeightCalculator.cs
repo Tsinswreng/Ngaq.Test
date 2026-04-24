@@ -42,7 +42,7 @@ public partial class TestISvcStudyPlan{
 			_weightCalculatorIds.Add(add.Id);
 			_weightCalculatorIds.Add(upd.Id);
 
-			upd.Type = EWeightCalculatorType.Js;
+			upd.Type = EWeightCalculatorType.JsV1;
 			upd.Text = "new_text";
 			upd.Descr = "updated";
 			upd.BizUpdatedAt = UnixMs.Now();
