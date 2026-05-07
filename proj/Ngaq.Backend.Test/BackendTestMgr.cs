@@ -1,7 +1,6 @@
 using Ngaq.Backend.Test.Domains.Word;
 using Ngaq.Backend.Test.Domains.StudyPlan;
 using Ngaq.Backend.Test.Domains.Kv;
-using Ngaq.Backend.Test.Frontend.User.Svc;
 using Ngaq.Backend.Test.CsSql.Repo;
 using Ngaq.Backend.Test.CsSql.TblSetter;
 using Tsinswreng.CsTreeTest;
@@ -22,7 +21,6 @@ public class LocalTestMgr:DiEtTestMgr{
 		this.RegisterTester<TestISvcNormLang>();
 		this.RegisterTester<TestISvcNormLangToUserLang>();
 		this.RegisterTester<TestISvcKv>();
-		this.RegisterTester<TestSvcTokenStorage>();
 		this.RegisterTester<TestDaoWord>();
 		this.RegisterTester<TestRepo>();
 		this.RegisterTester<TestTblSetter>();
