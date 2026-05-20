@@ -5,29 +5,50 @@ using System.Reflection;
 
 namespace Ngaq.Core.Test.Lang.ExprRefl;
 
-public class Refl{
-	public static obj? Get<T>(
-		T Obj, Expression<Func<T,obj?>> ExprMemb
-	){
-		if(ExprMemb.Body is not MemberExpression MemberExpression){
+public class Refl
+{
+	public static obj? Get<T>(T Obj, Expression<Func<T, obj?>> ExprMemb)
+	{
+		var memberExpr = UnwrapMemberExpression(ExprMemb.Body);
+		if (memberExpr == null)
 			throw new Exception($"unsupported expr {ExprMemb}");
-		}
-		if(MemberExpression.Member is not PropertyInfo PropInfo){
-			throw new Exception($"unsupported member {MemberExpression.Member}");
-		}
-		return PropInfo.GetValue(Obj);
+
+		// 支持属性和字段
+		if (memberExpr.Member is PropertyInfo propInfo)
+			return propInfo.GetValue(Obj);
+		if (memberExpr.Member is FieldInfo fieldInfo)
+			return fieldInfo.GetValue(Obj);
+		
+		throw new Exception($"unsupported member {memberExpr.Member}");
 	}
-	public static T Set<T>(
-		T Obj, Expression<Func<T,obj?>> ExprMemb, obj? Value
-	){
-		if(ExprMemb.Body is not MemberExpression MemberExpression){
+
+	public static T Set<T>(T Obj, Expression<Func<T, obj?>> ExprMemb, obj? Value)
+	{
+		var memberExpr = UnwrapMemberExpression(ExprMemb.Body);
+		if (memberExpr == null)
 			throw new Exception($"unsupported expr {ExprMemb}");
-		}
-		if(MemberExpression.Member is not PropertyInfo PropInfo){
-			throw new Exception($"unsupported member {MemberExpression.Member}");
-		}
-		PropInfo.SetValue(Obj, Value);
+
+		if (memberExpr.Member is PropertyInfo propInfo)
+			propInfo.SetValue(Obj, Value);
+		else if (memberExpr.Member is FieldInfo fieldInfo)
+			fieldInfo.SetValue(Obj, Value);
+		else
+			throw new Exception($"unsupported member {memberExpr.Member}");
+		
 		return Obj;
+	}
+
+	/// <summary>去除可能的 Convert 节点，提取最内层的 MemberExpression</summary>
+	private static MemberExpression? UnwrapMemberExpression(Expression expr)
+	{
+		// 处理 Convert/ConvertChecked
+		while (expr is UnaryExpression unary && 
+			(unary.NodeType == ExpressionType.Convert || 
+				unary.NodeType == ExpressionType.ConvertChecked))
+		{
+			expr = unary.Operand;
+		}
+		return expr as MemberExpression;
 	}
 }
 
