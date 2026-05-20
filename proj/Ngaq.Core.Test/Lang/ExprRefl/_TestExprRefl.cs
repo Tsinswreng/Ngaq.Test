@@ -5,6 +5,15 @@ using System.Reflection;
 
 namespace Ngaq.Core.Test.Lang.ExprRefl;
 
+public class MyAttr: Attribute{
+	public string? Name{get;set;}
+	public Type? Type{get;set;}
+	public MyAttr(string? Name = null, Type? Type = null){
+		this.Name = Name;
+		this.Type = Type;
+	}
+}
+
 public class Refl
 {
 	public static obj? Get<T>(T Obj, Expression<Func<T, obj?>> ExprMemb)
@@ -14,27 +23,34 @@ public class Refl
 			throw new Exception($"unsupported expr {ExprMemb}");
 
 		// 支持属性和字段
-		if (memberExpr.Member is PropertyInfo propInfo)
+		if (memberExpr.Member is PropertyInfo propInfo){
 			return propInfo.GetValue(Obj);
-		if (memberExpr.Member is FieldInfo fieldInfo)
+		}
+			
+		if (memberExpr.Member is FieldInfo fieldInfo){
 			return fieldInfo.GetValue(Obj);
-		
+		}
 		throw new Exception($"unsupported member {memberExpr.Member}");
 	}
 
 	public static T Set<T>(T Obj, Expression<Func<T, obj?>> ExprMemb, obj? Value)
 	{
 		var memberExpr = UnwrapMemberExpression(ExprMemb.Body);
-		if (memberExpr == null)
+		if (memberExpr == null){
 			throw new Exception($"unsupported expr {ExprMemb}");
+		}
+			
 
-		if (memberExpr.Member is PropertyInfo propInfo)
+		if (memberExpr.Member is PropertyInfo propInfo){
 			propInfo.SetValue(Obj, Value);
-		else if (memberExpr.Member is FieldInfo fieldInfo)
+		}
+			
+		else if (memberExpr.Member is FieldInfo fieldInfo){
 			fieldInfo.SetValue(Obj, Value);
-		else
+		}
+		else{
 			throw new Exception($"unsupported member {memberExpr.Member}");
-		
+		}
 		return Obj;
 	}
 
@@ -56,6 +72,7 @@ public partial class TestExprRefl: ITester{
 	
 	class MyCls{
 		public int MyInt{get;set;}
+		[MyAttr(Name = "MyStrProp", Type = typeof(TestExprRefl))]
 		public string MyStr{get;set;}
 	}
 	
