@@ -3,6 +3,7 @@ using Ngaq.Core.Test.Tools.Json.AppJsonSerializerTests;
 using Ngaq.Core.Test.Sync.IPacker;
 using Tsinswreng.CsTreeTest;
 using Ngaq.Core.Test.Lib.MsgFmt;
+using Ngaq.Core.Test.Lang.ExprRefl;
 
 namespace Ngaq.Core.Test;
 
@@ -14,6 +15,7 @@ public class CoreTestMgr:DiEtTestMgr{
 		this.RegisterTester<TestIDictJsonSerializer>();
 		this.RegisterTester<TestIPacker>();
 		this.RegisterTester<TestMsgFmt>();
+		this.RegisterTester<TestExprRefl>();
 		return Node;
 	}
 }
