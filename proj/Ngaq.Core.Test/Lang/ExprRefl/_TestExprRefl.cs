@@ -16,6 +16,18 @@ public class MyAttr: Attribute{
 
 public class Refl
 {
+	/// <summary>
+	/// 从成员表达式中提取成员信息。
+	/// </summary>
+	public static MemberInfo GetInfo<T>(Expression<Func<T, obj?>> ExprMemb)
+	{
+		var memberExpr = UnwrapMemberExpression(ExprMemb.Body);
+		if (memberExpr == null){
+			throw new Exception($"unsupported expr {ExprMemb}");
+		}
+		return memberExpr.Member;
+	}
+
 	public static obj? Get<T>(T Obj, Expression<Func<T, obj?>> ExprMemb)
 	{
 		var memberExpr = UnwrapMemberExpression(ExprMemb.Body);
@@ -112,6 +124,57 @@ public partial class TestExprRefl: ITester{
 			Refl.Set(c, x=>x.MyStr, "abc");
 			if(c.MyStr != "abc"){
 				throw new Exception($"expected abc but got {Refl.Get(c, x=>x.MyStr)}");
+			}
+			return NIL;
+		});
+		R("GetInfo_PropertyInfo", async(o)=>{
+			var info = Refl.GetInfo<MyCls>(x => x.MyStr);
+			if(info is not PropertyInfo propInfo){
+				throw new Exception($"expected {nameof(PropertyInfo)} but got {info.GetType()}");
+			}
+			if(propInfo.Name != nameof(MyCls.MyStr)){
+				throw new Exception($"expected {nameof(MyCls.MyStr)} but got {propInfo.Name}");
+			}
+			return NIL;
+		});
+		R("GetInfo_PropertyValue", async(o)=>{
+			var c = new MyCls(){MyStr = "from-info"};
+			var info = Refl.GetInfo<MyCls>(x => x.MyStr);
+			if(info is not PropertyInfo propInfo){
+				throw new Exception($"expected {nameof(PropertyInfo)} but got {info.GetType()}");
+			}
+			var value = propInfo.GetValue(c);
+			if(value is not str s || s != "from-info"){
+				throw new Exception($"expected from-info but got {value}");
+			}
+			return NIL;
+		});
+		R("GetInfo_SetPropertyValue", async(o)=>{
+			var c = new MyCls();
+			var info = Refl.GetInfo<MyCls>(x => x.MyStr);
+			if(info is not PropertyInfo propInfo){
+				throw new Exception($"expected {nameof(PropertyInfo)} but got {info.GetType()}");
+			}
+			propInfo.SetValue(c, "set-by-info");
+			if(c.MyStr != "set-by-info"){
+				throw new Exception($"expected set-by-info but got {c.MyStr}");
+			}
+			return NIL;
+		});
+		R("GetInfo_CustomAttr", async(o)=>{
+			var info = Refl.GetInfo<MyCls>(x => x.MyStr);
+			if(info is not PropertyInfo propInfo){
+				throw new Exception($"expected {nameof(PropertyInfo)} but got {info.GetType()}");
+			}
+			var attr = propInfo.GetCustomAttribute<MyAttr>();
+			if(attr is null){
+				throw new Exception("expected MyAttr but got null");
+			}
+			if(attr.Name != "MyStrProp"){
+				throw new Exception($"expected MyStrProp but got {attr.Name}");
+			}
+			if(attr.Type != typeof(TestExprRefl)){
+				throw new Exception($"expected {typeof(TestExprRefl)} but got {attr.Type}");
 			}
 			return NIL;
 		});
