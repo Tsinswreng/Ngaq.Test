@@ -26,20 +26,14 @@ public partial class TestISvcWordV2{
 			var remote = MkSyncInput(owner, token + "_h1", "en", token + "_d1");
 			try{
 				var dtos = await ToList(SvcWordV2.BatSyncJnWordByBizId(MkUserCtx(owner), AsyE(remote), CT.None));
-				if(dtos.Count != 1){
-					throw new Exception("BizSyncJnWordByBizId should return one dto for one input item");
-				}
-				if(!ReferenceEquals(dtos[0].DiffResult, EDiffByBizIdResultForSync.LocalNotExist)){
-					throw new Exception("BizSyncJnWordByBizId should mark fresh remote as LocalNotExist");
-				}
+				Assert.IsTrue(dtos.Count == 1, "BizSyncJnWordByBizId should return one dto for one input item");
+				Assert.IsTrue(ReferenceEquals(dtos[0].DiffResult, EDiffByBizIdResultForSync.LocalNotExist), "BizSyncJnWordByBizId should mark fresh remote as LocalNotExist");
 
 				await RunNoTxn(async(Ctx)=>{
 					var words = (await ToList(RepoWord.GetAll(Ctx, CT.None)))
 						.Where(x=>x.Owner == owner && x.Head == remote.Head && x.Lang == remote.Lang)
 						.ToList();
-					if(words.Count != 1){
-						throw new Exception("BizSyncJnWordByBizId should insert word when local does not exist");
-					}
+					Assert.IsTrue(words.Count == 1, "BizSyncJnWordByBizId should insert word when local does not exist");
 					return NIL;
 				});
 				return NIL;
@@ -56,17 +50,13 @@ public partial class TestISvcWordV2{
 			try{
 				_ = await ToList(SvcWordV2.BatSyncJnWordByBizId(MkUserCtx(owner), AsyE(remote), CT.None));
 				var dtos2 = await ToList(SvcWordV2.BatSyncJnWordByBizId(MkUserCtx(owner), AsyE(remote), CT.None));
-				if(dtos2.Count != 1){
-					throw new Exception("BizSyncJnWordByBizId should still return one dto on re-sync");
-				}
+				Assert.IsTrue(dtos2.Count == 1, "BizSyncJnWordByBizId should still return one dto on re-sync");
 
 				await RunNoTxn(async(Ctx)=>{
 					var words = (await ToList(RepoWord.GetAll(Ctx, CT.None)))
 						.Where(x=>x.Owner == owner && x.Head == remote.Head && x.Lang == remote.Lang)
 						.ToList();
-					if(words.Count != 1){
-						throw new Exception("BizSyncJnWordByBizId should not duplicate root rows for same biz-id");
-					}
+					Assert.IsTrue(words.Count == 1, "BizSyncJnWordByBizId should not duplicate root rows for same biz-id");
 					return NIL;
 				});
 				return NIL;
@@ -96,9 +86,7 @@ public partial class TestISvcWordV2{
 					var wordsB = (await ToList(RepoWord.GetAll(Ctx, CT.None)))
 						.Where(x=>x.Owner == ownerB && x.Head == remoteA.Head && x.Lang == remoteA.Lang)
 						.ToList();
-					if(wordsA.Count != 1 || wordsB.Count != 1){
-						throw new Exception("BizSyncJnWordByBizId should isolate by owner");
-					}
+					Assert.IsTrue(wordsA.Count == 1 && wordsB.Count == 1, "BizSyncJnWordByBizId should isolate by owner");
 					return NIL;
 				});
 				return NIL;

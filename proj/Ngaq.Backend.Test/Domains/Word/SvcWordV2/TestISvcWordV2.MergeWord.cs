@@ -32,15 +32,9 @@ public partial class TestISvcWordV2{
 				token + "_d1",
 			]);
 			var results = await ToList(SvcWordV2.GetWordMergeResult(MkUserCtx(owner), AsyE(remote), CT.None));
-			if(results.Count != 1){
-				throw new Exception("GetWordMergeResult should return one item for one input");
-			}
-			if(results[0].Result != EJnWordMergeResult.LocalNotExist){
-				throw new Exception("GetWordMergeResult should classify missing local as LocalNotExist");
-			}
-			if(results[0].Merged.Head != remote.Head || results[0].Merged.Lang != remote.Lang){
-				throw new Exception("GetWordMergeResult merged root should keep remote biz-id");
-			}
+			Assert.IsTrue(results.Count == 1, "GetWordMergeResult should return one item for one input");
+			Assert.IsTrue(results[0].Result == EJnWordMergeResult.LocalNotExist, "GetWordMergeResult should classify missing local as LocalNotExist");
+			Assert.IsTrue(results[0].Merged.Head == remote.Head && results[0].Merged.Lang == remote.Lang, "GetWordMergeResult merged root should keep remote biz-id");
 			return NIL;
 		});
 
@@ -105,21 +99,15 @@ public partial class TestISvcWordV2{
 					var words = (await ToList(RepoWord.GetAll(Ctx, CT.None)))
 						.Where(x=>x.Owner == owner && x.Head == head && x.Lang == "en")
 						.ToList();
-					if(words.Count != 1){
-						throw new Exception("MergeWord should not create duplicate root by same biz-id");
-					}
+					Assert.IsTrue(words.Count == 1, "MergeWord should not create duplicate root by same biz-id");
 					var wordId = words[0].Id;
 					var props = (await ToList(RepoProp.GetAll(Ctx, CT.None)))
 						.Where(x=>x.WordId == wordId && x.KStr == KeysProp.Inst.description)
 						.ToList();
-					if(props.Count != 2){
-						throw new Exception("MergeWord should append only new assets");
-					}
+					Assert.IsTrue(props.Count == 2, "MergeWord should append only new assets");
 					var d0Cnt = props.Count(x=>x.VStr == token + "_d0");
 					var d1Cnt = props.Count(x=>x.VStr == token + "_d1");
-					if(d0Cnt != 1 || d1Cnt != 1){
-						throw new Exception("MergeWord should keep old desc and append one new desc");
-					}
+					Assert.IsTrue(d0Cnt == 1 && d1Cnt == 1, "MergeWord should keep old desc and append one new desc");
 					return NIL;
 				});
 				return NIL;
@@ -197,9 +185,7 @@ public partial class TestISvcWordV2{
 					var learns = (await ToList(RepoLearn.GetAll(Ctx, CT.None)))
 						.Where(x=>x.WordId == word.Id && x.LearnResult == ELearn.Add)
 						.ToList();
-					if(learns.Count != 2){
-						throw new Exception("MergeWord_NewDescrAsAdd should add learns for only newly-added descriptions");
-					}
+					Assert.IsTrue(learns.Count == 2, "MergeWord_NewDescrAsAdd should add learns for only newly-added descriptions");
 					return NIL;
 				});
 				return NIL;

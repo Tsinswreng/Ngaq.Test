@@ -43,16 +43,10 @@ public partial class TestISvcWordV2{
 
 				await RunNoTxn(async(Ctx)=>{
 					var gotLearns = await ToList(RepoLearn.BatGetByIdWithDel(Ctx, AsyE(learns.Select(x=>x.Id).ToArray()), CT.None));
-					if(gotLearns.Count != learns.Length || gotLearns.Any(x=>x is null)){
-						throw new Exception("BatAddNewLearnRecord failed to insert all learn records");
-					}
+					Assert.IsTrue(gotLearns.Count == learns.Length && gotLearns.All(x => x is not null), "BatAddNewLearnRecord failed to insert all learn records");
 					var gotWords = await ToList(RepoWord.BatGetByIdWithDel(Ctx, AsyE(w1.Id, w2.Id), CT.None));
-					if(gotWords.Count != 2 || gotWords.Any(x=>x is null)){
-						throw new Exception("failed to load words after BatAddNewLearnRecord");
-					}
-					if(gotWords.Any(x=>x!.BizUpdatedAt.IsNullOrDefault())){
-						throw new Exception("BatAddNewLearnRecord did not touch PoWord.BizUpdatedAt");
-					}
+					Assert.IsTrue(gotWords.Count == 2 && gotWords.All(x => x is not null), "failed to load words after BatAddNewLearnRecord");
+					Assert.IsTrue(gotWords.All(x => !x!.BizUpdatedAt.IsNullOrDefault()), "BatAddNewLearnRecord did not touch PoWord.BizUpdatedAt");
 					return NIL;
 				});
 				return NIL;
@@ -80,9 +74,7 @@ public partial class TestISvcWordV2{
 
 				await RunNoTxn(async(Ctx)=>{
 					var learns = await ToList(RepoLearn.GetAll(Ctx, CT.None));
-					if(learns.Any(x=>x.WordId == word.Id)){
-						throw new Exception("empty learn-record input should not insert learn rows");
-					}
+					Assert.IsTrue(learns.All(x => x.WordId != word.Id), "empty learn-record input should not insert learn rows");
 					return NIL;
 				});
 				return NIL;

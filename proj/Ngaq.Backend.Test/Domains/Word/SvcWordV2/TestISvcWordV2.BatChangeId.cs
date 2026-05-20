@@ -52,28 +52,20 @@ public partial class TestISvcWordV2{
 
 				await RunNoTxn(async(Ctx)=>{
 					var oldWord = await ToList(RepoWord.BatGetByIdWithDel(Ctx, AsyE(oldId), CT.None));
-					if(oldWord.Count != 1 || oldWord[0] is not null){
-						throw new Exception("BatChangeId should remove old root id");
-					}
+					Assert.IsTrue(oldWord.Count == 1 && oldWord[0] is null, "BatChangeId should remove old root id");
 
 					var newWord = await ToList(RepoWord.BatGetByIdWithDel(Ctx, AsyE(newId), CT.None));
-					if(newWord.Count != 1 || newWord[0] is null || newWord[0]!.Owner != owner){
-						throw new Exception("BatChangeId should create root row with new id");
-					}
+					Assert.IsTrue(newWord.Count == 1 && newWord[0] is not null && newWord[0]!.Owner == owner, "BatChangeId should create root row with new id");
 
 					var props = (await ToList(RepoProp.GetAll(Ctx, CT.None)))
 						.Where(x=>x.Id == prop.Id)
 						.ToList();
-					if(props.Count != 1 || props[0].WordId != newId){
-						throw new Exception("BatChangeId should move PoWordProp.WordId to new id");
-					}
+					Assert.IsTrue(props.Count == 1 && props[0].WordId == newId, "BatChangeId should move PoWordProp.WordId to new id");
 
 					var learns = (await ToList(RepoLearn.GetAll(Ctx, CT.None)))
 						.Where(x=>x.Id == learn.Id)
 						.ToList();
-					if(learns.Count != 1 || learns[0].WordId != newId){
-						throw new Exception("BatChangeId should move PoWordLearn.WordId to new id");
-					}
+					Assert.IsTrue(learns.Count == 1 && learns[0].WordId == newId, "BatChangeId should move PoWordLearn.WordId to new id");
 					return NIL;
 				});
 				return NIL;

@@ -37,20 +37,14 @@ public partial class TestISvcWordV2{
 			try{
 				using var stream = packer.Pack(AsyE(remote1, remote2), packInfo, CT.None).ToStream();
 				var dtos = await ToList(SvcWordV2.BatSyncJnWordByBizIdFromStream(MkUserCtx(owner), stream, CT.None));
-				if(dtos.Count != 2){
-					throw new Exception("BatSyncJnWordByBizIdFromStream should return one dto per remote word.");
-				}
-				if(dtos.Any(x=>x.DiffResult != EDiffByBizIdResultForSync.LocalNotExist)){
-					throw new Exception("BatSyncJnWordByBizIdFromStream should mark fresh remotes as LocalNotExist.");
-				}
+				Assert.IsTrue(dtos.Count == 2, "BatSyncJnWordByBizIdFromStream should return one dto per remote word.");
+				Assert.IsTrue(dtos.All(x => x.DiffResult == EDiffByBizIdResultForSync.LocalNotExist), "BatSyncJnWordByBizIdFromStream should mark fresh remotes as LocalNotExist.");
 
 				await RunNoTxn(async(Ctx)=>{
 					var words = (await ToList(RepoWord.GetAll(Ctx, CT.None)))
 						.Where(x=>x.Owner == owner && x.Head.StartsWith(token))
 						.ToList();
-					if(words.Count != 2){
-						throw new Exception("BatSyncJnWordByBizIdFromStream should insert all streamed words.");
-					}
+					Assert.IsTrue(words.Count == 2, "BatSyncJnWordByBizIdFromStream should insert all streamed words.");
 					return NIL;
 				});
 				return NIL;

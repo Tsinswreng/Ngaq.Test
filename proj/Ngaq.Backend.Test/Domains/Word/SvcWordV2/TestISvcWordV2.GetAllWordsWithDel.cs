@@ -29,9 +29,7 @@ public partial class TestISvcWordV2{
 
 				var got = await ToList(SvcWordV2.GetAllWordsWithDel(MkUserCtx(owner), CT.None));
 				var gotHeads = got.Select(x=>x.Word.Head).ToHashSet();
-				if(!gotHeads.Contains(alive.Word.Head) || !gotHeads.Contains(deleted.Word.Head)){
-					throw new Exception("GetAllWordsWithDel should include both alive and soft-deleted words.");
-				}
+				Assert.IsTrue(gotHeads.Contains(alive.Word.Head) && gotHeads.Contains(deleted.Word.Head), "GetAllWordsWithDel should include both alive and soft-deleted words.");
 				return NIL;
 			}
 			finally{

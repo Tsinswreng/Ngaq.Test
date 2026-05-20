@@ -30,9 +30,7 @@ public partial class TestISvcWordV2{
 				using var stream = await SvcWordV2.PackAllWordsWithDel(MkUserCtx(owner), CT.None);
 				var unpacked = await ToList(SvcWordV2.UnpackJnWords(stream, CT.None));
 				var gotHeads = unpacked.Select(x=>x.Word.Head).ToHashSet();
-				if(!gotHeads.Contains(alive.Word.Head) || !gotHeads.Contains(deleted.Word.Head)){
-					throw new Exception("PackAllWordsWithDel result should include alive and soft-deleted words.");
-				}
+				Assert.IsTrue(gotHeads.Contains(alive.Word.Head) && gotHeads.Contains(deleted.Word.Head), "PackAllWordsWithDel result should include alive and soft-deleted words.");
 				return NIL;
 			}
 			finally{

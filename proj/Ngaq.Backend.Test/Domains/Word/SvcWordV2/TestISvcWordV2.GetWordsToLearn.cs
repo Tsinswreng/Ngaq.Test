@@ -48,18 +48,12 @@ public partial class TestISvcWordV2{
 				var fromFn1 = gotA_1.Where(x=>x.Word.Head.StartsWith(token)).ToList();
 				var fromFn2 = gotA_2.Where(x=>x.Word.Head.StartsWith(token)).ToList();
 
-				if(fromFn1.Count != 2 || fromFn1.Any(x=>x.Word.Owner != ownerA)){
-					throw new Exception("GetWordsToLearn(owner) owner-isolation assert failed");
-				}
-				if(fromFn2.Count != 2 || fromFn2.Any(x=>x.Word.Owner != ownerA)){
-					throw new Exception("GetWordsToLearn(owner,prefilter) owner-isolation assert failed");
-				}
+				Assert.IsTrue(fromFn1.Count == 2 && fromFn1.All(x => x.Word.Owner == ownerA), "GetWordsToLearn(owner) owner-isolation assert failed");
+				Assert.IsTrue(fromFn2.Count == 2 && fromFn2.All(x => x.Word.Owner == ownerA), "GetWordsToLearn(owner,prefilter) owner-isolation assert failed");
 
 				var ids1 = fromFn1.Select(x=>x.Word.Id).OrderBy(x=>x.ToString()).ToArray();
 				var ids2 = fromFn2.Select(x=>x.Word.Id).OrderBy(x=>x.ToString()).ToArray();
-				if(!ids1.SequenceEqual(ids2)){
-					throw new Exception("two overloads of GetWordsToLearn are inconsistent for null prefilter");
-				}
+				Assert.IsTrue(ids1.SequenceEqual(ids2), "two overloads of GetWordsToLearn are inconsistent for null prefilter");
 
 				return NIL;
 			}
@@ -77,9 +71,7 @@ public partial class TestISvcWordV2{
 			var got2 = await ToList(SvcWordV2.GetWordsToLearn(MkUserCtx(owner), (PreFilter?)null, CT.None));
 			var got3 = await ToList(SvcWordV2.GetWordsToLearn(MkUserCtx(owner), new PreFilter(), CT.None));
 
-			if(got1.Count != 0 || got2.Count != 0 || got3.Count != 0){
-				throw new Exception("expected empty async enumerable when user has no words");
-			}
+			Assert.IsTrue(got1.Count == 0 && got2.Count == 0 && got3.Count == 0, "expected empty async enumerable when user has no words");
 			return NIL;
 		});
 
@@ -97,9 +89,7 @@ public partial class TestISvcWordV2{
 
 				var got = await ToList(SvcWordV2.GetWordsToLearn(MkUserCtx(owner), CT.None));
 				var tokenWords = got.Where(x=>x.Word.Head.StartsWith(token)).ToList();
-				if(tokenWords.Count != 1 || tokenWords[0].Word.Id != keep.Id){
-					throw new Exception("GetWordsToLearn should exclude soft deleted words");
-				}
+				Assert.IsTrue(tokenWords.Count == 1 && tokenWords[0].Word.Id == keep.Id, "GetWordsToLearn should exclude soft deleted words");
 				return NIL;
 			}
 			finally{
@@ -141,9 +131,7 @@ public partial class TestISvcWordV2{
 
 				var got = await ToList(SvcWordV2.GetWordsToLearn(MkUserCtx(owner), preFilter, CT.None));
 				var tokenWords = got.Where(x=>x.Word.Head.StartsWith(token)).ToList();
-				if(tokenWords.Count != 2 || tokenWords.Any(x=>x.Word.Lang != "en")){
-					throw new Exception("explicit core prefilter should keep only matched lang words");
-				}
+				Assert.IsTrue(tokenWords.Count == 2 && tokenWords.All(x => x.Word.Lang == "en"), "explicit core prefilter should keep only matched lang words");
 				return NIL;
 			}
 			finally{
@@ -203,9 +191,7 @@ public partial class TestISvcWordV2{
 
 				var got = await ToList(SvcWordV2.GetWordsToLearn(MkUserCtx(owner), CT.None));
 				var tokenWords = got.Where(x=>x.Word.Head.StartsWith(token)).ToList();
-				if(tokenWords.Count != 1 || tokenWords[0].Word.Lang != "jp"){
-					throw new Exception("GetWordsToLearn should apply current study-plan prefilter when no prefilter argument");
-				}
+				Assert.IsTrue(tokenWords.Count == 1 && tokenWords[0].Word.Lang == "jp", "GetWordsToLearn should apply current study-plan prefilter when no prefilter argument");
 				return NIL;
 			}
 			finally{

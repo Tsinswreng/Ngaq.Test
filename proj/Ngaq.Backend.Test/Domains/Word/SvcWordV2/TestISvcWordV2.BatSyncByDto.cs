@@ -76,19 +76,11 @@ public partial class TestISvcWordV2{
 					var words = (await ToList(RepoWord.GetAll(Ctx, CT.None)))
 						.Where(x=>x.Owner == owner && x.Head.StartsWith(token))
 						.ToList();
-					if(!words.Any(x=>x.Head == noChangeRoot.Head)){
-						throw new Exception("BatSyncByDto NoChange case should keep local word");
-					}
-					if(!words.Any(x=>x.Head == remoteOlderRoot.Head)){
-						throw new Exception("BatSyncByDto RemoteIsOlder case should keep local word");
-					}
-					if(!words.Any(x=>x.Head == localNotExistRemote.Head)){
-						throw new Exception("BatSyncByDto LocalNotExist case should insert remote word");
-					}
+					Assert.IsTrue(words.Any(x => x.Head == noChangeRoot.Head), "BatSyncByDto NoChange case should keep local word");
+					Assert.IsTrue(words.Any(x => x.Head == remoteOlderRoot.Head), "BatSyncByDto RemoteIsOlder case should keep local word");
+					Assert.IsTrue(words.Any(x => x.Head == localNotExistRemote.Head), "BatSyncByDto LocalNotExist case should insert remote word");
 					var idNeWords = words.Where(x=>x.Head == idOldRoot.Head && x.Lang == idOldRoot.Lang).ToList();
-					if(idNeWords.Count != 1){
-						throw new Exception("BatSyncByDto IdNotEqual case should leave one merged biz-id row");
-					}
+					Assert.IsTrue(idNeWords.Count == 1, "BatSyncByDto IdNotEqual case should leave one merged biz-id row");
 					return NIL;
 				});
 				return NIL;

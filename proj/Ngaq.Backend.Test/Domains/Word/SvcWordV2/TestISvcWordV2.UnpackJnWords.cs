@@ -35,13 +35,9 @@ public partial class TestISvcWordV2{
 			using var stream = packer.Pack(AsyE(w1, w2), packInfo, CT.None).ToStream();
 
 			var got = await ToList(SvcWordV2.UnpackJnWords(stream, CT.None));
-			if(got.Count != 2){
-				throw new Exception("UnpackJnWords should return all packed words.");
-			}
+			Assert.IsTrue(got.Count == 2, "UnpackJnWords should return all packed words.");
 			var gotHeads = got.Select(x=>x.Word.Head).ToHashSet();
-			if(!gotHeads.Contains(w1.Word.Head) || !gotHeads.Contains(w2.Word.Head)){
-				throw new Exception("UnpackJnWords should preserve word heads.");
-			}
+			Assert.IsTrue(gotHeads.Contains(w1.Word.Head) && gotHeads.Contains(w2.Word.Head), "UnpackJnWords should preserve word heads.");
 			return NIL;
 		});
 	}

@@ -60,23 +60,13 @@ public partial class TestISvcWordV2{
 				});
 
 				var got = await SvcWordV2.LlmDictWordToJnWord(MkUserCtx(owner), req, resp, CT.None);
-				if(got.Owner != owner){
-					throw new Exception("LlmDictWordToJnWord should set owner from context");
-				}
-				if(got.Head != resp.Head){
-					throw new Exception("LlmDictWordToJnWord should map head from resp");
-				}
-				if(got.Lang != map.UserLang){
-					throw new Exception("LlmDictWordToJnWord should map lang via NormLangToUserLang");
-				}
+				Assert.IsTrue(got.Owner == owner, "LlmDictWordToJnWord should set owner from context");
+				Assert.IsTrue(got.Head == resp.Head, "LlmDictWordToJnWord should map head from resp");
+				Assert.IsTrue(got.Lang == map.UserLang, "LlmDictWordToJnWord should map lang via NormLangToUserLang");
 				var descCnt = got.Props.Count(x=>x.KStr == KeysProp.Inst.description);
 				var pronCnt = got.Props.Count(x=>x.KStr == KeysProp.Inst.pronunciation);
-				if(descCnt != 2 || pronCnt != 1){
-					throw new Exception("LlmDictWordToJnWord should map description and pronunciation props");
-				}
-				if(got.Props.Any(x=>x.WordId != got.Id)){
-					throw new Exception("LlmDictWordToJnWord should ensure foreign keys");
-				}
+				Assert.IsTrue(descCnt == 2 && pronCnt == 1, "LlmDictWordToJnWord should map description and pronunciation props");
+				Assert.IsTrue(got.Props.All(x => x.WordId == got.Id), "LlmDictWordToJnWord should ensure foreign keys");
 				return NIL;
 			}
 			finally{

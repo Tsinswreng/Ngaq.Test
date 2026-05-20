@@ -47,19 +47,13 @@ public partial class TestISvcWordV2{
 
 				await RunNoTxn(async(Ctx)=>{
 					var gotWord = await ToList(RepoWord.BatGetByIdWithDel(Ctx, AsyE(word.Id), CT.None));
-					if(gotWord.Count != 1 || gotWord[0] is null || !gotWord[0]!.IsDeleted()){
-						throw new Exception("failed to soft-delete root word");
-					}
+					Assert.IsTrue(gotWord.Count == 1 && gotWord[0] is not null && gotWord[0].IsDeleted(), "failed to soft-delete root word");
 
 					var gotProps = await ToList(RepoProp.GetManyInIdWithDel(Ctx, AsyE(props.Select(x=>x.Id).ToArray()), CT.None));
-					if(gotProps.Count != props.Length || gotProps.Any(x=>x is null || !x.IsDeleted())){
-						throw new Exception("failed to soft-delete props");
-					}
+					Assert.IsTrue(gotProps.Count == props.Length && gotProps.All(x => x is not null && x.IsDeleted()), "failed to soft-delete props");
 
 					var gotLearns = await ToList(RepoLearn.GetManyInIdWithDel(Ctx, AsyE(learns.Select(x=>x.Id).ToArray()), CT.None));
-					if(gotLearns.Count != learns.Length || gotLearns.Any(x=>x is null || !x.IsDeleted())){
-						throw new Exception("failed to soft-delete learns");
-					}
+					Assert.IsTrue(gotLearns.Count == learns.Length && gotLearns.All(x => x is not null && x.IsDeleted()), "failed to soft-delete learns");
 					return NIL;
 				});
 				return NIL;
@@ -92,9 +86,7 @@ public partial class TestISvcWordV2{
 				await SvcWordV2.SoftDelJnWordInId(MkUserCtx(owner), AsyE(word.Id, word.Id), CT.None);
 				await RunNoTxn(async(Ctx)=>{
 					var gotWord = await ToList(RepoWord.BatGetByIdWithDel(Ctx, AsyE(word.Id), CT.None));
-					if(gotWord.Count != 1 || gotWord[0] is null || !gotWord[0]!.IsDeleted()){
-						throw new Exception("duplicated ids soft-delete should still delete the word");
-					}
+					Assert.IsTrue(gotWord.Count == 1 && gotWord[0] is not null && gotWord[0].IsDeleted(), "duplicated ids soft-delete should still delete the word");
 					return NIL;
 				});
 				return NIL;

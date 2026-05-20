@@ -38,9 +38,7 @@ public partial class TestISvcWordV2{
 
 				var args = new PoWord{Id = word.Id, Owner = owner, Head = word.Head, Lang = word.Lang};
 				var rtn = await ToList(SvcWordV2.BatUpdHeadLang(MkUserCtx(owner), AsyE(args), CT.None));
-				if(rtn.Count != 1 || rtn[0] is null || rtn[0]!.FinalId != word.Id || rtn[0]!.Result != EUpdBizIdResult.BizIdAlreadyEqual){
-					throw new Exception("BatUpdHeadLang should return null when (Head,Lang) not changed");
-				}
+				Assert.IsTrue(rtn.Count == 1 && rtn[0] is not null && rtn[0]!.FinalId == word.Id && rtn[0]!.Result == EUpdBizIdResult.BizIdAlreadyEqual, "BatUpdHeadLang should return null when (Head,Lang) not changed");
 				return NIL;
 			}
 			finally{
@@ -63,15 +61,11 @@ public partial class TestISvcWordV2{
 
 				var arg = new PoWord{Id = word.Id, Owner = owner, Head = token + "_new", Lang = "en"};
 				var rtn = await ToList(SvcWordV2.BatUpdHeadLang(MkUserCtx(owner), AsyE(arg), CT.None));
-				if(rtn.Count != 1 || rtn[0] is null || rtn[0]!.FinalId != word.Id || rtn[0]!.Result != EUpdBizIdResult.DataOfBizIdNotExist){
-					throw new Exception("BatUpdHeadLang should return null when id remains unchanged");
-				}
+				Assert.IsTrue(rtn.Count == 1 && rtn[0] is not null && rtn[0]!.FinalId == word.Id && rtn[0]!.Result == EUpdBizIdResult.DataOfBizIdNotExist, "BatUpdHeadLang should return null when id remains unchanged");
 
 				await RunNoTxn(async(Ctx)=>{
 					var got = await ToList(RepoWord.BatGetByIdWithDel(Ctx, AsyE(word.Id), CT.None));
-					if(got.Count != 1 || got[0] is null || got[0]!.Head != arg.Head || got[0]!.Lang != arg.Lang){
-						throw new Exception("BatUpdHeadLang should update (Head,Lang) in-place");
-					}
+					Assert.IsTrue(got.Count == 1 && got[0] is not null && got[0]!.Head == arg.Head && got[0]!.Lang == arg.Lang, "BatUpdHeadLang should update (Head,Lang) in-place");
 					return NIL;
 				});
 				return NIL;
@@ -112,28 +106,18 @@ public partial class TestISvcWordV2{
 
 				var arg = new PoWord{Id = src.Id, Owner = owner, Head = dst.Head, Lang = dst.Lang};
 				var rtn = await ToList(SvcWordV2.BatUpdHeadLang(MkUserCtx(owner), AsyE(arg), CT.None));
-				if(rtn.Count != 1 || rtn[0] is null || rtn[0]!.FinalId != dst.Id || rtn[0]!.Result != EUpdBizIdResult.BizIdNotEqual){
-					throw new Exception("BatUpdHeadLang should return target id when merged");
-				}
+				Assert.IsTrue(rtn.Count == 1 && rtn[0] is not null && rtn[0]!.FinalId == dst.Id && rtn[0]!.Result == EUpdBizIdResult.BizIdNotEqual, "BatUpdHeadLang should return target id when merged");
 
 				await RunNoTxn(async(Ctx)=>{
 					var srcGot = await ToList(RepoWord.BatGetByIdWithDel(Ctx, AsyE(src.Id), CT.None));
 					var dstGot = await ToList(RepoWord.BatGetByIdWithDel(Ctx, AsyE(dst.Id), CT.None));
-					if(srcGot.Count != 1 || srcGot[0] is null || !srcGot[0]!.IsDeleted()){
-						throw new Exception("BatUpdHeadLang merge should soft-delete source word");
-					}
-					if(dstGot.Count != 1 || dstGot[0] is null || dstGot[0]!.IsDeleted()){
-						throw new Exception("BatUpdHeadLang merge should keep target alive");
-					}
+					Assert.IsTrue(srcGot.Count == 1 && srcGot[0] is not null && srcGot[0]!.IsDeleted(), "BatUpdHeadLang merge should soft-delete source word");
+					Assert.IsTrue(dstGot.Count == 1 && dstGot[0] is not null && !dstGot[0]!.IsDeleted(), "BatUpdHeadLang merge should keep target alive");
 
 					var prop = (await ToList(RepoProp.GetAll(Ctx, CT.None))).FirstOrDefault(x=>x.Id == srcProp.Id);
 					var learn = (await ToList(RepoLearn.GetAll(Ctx, CT.None))).FirstOrDefault(x=>x.Id == srcLearn.Id);
-					if(prop is null || prop.WordId != dst.Id){
-						throw new Exception("BatUpdHeadLang merge should move prop foreign key to target id");
-					}
-					if(learn is null || learn.WordId != dst.Id){
-						throw new Exception("BatUpdHeadLang merge should move learn foreign key to target id");
-					}
+					Assert.IsTrue(prop is not null && prop.WordId == dst.Id, "BatUpdHeadLang merge should move prop foreign key to target id");
+					Assert.IsTrue(learn is not null && learn.WordId == dst.Id, "BatUpdHeadLang merge should move learn foreign key to target id");
 					return NIL;
 				});
 				return NIL;
