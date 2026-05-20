@@ -92,6 +92,7 @@ public partial class TestExprRefl: ITester{
 		public int MyField;
 	}
 	
+	
 	[Doc(@$"
 	#Params([src obj],[target type], [target obj])
 	")]
@@ -107,185 +108,122 @@ public partial class TestExprRefl: ITester{
 			nameof(TestExprRefl)
 		);
 		var R = register.Register;
+		var T = Assert.IsTrue;
 		R("PropInfo_Exception", async(o)=>{
 			var ex = new Exception("test");
 			var msg = Refl.Get(ex, x=>x.Message);
-			if(msg is not str s || s != ex.Message){
-				throw new Exception($"expected {ex.Message} but got {msg}");
-			}
+			T(msg is str s && s == ex.Message);
 			Refl.Set(ex, x=>x.HelpLink, "help");
-			if(ex.HelpLink != "help"){
-				throw new Exception($"expected help but got {ex.HelpLink}");
-			}
+			T(ex.HelpLink == "help");
 			return NIL;
 		});
 		R("CustomDefinedClass", async(o)=>{
 			var c = new MyCls();
 			Refl.Set(c, x=>x.MyInt, 123);
-			if(Refl.Get(c, x=>x.MyInt) is not int i || i!= 123){
-				throw new Exception($"expected 123 but got {Refl.Get(c, x=>x.MyInt)}");
-			}
+			T(Refl.Get(c, x=>x.MyInt) is int i && i == 123);
 			Refl.Set(c, x=>x.MyStr, "abc");
-			if(c.MyStr != "abc"){
-				throw new Exception($"expected abc but got {Refl.Get(c, x=>x.MyStr)}");
-			}
+			T(c.MyStr == "abc");
 			return NIL;
 		});
 		R("GetInfo_PropertyInfo", async(o)=>{
 			var info = Refl.GetInfo<MyCls>(x => x.MyStr);
-			if(info is not PropertyInfo propInfo){
-				throw new Exception($"expected {nameof(PropertyInfo)} but got {info.GetType()}");
-			}
-			if(propInfo.Name != nameof(MyCls.MyStr)){
-				throw new Exception($"expected {nameof(MyCls.MyStr)} but got {propInfo.Name}");
-			}
+			T(info is PropertyInfo);
+			var propInfo = (PropertyInfo)info;
+			T(propInfo.Name == nameof(MyCls.MyStr));
 			return NIL;
 		});
 		R("GetInfo_PropertyMetadata", async(o)=>{
 			var info = Refl.GetInfo<MyCls>(x => x.MyStr);
-			if(info is not PropertyInfo propInfo){
-				throw new Exception($"expected {nameof(PropertyInfo)} but got {info.GetType()}");
-			}
-			if(propInfo.PropertyType != typeof(str)){
-				throw new Exception($"expected {typeof(str)} but got {propInfo.PropertyType}");
-			}
-			if(propInfo.DeclaringType != typeof(MyCls)){
-				throw new Exception($"expected {typeof(MyCls)} but got {propInfo.DeclaringType}");
-			}
-			if(!propInfo.CanRead || !propInfo.CanWrite){
-				throw new Exception("expected property to be readable and writable");
-			}
+			T(info is PropertyInfo);
+			var propInfo = (PropertyInfo)info;
+			T(propInfo.PropertyType == typeof(str));
+			T(propInfo.DeclaringType == typeof(MyCls));
+			T(propInfo.CanRead && propInfo.CanWrite);
 			return NIL;
 		});
 		R("GetInfo_PropertyValue", async(o)=>{
 			var c = new MyCls(){MyStr = "from-info"};
 			var info = Refl.GetInfo<MyCls>(x => x.MyStr);
-			if(info is not PropertyInfo propInfo){
-				throw new Exception($"expected {nameof(PropertyInfo)} but got {info.GetType()}");
-			}
+			T(info is PropertyInfo);
+			var propInfo = (PropertyInfo)info;
 			var value = propInfo.GetValue(c);
-			if(value is not str s || s != "from-info"){
-				throw new Exception($"expected from-info but got {value}");
-			}
+			T(value is str s && s == "from-info");
 			return NIL;
 		});
 		R("GetInfo_PropertyAccessor", async(o)=>{
 			var info = Refl.GetInfo<MyCls>(x => x.MyStr);
-			if(info is not PropertyInfo propInfo){
-				throw new Exception($"expected {nameof(PropertyInfo)} but got {info.GetType()}");
-			}
-			if(propInfo.GetMethod is null || propInfo.SetMethod is null){
-				throw new Exception("expected getter and setter to exist");
-			}
-			if(propInfo.GetMethod.Name != "get_MyStr"){
-				throw new Exception($"expected get_MyStr but got {propInfo.GetMethod.Name}");
-			}
-			if(propInfo.SetMethod.Name != "set_MyStr"){
-				throw new Exception($"expected set_MyStr but got {propInfo.SetMethod.Name}");
-			}
+			T(info is PropertyInfo);
+			var propInfo = (PropertyInfo)info;
+			T(propInfo.GetMethod is not null && propInfo.SetMethod is not null);
+			T(propInfo.GetMethod!.Name == "get_MyStr");
+			T(propInfo.SetMethod!.Name == "set_MyStr");
 			return NIL;
 		});
 		R("GetInfo_SetPropertyValue", async(o)=>{
 			var c = new MyCls();
 			var info = Refl.GetInfo<MyCls>(x => x.MyStr);
-			if(info is not PropertyInfo propInfo){
-				throw new Exception($"expected {nameof(PropertyInfo)} but got {info.GetType()}");
-			}
+			T(info is PropertyInfo);
+			var propInfo = (PropertyInfo)info;
 			propInfo.SetValue(c, "set-by-info");
-			if(c.MyStr != "set-by-info"){
-				throw new Exception($"expected set-by-info but got {c.MyStr}");
-			}
+			T(c.MyStr == "set-by-info");
 			return NIL;
 		});
 		R("GetInfo_CustomAttr", async(o)=>{
 			var info = Refl.GetInfo<MyCls>(x => x.MyStr);
-			if(info is not PropertyInfo propInfo){
-				throw new Exception($"expected {nameof(PropertyInfo)} but got {info.GetType()}");
-			}
+			T(info is PropertyInfo);
+			var propInfo = (PropertyInfo)info;
 			var attr = propInfo.GetCustomAttribute<MyAttr>();
-			if(attr is null){
-				throw new Exception("expected MyAttr but got null");
-			}
-			if(attr.Name != "MyStrProp"){
-				throw new Exception($"expected MyStrProp but got {attr.Name}");
-			}
-			if(attr.Type != typeof(TestExprRefl)){
-				throw new Exception($"expected {typeof(TestExprRefl)} but got {attr.Type}");
-			}
+			T(attr is not null);
+			T(attr!.Name == "MyStrProp");
+			T(attr.Type == typeof(TestExprRefl));
 			return NIL;
 		});
 		R("GetInfo_StandardAttr", async(o)=>{
 			var info = Refl.GetInfo<MyCls>(x => x.LegacyNum);
-			if(info is not PropertyInfo propInfo){
-				throw new Exception($"expected {nameof(PropertyInfo)} but got {info.GetType()}");
-			}
-			if(!propInfo.IsDefined(typeof(ObsoleteAttribute), false)){
-				throw new Exception($"expected {nameof(ObsoleteAttribute)} on {propInfo.Name}");
-			}
+			T(info is PropertyInfo);
+			var propInfo = (PropertyInfo)info;
+			T(propInfo.IsDefined(typeof(ObsoleteAttribute), false));
 			var attr = propInfo.GetCustomAttribute<ObsoleteAttribute>();
-			if(attr is null){
-				throw new Exception($"expected {nameof(ObsoleteAttribute)} but got null");
-			}
-			if(attr.Message != "for-reflection-test"){
-				throw new Exception($"expected for-reflection-test but got {attr.Message}");
-			}
+			T(attr is not null);
+			T(attr!.Message == "for-reflection-test");
 			return NIL;
 		});
 		R("GetInfo_FieldInfo", async(o)=>{
 			var info = Refl.GetInfo<MyCls>(x => x.MyField);
-			if(info is not FieldInfo fieldInfo){
-				throw new Exception($"expected {nameof(FieldInfo)} but got {info.GetType()}");
-			}
-			if(fieldInfo.Name != nameof(MyCls.MyField)){
-				throw new Exception($"expected {nameof(MyCls.MyField)} but got {fieldInfo.Name}");
-			}
-			if(fieldInfo.FieldType != typeof(int)){
-				throw new Exception($"expected {typeof(int)} but got {fieldInfo.FieldType}");
-			}
+			T(info is FieldInfo);
+			var fieldInfo = (FieldInfo)info;
+			T(fieldInfo.Name == nameof(MyCls.MyField));
+			T(fieldInfo.FieldType == typeof(int));
 			return NIL;
 		});
 		R("GetInfo_FieldValue", async(o)=>{
 			var c = new MyCls(){MyField = 7};
 			var info = Refl.GetInfo<MyCls>(x => x.MyField);
-			if(info is not FieldInfo fieldInfo){
-				throw new Exception($"expected {nameof(FieldInfo)} but got {info.GetType()}");
-			}
+			T(info is FieldInfo);
+			var fieldInfo = (FieldInfo)info;
 			var value = fieldInfo.GetValue(c);
-			if(value is not int i || i != 7){
-				throw new Exception($"expected 7 but got {value}");
-			}
+			T(value is int i && i == 7);
 			fieldInfo.SetValue(c, 9);
-			if(c.MyField != 9){
-				throw new Exception($"expected 9 but got {c.MyField}");
-			}
+			T(c.MyField == 9);
 			return NIL;
 		});
 		R("GetInfo_FieldCustomAttrs", async(o)=>{
 			var info = Refl.GetInfo<MyCls>(x => x.MyField);
-			if(info is not FieldInfo fieldInfo){
-				throw new Exception($"expected {nameof(FieldInfo)} but got {info.GetType()}");
-			}
-			if(!fieldInfo.IsDefined(typeof(MyAttr), false)){
-				throw new Exception($"expected {nameof(MyAttr)} on {fieldInfo.Name}");
-			}
+			T(info is FieldInfo);
+			var fieldInfo = (FieldInfo)info;
+			T(fieldInfo.IsDefined(typeof(MyAttr), false));
 			MyAttr? firstAttr = null;
 			var attrCount = 0;
 			foreach(var attr in fieldInfo.GetCustomAttributes<MyAttr>()){
 				firstAttr ??= attr;
 				attrCount++;
 			}
-			if(attrCount != 1){
-				throw new Exception($"expected 1 attr but got {attrCount}");
-			}
-			if(firstAttr is null){
-				throw new Exception($"expected {nameof(MyAttr)} but got null");
-			}
-			if(firstAttr.Name != "MyField"){
-				throw new Exception($"expected MyField but got {firstAttr.Name}");
-			}
-			if(firstAttr.Type != typeof(int)){
-				throw new Exception($"expected {typeof(int)} but got {firstAttr.Type}");
-			}
+			T(attrCount == 1);
+			T(firstAttr is not null);
+			T(firstAttr!.Name == "MyField");
+			T(firstAttr.Type == typeof(int));
+			
+			
 			return NIL;
 		});
 /* 

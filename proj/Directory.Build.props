@@ -14,7 +14,7 @@
 
 	<ItemGroup>
 		<!-- <ProjectReference Include="../../../Tsinswreng.CsTreeTest/proj/Tsinswreng.CsTreeTest/Tsinswreng.CsTreeTest.csproj" /> -->
-		<PackageReference Include="Tsinswreng.CsTreeTest" Version="0.0.1-alpha" />
+		<PackageReference Include="Tsinswreng.CsTreeTest" Version="0.1.1-alpha" />
 		<PackageReference Include="Tsinswreng.CsCore" Version="0.0.1-alpha" />
 		<PackageReference Include="Tsinswreng.CsTools" Version="0.0.1-alpha" />
 		<PackageReference Include="Tsinswreng.CsCfg" Version="0.0.1-alpha" />

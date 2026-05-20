@@ -15,7 +15,8 @@
 	<ItemGroup>
 		<ProjectReference Include="../Ngaq.Core/Ngaq.Core.csproj" />
 		<ProjectReference Include="../Ngaq.Backend/Ngaq.Backend.csproj" />
-		<ProjectReference Include="../Tsinswreng.CsTreeTest/proj/Tsinswreng.CsTreeTest/Tsinswreng.CsTreeTest.csproj" />
+		<!-- <ProjectReference Include="../Tsinswreng.CsTreeTest/proj/Tsinswreng.CsTreeTest/Tsinswreng.CsTreeTest.csproj" /> -->
+		<!-- <PackageReference Include="Tsinswreng.CsTreeTest" Version="0.1.1-alpha" /> -->
 	</ItemGroup>
 
 	<ItemGroup>
