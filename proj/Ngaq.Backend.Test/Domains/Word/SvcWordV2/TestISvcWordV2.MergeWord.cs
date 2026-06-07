@@ -1,5 +1,6 @@
 using Ngaq.Core.Model.Po.Kv;
 using Ngaq.Core.Model.Po.Learn_;
+using Ngaq.Core.Shared.Base.Models.Po;
 using Ngaq.Core.Shared.User.Models.Po.User;
 using Ngaq.Core.Shared.Word.Models;
 using Ngaq.Core.Shared.Word.Models.Learn_;
@@ -186,6 +187,73 @@ public partial class TestISvcWordV2{
 						.Where(x=>x.WordId == word.Id && x.LearnResult == ELearn.Add)
 						.ToList();
 					Assert.IsTrue(learns.Count == 2, "MergeWord_NewDescrAsAdd should add learns for only newly-added descriptions");
+					return NIL;
+				});
+				return NIL;
+			}
+			finally{
+				await TryCleanupByHeadOwner(owner, token);
+			}
+		});
+
+		R("MergeWord_WhenLocalSoftDeleted_Should_RestoreRootEvenWithoutNewAssets", async(o)=>{
+			var owner = new IdUser();
+			var token = "ut_wv2_merge_restore_" + Guid.NewGuid().ToString("N");
+			var head = token + "_h1";
+			var local = new PoWord{
+				Id = new IdWord(),
+				Owner = owner,
+				Head = head,
+				Lang = "en",
+			};
+			var oldDesc = new PoWordProp{
+				Id = new IdWordProp(),
+				WordId = local.Id,
+				KType = EKvType.Str,
+				KStr = KeysProp.Inst.description,
+				VType = EKvType.Str,
+				VStr = token + "_d0",
+			};
+			var remote = new JnWord{
+				Word = new PoWord{
+					Id = new IdWord(),
+					Owner = owner,
+					Head = head,
+					Lang = "en",
+				},
+				Props = [
+					new PoWordProp{
+						Id = oldDesc.Id,
+						KType = EKvType.Str,
+						KStr = KeysProp.Inst.description,
+						VType = EKvType.Str,
+						VStr = token + "_d0",
+					},
+				],
+				Learns = [],
+			};
+			remote.EnsureForeignId();
+
+			try{
+				await RunNoTxn(async(Ctx)=>{
+					await RepoWord.BatAdd(Ctx, AsyE(local), CT.None);
+					await RepoProp.BatAdd(Ctx, AsyE(oldDesc), CT.None);
+					return NIL;
+				});
+				await SvcWordV2.SoftDelPoWordInId(MkUserCtx(owner), AsyE(local.Id), CT.None);
+
+				await SvcWordV2.MergeWord(MkUserCtx(owner), AsyE(remote), CT.None);
+
+				await RunNoTxn(async(Ctx)=>{
+					var words = await ToList(RepoWord.GetAll(Ctx, CT.None));
+					var gotWord = words.FirstOrDefault(x=>x.Owner == owner && x.Head == head && x.Lang == "en")
+						?? throw new Exception("merged word should exist");
+					Assert.IsTrue(!gotWord.IsDeleted(), "MergeWord should restore deleted root when same biz-id is merged");
+
+					var descs = (await ToList(RepoProp.GetAll(Ctx, CT.None)))
+						.Where(x=>x.WordId == gotWord.Id && x.KStr == KeysProp.Inst.description)
+						.ToList();
+					Assert.IsTrue(descs.Count == 1, "MergeWord should not duplicate existing assets when restoring root");
 					return NIL;
 				});
 				return NIL;

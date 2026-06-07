@@ -1,5 +1,6 @@
 using Ngaq.Core.Test;
 using Ngaq.Backend.Test;
+using Ngaq.Ui.Test;
 using Ngaq.Windows.Test.Frontend.User.Svc;
 using Tsinswreng.CsTreeTest;
 
@@ -11,6 +12,7 @@ public class WindowsTestMgr:DiEtTestMgr{
 		Test = this.TestNode;
 		this.RegisterSubMgr(LocalTestMgr.Inst);
 		this.RegisterSubMgr(CoreTestMgr.Inst);
+		this.RegisterSubMgr(UiTestMgr.Inst);
 		this.RegisterTester<TestSvcTokenStorage>();
 		return Test;
 	}

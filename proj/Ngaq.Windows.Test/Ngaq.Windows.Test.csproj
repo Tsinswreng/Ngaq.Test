@@ -11,6 +11,7 @@
 	<ItemGroup>
 		<ProjectReference Include="../Ngaq.Core.Test/Ngaq.Core.Test.csproj" />
 		<ProjectReference Include="../Ngaq.Backend.Test/Ngaq.Backend.Test.csproj" />
+		<ProjectReference Include="../Ngaq.Ui.Test/Ngaq.Ui.Test.csproj" />
 	</ItemGroup>
 
 </Project>
