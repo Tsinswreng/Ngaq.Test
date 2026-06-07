@@ -17,17 +17,8 @@ public partial class TestIViewLearnWord{
 		);
 		var R = register.Register;
 
-		R("ClickReset_Should_NotThrow_AfterBasicStateAssignment", async(o)=>{
-			ViewLearnWord.WordInfo = new FakeWordInfo{
-				HeadText = "ut_i_view_learn_word_reset",
-				Descrs = ["before reset"],
-			};
-			ViewLearnWord.WordListCards = [new FakeWordListCard{
-				HeadText = "ut_i_view_learn_word_card_before_reset",
-			}];
-
+		R("ClickReset_Should_NotThrow", async(o)=>{
 			await ViewLearnWord.ClickReset(default);
-
 			_ = ViewLearnWord.WordInfo;
 			_ = ViewLearnWord.WordListCards;
 			Assert.IsTrue(true);

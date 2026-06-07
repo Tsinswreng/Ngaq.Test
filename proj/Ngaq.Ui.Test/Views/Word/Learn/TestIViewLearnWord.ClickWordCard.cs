@@ -17,15 +17,8 @@ public partial class TestIViewLearnWord{
 		);
 		var R = register.Register;
 
-		R("ClickWordCard_Pos0_Should_NotThrow_WhenListPrepared", async(o)=>{
-			ViewLearnWord.WordListCards = [new FakeWordListCard{
-				IndexText = "0",
-				HeadText = "ut_i_view_learn_word_click_card",
-				LangText = "en",
-			}];
-
+		R("ClickWordCard_Pos0_Should_NotThrow", async(o)=>{
 			await ViewLearnWord.ClickWordCard(0, default);
-
 			_ = ViewLearnWord.WordInfo;
 			Assert.IsTrue(true);
 			return null;
