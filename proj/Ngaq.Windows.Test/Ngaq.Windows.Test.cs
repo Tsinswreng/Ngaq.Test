@@ -17,6 +17,7 @@ using Ngaq.Backend.Di;
 using Ngaq.Core;
 using Ngaq.Core.Shared.Audio;
 using Ngaq.Ui;
+using Ngaq.Ui.Views;
 using Ngaq.Ui.Views.Word.Learn;
 using Tsinswreng.CsCore;
 using Tsinswreng.CsTreeTest;
@@ -63,6 +64,7 @@ internal class Program{
 
 		Dispatcher.UIThread.Post(async () => {
 			try{
+				_ = MainView.Inst;
 				ITestExecutor executor = new TreeTestExecutor();
 				await executor.RunEtPrint(mgr.TestNode);
 			}catch(Exception ex){

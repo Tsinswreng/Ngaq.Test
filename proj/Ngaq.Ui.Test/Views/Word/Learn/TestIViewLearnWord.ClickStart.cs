@@ -14,7 +14,9 @@ public partial class TestIViewLearnWord{
 		var R = register.Register;
 
 		R("ClickStart_Should_NotThrow_And_KeepContractReachable", async(o)=>{
-			await ViewLearnWord.ClickStart(default);
+			await AssertNoUnhandledUiException(async ()=>{
+				await ViewLearnWord.ClickStart(default);
+			});
 			_ = ViewLearnWord.WordInfo;
 			_ = ViewLearnWord.WordListCards;
 			Assert.IsTrue(true);
