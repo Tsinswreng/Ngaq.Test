@@ -1,8 +1,4 @@
-using Avalonia.Media;
 using Ngaq.Ui.Views.Word.Learn;
-using Ngaq.Ui.Views.Word.WordCard;
-using Ngaq.Ui.Views.Word.WordInfo;
-using Tsinswreng.CsCore;
 using Tsinswreng.CsTreeTest;
 
 namespace Ngaq.Ui.Test.Views.Word.Learn;
@@ -39,37 +35,5 @@ public partial class TestIViewLearnWord: ITester{
 		RegisterWordInfo(Node);
 		RegisterWordListCards(Node);
 		return Node;
-	}
-
-	/// <summary>
-	/// 測試用的 `IViewWordInfo` 假實現，用來驗證接口層的入參/出參契約。
-	/// </summary>
-	internal sealed class FakeWordInfo: IViewWordInfo{
-		public str HeadText{get;set;} = "";
-		public IList<str>? Descrs{get;set;} = [];
-	}
-
-	/// <summary>
-	/// 測試用的 `IViewWordListCard` 假實現。
-	/// 後續若要加深斷言，可在此補更多可觀察狀態。
-	/// </summary>
-	internal sealed class FakeWordListCard: IViewWordListCard{
-		public str IndexText{get;set;} = "";
-		public str LangText{get;set;} = "";
-		public str HeadText{get;set;} = "";
-		public str LearnHistoryText{get;set;} = "";
-		public str LastLearnedTimeText{get;set;} = "";
-		public str WeightText{get;set;} = "";
-		public IBrush HeadFontColor{get;set;} = Brushes.Transparent;
-		public IBrush LearnedColor{get;set;} = Brushes.Transparent;
-
-		/// <summary>
-		/// 假卡片點擊，當前僅保持接口可調用。
-		/// </summary>
-		/// <param name="Ct">取消令牌。</param>
-		/// <returns>固定返回空值。</returns>
-		public Task<nil> Click(CT Ct){
-			return Task.FromResult<nil>(NIL);
-		}
 	}
 }

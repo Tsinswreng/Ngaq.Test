@@ -14,4 +14,8 @@
 		<ProjectReference Include="../Ngaq.Ui.Test/Ngaq.Ui.Test.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<PackageReference Include="Avalonia.Desktop" Version="11.3.8" />
+	</ItemGroup>
+
 </Project>
