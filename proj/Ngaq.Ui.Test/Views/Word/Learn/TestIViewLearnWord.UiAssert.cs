@@ -38,4 +38,27 @@ public partial class TestIViewLearnWord{
 
 		return NIL;
 	}
+
+	protected async Task<T> RunOnUiAsync<T>(
+		Func<T> Fn
+	){
+		return await Dispatcher.UIThread.InvokeAsync(Fn);
+	}
+
+	protected async Task WaitUntilUiAsync(
+		Func<bool> Pred
+		,str FailMsg
+		,int TimeoutMs = 3000
+	){
+		var startAt = Environment.TickCount64;
+		while(true){
+			if(await RunOnUiAsync(Pred)){
+				return;
+			}
+			if(Environment.TickCount64 - startAt >= TimeoutMs){
+				throw new TimeoutException(FailMsg);
+			}
+			await Task.Delay(20);
+		}
+	}
 }

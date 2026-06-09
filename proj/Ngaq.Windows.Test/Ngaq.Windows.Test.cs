@@ -9,6 +9,7 @@ dotnet publish -c Release -r win-x64
 #endif
 
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,7 @@ using Ngaq.Backend.Di;
 using Ngaq.Core;
 using Ngaq.Core.Shared.Audio;
 using Ngaq.Ui;
+using Ngaq.Ui.Infra;
 using Ngaq.Ui.Views;
 using Ngaq.Ui.Views.Word.Learn;
 using Tsinswreng.CsCore;
@@ -57,6 +59,8 @@ internal class Program{
 			return sp2;
 		});
 
+		lifetime.MainWindow = new MainWindow();
+
 		Dispatcher.UIThread.UnhandledException += (s, e) => {
 			Console.Error.WriteLine($"[TEST] Unhandled UI exception: {e.Exception?.GetBaseException()?.Message}");
 			e.Handled = true;
@@ -65,6 +69,10 @@ internal class Program{
 		Dispatcher.UIThread.Post(async () => {
 			try{
 				_ = MainView.Inst;
+				if(SvcProvdr.GetService<IViewLearnWord>() is Control learnView){
+					MgrViewNavi.Inst.ViewNavi?.GoTo(learnView);
+					await Dispatcher.UIThread.InvokeAsync(() => { });
+				}
 				ITestExecutor executor = new TreeTestExecutor();
 				await executor.RunEtPrint(mgr.TestNode);
 			}catch(Exception ex){
