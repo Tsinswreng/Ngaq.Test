@@ -55,7 +55,7 @@ public static class UiTestTools{
 	public static async Task WaitUntilUiAsync(
 		Func<bool> Pred
 		,str FailMsg
-		,int TimeoutMs = 3000
+		,i64 TimeoutMs = 3000
 	){
 		var startAt = Environment.TickCount64;
 		while(true){
@@ -95,6 +95,33 @@ public static class UiTestTools{
 		}
 		finally{
 			Source.PropertyChanged -= OnChanged;
+		}
+	}
+
+	/// 先訂閱普通 EventHandler 事件，再執行操作，最後等待事件到達。
+	/// 適用於 View 契約中以 DoneXxx 表達“本次 UI 操作流程已結束”的場景。
+	public static async Task<EventArgs> AwaitEventAsync(
+		Action<EventHandler> Subscribe
+		,Action<EventHandler> Unsubscribe
+		,Func<Task> Act
+		,int TimeoutMs = 3000
+	){
+		var tcs = new TaskCompletionSource<EventArgs>();
+		void OnEvent(object? Sender, EventArgs E){
+			tcs.TrySetResult(E);
+		}
+
+		Subscribe(OnEvent);
+		try{
+			await Act();
+			var done = await Task.WhenAny(tcs.Task, Task.Delay(TimeoutMs));
+			if(done != tcs.Task){
+				throw new TimeoutException($"Expected event within {TimeoutMs} ms.");
+			}
+			return await tcs.Task;
+		}
+		finally{
+			Unsubscribe(OnEvent);
 		}
 	}
 }

@@ -22,6 +22,7 @@ using Ngaq.Ui.Infra;
 using Ngaq.Ui.Test;
 using Ngaq.Ui.Views;
 using Ngaq.Ui.Views.Word.Learn;
+using Ngaq.Ui.Views.Word.WordEditV2;
 using Tsinswreng.CsTreeTest;
 
 namespace Ngaq.Ui.Windows.Test;
@@ -54,6 +55,8 @@ internal class Program{
 
 			var view = new ViewLearnWords();
 			sc.AddSingleton<IViewLearnWord>(view);
+			var wordEditV2 = new ViewWordEditV2();
+			sc.AddSingleton<IViewWordEditV2>(wordEditV2);
 			var sp2 = sc.BuildServiceProvider();
 			App.SetSvcProvider(sp2);
 			return sp2;
