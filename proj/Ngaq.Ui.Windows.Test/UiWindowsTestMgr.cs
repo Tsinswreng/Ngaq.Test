@@ -1,18 +1,18 @@
 using Ngaq.Core.Test;
 using Ngaq.Backend.Test;
-using Ngaq.Windows.Test.Frontend.User.Svc;
+using Ngaq.Ui.Test;
 using Tsinswreng.CsTreeTest;
 
-namespace Ngaq.Windows.Test;
+namespace Ngaq.Ui.Windows.Test;
 
-public class WindowsTestMgr:DiEtTestMgr{
-	public static WindowsTestMgr Inst = new();
+public class UiWindowsTestMgr:DiEtTestMgr{
+	public static UiWindowsTestMgr Inst = new();
+
 	public override ITestNode RegisterTestsInto(ITestNode? Test){
 		Test = this.TestNode;
 		this.RegisterSubMgr(LocalTestMgr.Inst);
 		this.RegisterSubMgr(CoreTestMgr.Inst);
-		this.RegisterTester<TestSvcTokenStorage>();
+		this.RegisterSubMgr(UiTestMgr.Inst);
 		return Test;
 	}
-
 }

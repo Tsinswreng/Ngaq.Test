@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
@@ -7,10 +7,15 @@
 		<Nullable>enable</Nullable>
 		<PublishAot>true</PublishAot>
 	</PropertyGroup>
-	
+
 	<ItemGroup>
 		<ProjectReference Include="../Ngaq.Core.Test/Ngaq.Core.Test.csproj" />
 		<ProjectReference Include="../Ngaq.Backend.Test/Ngaq.Backend.Test.csproj" />
+		<ProjectReference Include="../Ngaq.Ui.Test/Ngaq.Ui.Test.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Avalonia.Desktop" Version="11.3.8" />
 	</ItemGroup>
 
 </Project>
