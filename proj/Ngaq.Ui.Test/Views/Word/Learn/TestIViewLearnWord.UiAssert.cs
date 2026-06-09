@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.ComponentModel;
 using Avalonia.Threading;
 using Tsinswreng.CsCore;
 
@@ -59,6 +60,33 @@ public partial class TestIViewLearnWord{
 				throw new TimeoutException(FailMsg);
 			}
 			await Task.Delay(20);
+		}
+	}
+
+	protected async Task<PropertyChangedEventArgs> AwaitPropertyChangedAsync(
+		INotifyPropertyChanged Source
+		,str PropertyName
+		,Func<Task> Act
+		,int TimeoutMs = 3000
+	){
+		var tcs = new TaskCompletionSource<PropertyChangedEventArgs>();
+		void OnChanged(object? Sender, PropertyChangedEventArgs E){
+			if(E.PropertyName == PropertyName){
+				tcs.TrySetResult(E);
+			}
+		}
+
+		Source.PropertyChanged += OnChanged;
+		try{
+			await Act();
+			var done = await Task.WhenAny(tcs.Task, Task.Delay(TimeoutMs));
+			if(done != tcs.Task){
+				throw new TimeoutException($"Expected PropertyChanged('{PropertyName}') within {TimeoutMs} ms.");
+			}
+			return await tcs.Task;
+		}
+		finally{
+			Source.PropertyChanged -= OnChanged;
 		}
 	}
 }

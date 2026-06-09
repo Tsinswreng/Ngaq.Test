@@ -50,6 +50,7 @@ public partial class TestIViewLearnWord: ITester{
 		RegisterClickWordCard(Node);
 		RegisterWordInfo(Node);
 		RegisterWordListCards(Node);
+		RegisterEventDrivenExamples(Node);
 		return Node;
 	}
 

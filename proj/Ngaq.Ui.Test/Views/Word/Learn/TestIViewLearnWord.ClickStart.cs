@@ -45,7 +45,6 @@ public partial class TestIViewLearnWord{
 					await PrintClickStartDiag();
 					throw;
 				}
-
 				var cards = await RunOnUiAsync(()=>ViewLearnWord.WordListCards);
 				if(cards is null){
 					await PrintClickStartDiag();
