@@ -20,24 +20,24 @@ public partial class TestIViewLearnWord{
 		var R = register.Register;
 
 		R("EventDriven_ClickReset_Should_Raise_WordInfo_PropertyChanged", async(o)=>{
-			await AwaitPropertyChangedAsync(
+			await UiTestTools.AwaitPropertyChangedAsync(
 				ViewLearnWord,
 				nameof(IViewLearnWord.WordInfo),
-				()=>AssertNoUnhandledUiException(async ()=>{
+				()=>UiTestTools.AssertNoUnhandledUiException(async ()=>{
 					await ViewLearnWord.ClickReset(default);
 				})
 			);
 
-			var wordInfo = await RunOnUiAsync(()=>ViewLearnWord.WordInfo);
+			var wordInfo = await UiTestTools.RunOnUiAsync(()=>ViewLearnWord.WordInfo);
 			Assert.IsTrue(wordInfo is not null, "ClickReset should keep WordInfo readable.");
 			return null;
 		});
 
 		R("EventDriven_WordInfo_Should_Raise_When_Reset_Changes_Output", async(o)=>{
-			var evt = await AwaitPropertyChangedAsync(
+			var evt = await UiTestTools.AwaitPropertyChangedAsync(
 				ViewLearnWord,
 				nameof(IViewLearnWord.WordInfo),
-				()=>AssertNoUnhandledUiException(async ()=>{
+				()=>UiTestTools.AssertNoUnhandledUiException(async ()=>{
 					await ViewLearnWord.ClickReset(default);
 				})
 			);
@@ -62,10 +62,10 @@ public partial class TestIViewLearnWord{
 					return NIL;
 				});
 
-				var evt = await AwaitPropertyChangedAsync(
+				var evt = await UiTestTools.AwaitPropertyChangedAsync(
 					ViewLearnWord,
 					nameof(IViewLearnWord.WordInfo),
-					()=>AssertNoUnhandledUiException(async ()=>{
+					()=>UiTestTools.AssertNoUnhandledUiException(async ()=>{
 						await ViewLearnWord.ClickReset(default);
 						await ViewLearnWord.ClickStart(default);
 					})
@@ -75,7 +75,7 @@ public partial class TestIViewLearnWord{
 				return null;
 			}
 			finally{
-				await AssertNoUnhandledUiException(async ()=>{
+				await UiTestTools.AssertNoUnhandledUiException(async ()=>{
 					await ViewLearnWord.ClickReset(default);
 				});
 				await RunNoTxn(async(Ctx)=>{

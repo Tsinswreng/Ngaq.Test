@@ -1,12 +1,16 @@
 using System.Collections.Concurrent;
 using System.ComponentModel;
 using Avalonia.Threading;
-using Tsinswreng.CsCore;
 
-namespace Ngaq.Ui.Test.Views.Word.Learn;
+namespace Ngaq.Ui.Test;
 
-public partial class TestIViewLearnWord{
-	protected async Task<nil> AssertNoUnhandledUiException(Func<Task> Fn){
+/// UI 測試通用輔助工具。
+/// 集中放置 UI 線程調度、未處理異常捕獲、輪詢等待與事件等待，
+/// 避免把測試基礎設施綁死在某個具體 tester 類中。
+public static class UiTestTools{
+	/// 在指定操作期間捕獲 Avalonia UI 線程上的未處理異常。
+	/// 若操作或 UI 後續派發過程中出現未處理異常，則在此處統一轉成測試失敗。
+	public static async Task<nil> AssertNoUnhandledUiException(Func<Task> Fn){
 		var exceptions = new ConcurrentQueue<Exception>();
 		void OnUnhandledException(object? Sender, DispatcherUnhandledExceptionEventArgs E){
 			exceptions.Enqueue(E.Exception);
@@ -19,8 +23,8 @@ public partial class TestIViewLearnWord{
 				try{
 					await Fn();
 					tcs.SetResult(null);
-				}catch(Exception ex){
-					tcs.SetException(ex);
+				}catch(Exception Ex){
+					tcs.SetException(Ex);
 				}
 			});
 			await tcs.Task;
@@ -30,9 +34,9 @@ public partial class TestIViewLearnWord{
 		}
 
 		if(exceptions.TryDequeue(out var firstEx)){
-			var exList = new List<Exception>{ firstEx };
-			while(exceptions.TryDequeue(out var ex)){
-				exList.Add(ex);
+			var exList = new List<Exception>{firstEx};
+			while(exceptions.TryDequeue(out var Ex)){
+				exList.Add(Ex);
 			}
 			throw new AggregateException("Unhandled UI exception captured during current test case.", exList);
 		}
@@ -40,13 +44,15 @@ public partial class TestIViewLearnWord{
 		return NIL;
 	}
 
-	protected async Task<T> RunOnUiAsync<T>(
-		Func<T> Fn
-	){
+	/// 把委託切到 Avalonia UI 線程執行，並返回其結果。
+	/// 供測試安全讀取控件屬性或操作 UI 對象。
+	public static async Task<T> RunOnUiAsync<T>(Func<T> Fn){
 		return await Dispatcher.UIThread.InvokeAsync(Fn);
 	}
 
-	protected async Task WaitUntilUiAsync(
+	/// 輪詢等待 UI 條件成立。
+	/// 適用於目前尚未建立穩定事件信號、只能從最終可觀測狀態判斷完成的場景。
+	public static async Task WaitUntilUiAsync(
 		Func<bool> Pred
 		,str FailMsg
 		,int TimeoutMs = 3000
@@ -63,7 +69,9 @@ public partial class TestIViewLearnWord{
 		}
 	}
 
-	protected async Task<PropertyChangedEventArgs> AwaitPropertyChangedAsync(
+	/// 先訂閱 PropertyChanged，再執行操作，最後等待指定屬性的變化事件。
+	/// 若超時仍未收到事件，則視為事件驅動契約未達成。
+	public static async Task<PropertyChangedEventArgs> AwaitPropertyChangedAsync(
 		INotifyPropertyChanged Source
 		,str PropertyName
 		,Func<Task> Act

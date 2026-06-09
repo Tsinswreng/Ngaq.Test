@@ -32,12 +32,12 @@ public partial class TestIViewLearnWord{
 					return NIL;
 				});
 
-				await AssertNoUnhandledUiException(async ()=>{
+				await UiTestTools.AssertNoUnhandledUiException(async ()=>{
 					await ViewLearnWord.ClickReset(default);
 					await ViewLearnWord.ClickStart(default);
 				});
 				try{
-					await WaitUntilUiAsync(
+					await UiTestTools.WaitUntilUiAsync(
 						()=>ViewLearnWord.WordListCards?.Count > 0,
 						"ClickStart should render word cards after seeded data is prepared."
 					);
@@ -45,7 +45,7 @@ public partial class TestIViewLearnWord{
 					await PrintClickStartDiag();
 					throw;
 				}
-				var cards = await RunOnUiAsync(()=>ViewLearnWord.WordListCards);
+				var cards = await UiTestTools.RunOnUiAsync(()=>ViewLearnWord.WordListCards);
 				if(cards is null){
 					await PrintClickStartDiag();
 					throw new Exception("ClickStart should expose WordListCards after start.");
@@ -57,7 +57,7 @@ public partial class TestIViewLearnWord{
 				return null;
 			}
 			finally{
-				await AssertNoUnhandledUiException(async ()=>{
+				await UiTestTools.AssertNoUnhandledUiException(async ()=>{
 					await ViewLearnWord.ClickReset(default);
 				});
 				await RunNoTxn(async(Ctx)=>{

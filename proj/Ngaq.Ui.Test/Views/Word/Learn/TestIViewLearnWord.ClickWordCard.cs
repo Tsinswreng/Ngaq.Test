@@ -14,7 +14,7 @@ public partial class TestIViewLearnWord{
 		var R = register.Register;
 
 		R("ClickWordCard_Pos0_Should_NotThrow", async(o)=>{
-			await AssertNoUnhandledUiException(async ()=>{
+			await UiTestTools.AssertNoUnhandledUiException(async ()=>{
 				await ViewLearnWord.ClickWordCard(0, default);
 			});
 			_ = ViewLearnWord.WordInfo;
