@@ -38,7 +38,7 @@ public partial class TestISvcStudyPlan{
 				BizUpdatedAt = 5101,
 			};
 			await RunNoTxn(async(ctx)=>{
-				await RepoStudyPlan.BatAdd(ctx, AsyE(sp), CT.None);
+				await RepoStudyPlan.OrdAdd(ctx, AsyE(sp), CT.None);
 				return NIL;
 			});
 			_studyPlanIds.Add(sp.Id);
@@ -90,10 +90,10 @@ public partial class TestISvcStudyPlan{
 			};
 
 			await RunNoTxn(async(ctx)=>{
-				await RepoPreFilter.BatAdd(ctx, AsyE(preFilter), CT.None);
-				await RepoWeightArg.BatAdd(ctx, AsyE(weightArg), CT.None);
-				await RepoWeightCalculator.BatAdd(ctx, AsyE(weightCalculator), CT.None);
-				await RepoStudyPlan.BatAdd(ctx, AsyE(studyPlan), CT.None);
+				await RepoPreFilter.OrdAdd(ctx, AsyE(preFilter), CT.None);
+				await RepoWeightArg.OrdAdd(ctx, AsyE(weightArg), CT.None);
+				await RepoWeightCalculator.OrdAdd(ctx, AsyE(weightCalculator), CT.None);
+				await RepoStudyPlan.OrdAdd(ctx, AsyE(studyPlan), CT.None);
 				return NIL;
 			});
 			_preFilterIds.Add(preFilter.Id);
@@ -157,10 +157,10 @@ public partial class TestISvcStudyPlan{
 			};
 
 			await RunNoTxn(async(ctx)=>{
-				await RepoPreFilter.BatAdd(ctx, AsyE(preFilter), CT.None);
-				await RepoWeightArg.BatAdd(ctx, AsyE(weightArg), CT.None);
-				await RepoWeightCalculator.BatAdd(ctx, AsyE(weightCalculator), CT.None);
-				await RepoStudyPlan.BatAdd(ctx, AsyE(studyPlan), CT.None);
+				await RepoPreFilter.OrdAdd(ctx, AsyE(preFilter), CT.None);
+				await RepoWeightArg.OrdAdd(ctx, AsyE(weightArg), CT.None);
+				await RepoWeightCalculator.OrdAdd(ctx, AsyE(weightCalculator), CT.None);
+				await RepoStudyPlan.OrdAdd(ctx, AsyE(studyPlan), CT.None);
 				return NIL;
 			});
 			_preFilterIds.Add(preFilter.Id);
@@ -207,8 +207,8 @@ public partial class TestISvcStudyPlan{
 				BizUpdatedAt = 5401,
 			};
 			await RunNoTxn(async(ctx)=>{
-				await RepoWeightCalculator.BatAdd(ctx, AsyE(weightCalculator), CT.None);
-				await RepoStudyPlan.BatAdd(ctx, AsyE(studyPlan), CT.None);
+				await RepoWeightCalculator.OrdAdd(ctx, AsyE(weightCalculator), CT.None);
+				await RepoStudyPlan.OrdAdd(ctx, AsyE(studyPlan), CT.None);
 				return NIL;
 			});
 			_weightCalculatorIds.Add(weightCalculator.Id);

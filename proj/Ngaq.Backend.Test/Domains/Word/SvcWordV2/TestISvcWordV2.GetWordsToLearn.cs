@@ -37,7 +37,7 @@ public partial class TestISvcWordV2{
 
 			try{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatAdd(Ctx, AsyE(words), CT.None);
+					await RepoWord.OrdAdd(Ctx, AsyE(words), CT.None);
 					return NIL;
 				});
 
@@ -59,7 +59,7 @@ public partial class TestISvcWordV2{
 			}
 			finally{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatHardDelById(Ctx, AsyE(words.Select(x=>x.Id).ToArray()), CT.None);
+					await RepoWord.OrdHardDelById(Ctx, AsyE(words.Select(x=>x.Id).ToArray()), CT.None);
 					return NIL;
 				});
 			}
@@ -82,7 +82,7 @@ public partial class TestISvcWordV2{
 			var del = new PoWord{Id = new IdWord(), Owner = owner, Head = token + "_del", Lang = "en"};
 			try{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatAdd(Ctx, AsyE(keep, del), CT.None);
+					await RepoWord.OrdAdd(Ctx, AsyE(keep, del), CT.None);
 					await RepoWord.SoftDelInId(Ctx, AsyE(del.Id), CT.None);
 					return NIL;
 				});
@@ -94,7 +94,7 @@ public partial class TestISvcWordV2{
 			}
 			finally{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatHardDelById(Ctx, AsyE(keep.Id, del.Id), CT.None);
+					await RepoWord.OrdHardDelById(Ctx, AsyE(keep.Id, del.Id), CT.None);
 					return NIL;
 				});
 			}
@@ -125,7 +125,7 @@ public partial class TestISvcWordV2{
 
 			try{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatAdd(Ctx, AsyE(words), CT.None);
+					await RepoWord.OrdAdd(Ctx, AsyE(words), CT.None);
 					return NIL;
 				});
 
@@ -136,7 +136,7 @@ public partial class TestISvcWordV2{
 			}
 			finally{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatHardDelById(Ctx, AsyE(words.Select(x=>x.Id).ToArray()), CT.None);
+					await RepoWord.OrdHardDelById(Ctx, AsyE(words.Select(x=>x.Id).ToArray()), CT.None);
 					return NIL;
 				});
 			}
@@ -182,10 +182,10 @@ public partial class TestISvcWordV2{
 
 			try{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatAdd(Ctx, AsyE(words), CT.None);
-					await RepoPreFilter.BatAdd(Ctx, AsyE(poPreFilter), CT.None);
-					await RepoStudyPlan.BatAdd(Ctx, AsyE(poStudyPlan), CT.None);
-					await RepoKv.BatAdd(Ctx, AsyE(poCurStudyPlanKv), CT.None);
+					await RepoWord.OrdAdd(Ctx, AsyE(words), CT.None);
+					await RepoPreFilter.OrdAdd(Ctx, AsyE(poPreFilter), CT.None);
+					await RepoStudyPlan.OrdAdd(Ctx, AsyE(poStudyPlan), CT.None);
+					await RepoKv.OrdAdd(Ctx, AsyE(poCurStudyPlanKv), CT.None);
 					return NIL;
 				});
 
@@ -196,10 +196,10 @@ public partial class TestISvcWordV2{
 			}
 			finally{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoKv.BatHardDelById(Ctx, AsyE(poCurStudyPlanKv.Id), CT.None);
-					await RepoStudyPlan.BatHardDelById(Ctx, AsyE(poStudyPlan.Id), CT.None);
-					await RepoPreFilter.BatHardDelById(Ctx, AsyE(poPreFilter.Id), CT.None);
-					await RepoWord.BatHardDelById(Ctx, AsyE(words.Select(x=>x.Id).ToArray()), CT.None);
+					await RepoKv.OrdHardDelById(Ctx, AsyE(poCurStudyPlanKv.Id), CT.None);
+					await RepoStudyPlan.OrdHardDelById(Ctx, AsyE(poStudyPlan.Id), CT.None);
+					await RepoPreFilter.OrdHardDelById(Ctx, AsyE(poPreFilter.Id), CT.None);
+					await RepoWord.OrdHardDelById(Ctx, AsyE(words.Select(x=>x.Id).ToArray()), CT.None);
 					return NIL;
 				});
 			}

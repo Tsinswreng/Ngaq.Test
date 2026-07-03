@@ -31,7 +31,7 @@ public partial class TestISvcNormLang{
 			_ids.Add(row.Id);
 
 			await RunNoTxn(async(Ctx)=>{
-				var got = await RepoNormLang.BatGetByIdWithDel(Ctx, AsyE(row.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var got = await RepoNormLang.OrdGetByIdWithDel(Ctx, AsyE(row.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				if(got is null){
 					throw new Exception("BatAddNormLang should insert row");
 				}
@@ -80,7 +80,7 @@ public partial class TestISvcNormLang{
 				NativeName = "neo",
 			};
 			await RunNoTxn(async(Ctx)=>{
-				await RepoNormLang.BatAdd(Ctx, AsyE(existing), CT.None);
+				await RepoNormLang.OrdAdd(Ctx, AsyE(existing), CT.None);
 				return NIL;
 			});
 			_ids.Add(existing.Id);

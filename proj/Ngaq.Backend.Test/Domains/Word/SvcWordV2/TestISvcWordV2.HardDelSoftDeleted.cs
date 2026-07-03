@@ -65,30 +65,30 @@ public partial class TestISvcWordV2{
 
 			try{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatAdd(Ctx, AsyE(alive, deleted), CT.None);
-					await RepoProp.BatAdd(Ctx, AsyE(aliveProp, deletedProp), CT.None);
-					await RepoLearn.BatAdd(Ctx, AsyE(aliveLearn, deletedLearn), CT.None);
-					await RepoWord.BatSoftDelById(Ctx, AsyE(deleted.Id), CT.None);
+					await RepoWord.OrdAdd(Ctx, AsyE(alive, deleted), CT.None);
+					await RepoProp.OrdAdd(Ctx, AsyE(aliveProp, deletedProp), CT.None);
+					await RepoLearn.OrdAdd(Ctx, AsyE(aliveLearn, deletedLearn), CT.None);
+					await RepoWord.OrdSoftDelById(Ctx, AsyE(deleted.Id), CT.None);
 					return NIL;
 				});
 
 				await SvcWordV2.HardDelSoftDeleted(MkUserCtx(owner), CT.None);
 
 				await RunNoTxn(async(Ctx)=>{
-					var aliveWord = await ToList(RepoWord.BatGetByIdWithDel(Ctx, AsyE(alive.Id), CT.None));
+					var aliveWord = await ToList(RepoWord.OrdGetByIdWithDel(Ctx, AsyE(alive.Id), CT.None));
 					Assert.IsTrue(aliveWord.Count == 1 && aliveWord[0] is not null && !aliveWord[0]!.IsDeleted(), "alive root should remain");
 
-					var deletedWord = await ToList(RepoWord.BatGetByIdWithDel(Ctx, AsyE(deleted.Id), CT.None));
+					var deletedWord = await ToList(RepoWord.OrdGetByIdWithDel(Ctx, AsyE(deleted.Id), CT.None));
 					Assert.IsTrue(deletedWord.Count == 1 && deletedWord[0] is null, "soft-deleted root should be hard-deleted");
 
-					var alivePropGot = await ToList(RepoProp.GetManyInIdWithDel(Ctx, AsyE(aliveProp.Id), CT.None));
+					var alivePropGot = await ToList(RepoProp.GetInIdsWithDel(Ctx, AsyE(aliveProp.Id), CT.None));
 					Assert.IsTrue(alivePropGot.Count == 1 && alivePropGot[0] is not null, "alive word prop should remain");
-					var deletedPropGot = await ToList(RepoProp.GetManyInIdWithDel(Ctx, AsyE(deletedProp.Id), CT.None));
+					var deletedPropGot = await ToList(RepoProp.GetInIdsWithDel(Ctx, AsyE(deletedProp.Id), CT.None));
 					Assert.IsTrue(deletedPropGot.Count == 1 && deletedPropGot[0] is not null, "non-soft-deleted prop of deleted word should remain (orphan is allowed)");
 
-					var aliveLearnGot = await ToList(RepoLearn.GetManyInIdWithDel(Ctx, AsyE(aliveLearn.Id), CT.None));
+					var aliveLearnGot = await ToList(RepoLearn.GetInIdsWithDel(Ctx, AsyE(aliveLearn.Id), CT.None));
 					Assert.IsTrue(aliveLearnGot.Count == 1 && aliveLearnGot[0] is not null, "alive word learn should remain");
-					var deletedLearnGot = await ToList(RepoLearn.GetManyInIdWithDel(Ctx, AsyE(deletedLearn.Id), CT.None));
+					var deletedLearnGot = await ToList(RepoLearn.GetInIdsWithDel(Ctx, AsyE(deletedLearn.Id), CT.None));
 					Assert.IsTrue(deletedLearnGot.Count == 1 && deletedLearnGot[0] is not null, "non-soft-deleted learn of deleted word should remain (orphan is allowed)");
 					return NIL;
 				});
@@ -96,9 +96,9 @@ public partial class TestISvcWordV2{
 			}
 			finally{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoProp.BatHardDelById(Ctx, AsyE(aliveProp.Id, deletedProp.Id), CT.None);
-					await RepoLearn.BatHardDelById(Ctx, AsyE(aliveLearn.Id, deletedLearn.Id), CT.None);
-					await RepoWord.BatHardDelById(Ctx, AsyE(alive.Id, deleted.Id), CT.None);
+					await RepoProp.OrdHardDelById(Ctx, AsyE(aliveProp.Id, deletedProp.Id), CT.None);
+					await RepoLearn.OrdHardDelById(Ctx, AsyE(aliveLearn.Id, deletedLearn.Id), CT.None);
+					await RepoWord.OrdHardDelById(Ctx, AsyE(alive.Id, deleted.Id), CT.None);
 					return NIL;
 				});
 			}
@@ -142,9 +142,9 @@ public partial class TestISvcWordV2{
 
 			try{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatAdd(Ctx, AsyE(word), CT.None);
-					await RepoProp.BatAdd(Ctx, AsyE(aliveProp, softProp), CT.None);
-					await RepoLearn.BatAdd(Ctx, AsyE(aliveLearn, softLearn), CT.None);
+					await RepoWord.OrdAdd(Ctx, AsyE(word), CT.None);
+					await RepoProp.OrdAdd(Ctx, AsyE(aliveProp, softProp), CT.None);
+					await RepoLearn.OrdAdd(Ctx, AsyE(aliveLearn, softLearn), CT.None);
 					await RepoProp.SoftDelInId(Ctx, AsyE(softProp.Id), CT.None);
 					await RepoLearn.SoftDelInId(Ctx, AsyE(softLearn.Id), CT.None);
 					return NIL;
@@ -153,17 +153,17 @@ public partial class TestISvcWordV2{
 				await SvcWordV2.HardDelSoftDeleted(MkUserCtx(owner), CT.None);
 
 				await RunNoTxn(async(Ctx)=>{
-					var wordGot = await ToList(RepoWord.BatGetByIdWithDel(Ctx, AsyE(word.Id), CT.None));
+					var wordGot = await ToList(RepoWord.OrdGetByIdWithDel(Ctx, AsyE(word.Id), CT.None));
 					Assert.IsTrue(wordGot.Count == 1 && wordGot[0] is not null && !wordGot[0]!.IsDeleted(), "alive root should remain");
 
-					var alivePropGot = await ToList(RepoProp.GetManyInIdWithDel(Ctx, AsyE(aliveProp.Id), CT.None));
+					var alivePropGot = await ToList(RepoProp.GetInIdsWithDel(Ctx, AsyE(aliveProp.Id), CT.None));
 					Assert.IsTrue(alivePropGot.Count == 1 && alivePropGot[0] is not null, "alive prop should remain");
-					var softPropGot = await ToList(RepoProp.GetManyInIdWithDel(Ctx, AsyE(softProp.Id), CT.None));
+					var softPropGot = await ToList(RepoProp.GetInIdsWithDel(Ctx, AsyE(softProp.Id), CT.None));
 					Assert.IsTrue(softPropGot.Count == 0 || softPropGot.All(x=>x is null), "soft-deleted prop should be hard-deleted");
 
-					var aliveLearnGot = await ToList(RepoLearn.GetManyInIdWithDel(Ctx, AsyE(aliveLearn.Id), CT.None));
+					var aliveLearnGot = await ToList(RepoLearn.GetInIdsWithDel(Ctx, AsyE(aliveLearn.Id), CT.None));
 					Assert.IsTrue(aliveLearnGot.Count == 1 && aliveLearnGot[0] is not null, "alive learn should remain");
-					var softLearnGot = await ToList(RepoLearn.GetManyInIdWithDel(Ctx, AsyE(softLearn.Id), CT.None));
+					var softLearnGot = await ToList(RepoLearn.GetInIdsWithDel(Ctx, AsyE(softLearn.Id), CT.None));
 					Assert.IsTrue(softLearnGot.Count == 0 || softLearnGot.All(x=>x is null), "soft-deleted learn should be hard-deleted");
 					return NIL;
 				});
@@ -171,9 +171,9 @@ public partial class TestISvcWordV2{
 			}
 			finally{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoProp.BatHardDelById(Ctx, AsyE(aliveProp.Id, softProp.Id), CT.None);
-					await RepoLearn.BatHardDelById(Ctx, AsyE(aliveLearn.Id, softLearn.Id), CT.None);
-					await RepoWord.BatHardDelById(Ctx, AsyE(word.Id), CT.None);
+					await RepoProp.OrdHardDelById(Ctx, AsyE(aliveProp.Id, softProp.Id), CT.None);
+					await RepoLearn.OrdHardDelById(Ctx, AsyE(aliveLearn.Id, softLearn.Id), CT.None);
+					await RepoWord.OrdHardDelById(Ctx, AsyE(word.Id), CT.None);
 					return NIL;
 				});
 			}

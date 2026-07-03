@@ -183,10 +183,10 @@ public partial class TestISvcStudyPlan: ITester{
 				new PoPreFilter{Id = new IdPreFilter(), Owner = _ownerB, UniqName = _token + "_pf_b_1", Descr = "b1", BizUpdatedAt = 3004},
 			};
 
-			await RepoStudyPlan.BatAdd(Ctx, AsyE(studyPlans), CT.None);
-			await RepoWeightArg.BatAdd(Ctx, AsyE(weightArgs), CT.None);
-			await RepoWeightCalculator.BatAdd(Ctx, AsyE(weightCalculators), CT.None);
-			await RepoPreFilter.BatAdd(Ctx, AsyE(preFilters), CT.None);
+			await RepoStudyPlan.OrdAdd(Ctx, AsyE(studyPlans), CT.None);
+			await RepoWeightArg.OrdAdd(Ctx, AsyE(weightArgs), CT.None);
+			await RepoWeightCalculator.OrdAdd(Ctx, AsyE(weightCalculators), CT.None);
+			await RepoPreFilter.OrdAdd(Ctx, AsyE(preFilters), CT.None);
 
 			_studyPlanIds.Clear();
 			_studyPlanIds.AddRange(studyPlans.Select(x=>x.Id));
@@ -203,16 +203,16 @@ public partial class TestISvcStudyPlan: ITester{
 	async Task CleanupData(){
 		await RunNoTxn(async(Ctx)=>{
 			if(_studyPlanIds.Count > 0){
-				await RepoStudyPlan.BatHardDelById(Ctx, AsyE(_studyPlanIds.ToArray()), CT.None);
+				await RepoStudyPlan.OrdHardDelById(Ctx, AsyE(_studyPlanIds.ToArray()), CT.None);
 			}
 			if(_weightArgIds.Count > 0){
-				await RepoWeightArg.BatHardDelById(Ctx, AsyE(_weightArgIds.ToArray()), CT.None);
+				await RepoWeightArg.OrdHardDelById(Ctx, AsyE(_weightArgIds.ToArray()), CT.None);
 			}
 			if(_weightCalculatorIds.Count > 0){
-				await RepoWeightCalculator.BatHardDelById(Ctx, AsyE(_weightCalculatorIds.ToArray()), CT.None);
+				await RepoWeightCalculator.OrdHardDelById(Ctx, AsyE(_weightCalculatorIds.ToArray()), CT.None);
 			}
 			if(_preFilterIds.Count > 0){
-				await RepoPreFilter.BatHardDelById(Ctx, AsyE(_preFilterIds.ToArray()), CT.None);
+				await RepoPreFilter.OrdHardDelById(Ctx, AsyE(_preFilterIds.ToArray()), CT.None);
 			}
 			return NIL;
 		});

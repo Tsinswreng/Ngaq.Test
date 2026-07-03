@@ -32,7 +32,7 @@ public partial class TestISvcWordV2{
 			var idOldRoot = new PoWord{Id = new IdWord(), Owner = owner, Head = token + "_idnotequal", Lang = "en"};
 			try{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatAdd(Ctx, AsyE(noChangeRoot, remoteOlderRoot, idOldRoot), CT.None);
+					await RepoWord.OrdAdd(Ctx, AsyE(noChangeRoot, remoteOlderRoot, idOldRoot), CT.None);
 					return NIL;
 				});
 

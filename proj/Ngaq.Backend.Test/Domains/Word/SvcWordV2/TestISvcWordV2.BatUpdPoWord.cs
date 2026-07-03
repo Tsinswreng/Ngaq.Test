@@ -32,7 +32,7 @@ public partial class TestISvcWordV2{
 			};
 			try{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatAdd(Ctx, AsyE(word), CT.None);
+					await RepoWord.OrdAdd(Ctx, AsyE(word), CT.None);
 					return NIL;
 				});
 
@@ -48,7 +48,7 @@ public partial class TestISvcWordV2{
 				Assert.IsTrue(rows.Count == 1 && rows[0] is not null && rows[0]!.FinalId == word.Id, "BatUpdPoWord should return original id when (Id,Head,Lang) unchanged");
 
 				await RunNoTxn(async(Ctx)=>{
-					var got = await ToList(RepoWord.BatGetByIdWithDel(Ctx, AsyE(word.Id), CT.None));
+					var got = await ToList(RepoWord.OrdGetByIdWithDel(Ctx, AsyE(word.Id), CT.None));
 					Assert.IsTrue(got.Count == 1 && got[0] is not null && got[0]!.StoredAt == upd.StoredAt, "BatUpdPoWord should update other fields when (Id,Head,Lang) unchanged");
 					return NIL;
 				});
@@ -56,7 +56,7 @@ public partial class TestISvcWordV2{
 			}
 			finally{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatHardDelById(Ctx, AsyE(word.Id), CT.None);
+					await RepoWord.OrdHardDelById(Ctx, AsyE(word.Id), CT.None);
 					return NIL;
 				});
 			}
@@ -81,7 +81,7 @@ public partial class TestISvcWordV2{
 			};
 			try{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatAdd(Ctx, AsyE(src, dst), CT.None);
+					await RepoWord.OrdAdd(Ctx, AsyE(src, dst), CT.None);
 					return NIL;
 				});
 
@@ -96,8 +96,8 @@ public partial class TestISvcWordV2{
 				Assert.IsTrue(rows.Count == 1 && rows[0] is not null && rows[0]!.FinalId == dst.Id, "BatUpdPoWord should return merged target id when (Head,Lang) conflicts");
 
 				await RunNoTxn(async(Ctx)=>{
-					var srcGot = await ToList(RepoWord.BatGetByIdWithDel(Ctx, AsyE(src.Id), CT.None));
-					var dstGot = await ToList(RepoWord.BatGetByIdWithDel(Ctx, AsyE(dst.Id), CT.None));
+					var srcGot = await ToList(RepoWord.OrdGetByIdWithDel(Ctx, AsyE(src.Id), CT.None));
+					var dstGot = await ToList(RepoWord.OrdGetByIdWithDel(Ctx, AsyE(dst.Id), CT.None));
 					Assert.IsTrue(srcGot.Count == 1 && srcGot[0] is not null && srcGot[0]!.IsDeleted(), "BatUpdPoWord should soft-delete source after merge");
 					Assert.IsTrue(dstGot.Count == 1 && dstGot[0] is not null && !dstGot[0]!.IsDeleted(), "BatUpdPoWord should keep target after merge");
 					return NIL;
@@ -106,7 +106,7 @@ public partial class TestISvcWordV2{
 			}
 			finally{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatHardDelById(Ctx, AsyE(src.Id, dst.Id), CT.None);
+					await RepoWord.OrdHardDelById(Ctx, AsyE(src.Id, dst.Id), CT.None);
 					return NIL;
 				});
 			}

@@ -58,7 +58,7 @@ public partial class TestIViewLearnWord{
 			try{
 				await SvcStudyPlan.RestoreBuiltinStudyPlan(userCtx, CT.None);
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatAdd(Ctx, AsyE(words), CT.None);
+					await RepoWord.OrdAdd(Ctx, AsyE(words), CT.None);
 					return NIL;
 				});
 
@@ -79,7 +79,7 @@ public partial class TestIViewLearnWord{
 					await ViewLearnWord.ClickReset(default);
 				});
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatHardDelById(Ctx, AsyE(words.Select(x=>x.Id).ToArray()), CT.None);
+					await RepoWord.OrdHardDelById(Ctx, AsyE(words.Select(x=>x.Id).ToArray()), CT.None);
 					return NIL;
 				});
 			}

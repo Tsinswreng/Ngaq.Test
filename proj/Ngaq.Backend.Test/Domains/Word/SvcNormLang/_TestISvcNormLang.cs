@@ -111,7 +111,7 @@ public partial class TestISvcNormLang : ITester{
 		};
 
 		await RunNoTxn(async(Ctx)=>{
-			await RepoNormLang.BatAdd(Ctx, AsyE(rows), CT.None);
+			await RepoNormLang.OrdAdd(Ctx, AsyE(rows), CT.None);
 			return NIL;
 		});
 		_ids.AddRange(rows.Select(x=>x.Id));
@@ -121,7 +121,7 @@ public partial class TestISvcNormLang : ITester{
 		await RunNoTxn(async(Ctx)=>{
 			var ids = _ids.Distinct().ToArray();
 			if(ids.Length > 0){
-				await RepoNormLang.BatHardDelById(Ctx, AsyE(ids), CT.None);
+				await RepoNormLang.OrdHardDelById(Ctx, AsyE(ids), CT.None);
 			}
 			return NIL;
 		});

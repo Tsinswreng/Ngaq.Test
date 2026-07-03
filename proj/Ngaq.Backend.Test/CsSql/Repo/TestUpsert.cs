@@ -22,7 +22,7 @@ public partial class TestRepo{
 		);
 		var R = register.Register;
 
-		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatAdd)];
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.OrdAdd)];
 		R("BatExistsUpsert_Insert_Seed", async(o)=>{
 			return await RunInTxnIfNoCtx(async(Ctx)=>{
 				var a = new PoKv{
@@ -42,7 +42,7 @@ public partial class TestRepo{
 					VStr = "bat_exists_seed_v_b_" + System.Guid.NewGuid().ToString("N"),
 				};
 
-				await Repo.BatAdd(Ctx, AsyE(a, b), CT.None);
+				await Repo.OrdAdd(Ctx, AsyE(a, b), CT.None);
 
 				_batExistsUpsertSeed.Clear();
 				_batExistsUpsertSeed.Add(a);
@@ -55,7 +55,7 @@ public partial class TestRepo{
 			});
 		});
 
-		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatExistsById)];
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.OrdExistsById)];
 		R("BatExistsById_Existing_NonExisting_Existing", async(o)=>{
 			if(_batExistsUpsertSeed.Count < 2){
 				throw new Exception("BatExistsUpsert_Insert_Seed not executed");
@@ -65,7 +65,7 @@ public partial class TestRepo{
 				var existingA = _batExistsUpsertSeed[0].Id;
 				var existingB = _batExistsUpsertSeed[1].Id;
 				var nonExisting = new IdKv();
-				var ans = Repo.BatExistsById(Ctx, AsyE(existingA, nonExisting, existingB), CT.None);
+				var ans = Repo.OrdExistsById(Ctx, AsyE(existingA, nonExisting, existingB), CT.None);
 
 				var list = new List<bool>();
 				await foreach(var one in ans){
@@ -81,7 +81,7 @@ public partial class TestRepo{
 			});
 		});
 
-		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatUpsert), nameof(IRepo<PoKv, IdKv>.BatGetByIdWithDel)];
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.OrdUpsert), nameof(IRepo<PoKv, IdKv>.OrdGetByIdWithDel)];
 		R("BatUpsert_Insert_And_Update", async(o)=>{
 			if(_batExistsUpsertSeed.Count < 2){
 				throw new Exception("BatExistsUpsert_Insert_Seed not executed");
@@ -108,11 +108,11 @@ public partial class TestRepo{
 				};
 
 				// 按需求，不檢查 Resp 的內容，只驗證最終資料效果。
-				await Repo.BatUpsert(Ctx, AsyE(existedUpdated, newOne), CT.None);
+				await Repo.OrdUpsert(Ctx, AsyE(existedUpdated, newOne), CT.None);
 
 				_batExistsUpsertCleanupIds.Add(newOne.Id);
 
-				var got = Repo.BatGetByIdWithDel(Ctx, AsyE(existedUpdated.Id, newOne.Id), CT.None);
+				var got = Repo.OrdGetByIdWithDel(Ctx, AsyE(existedUpdated.Id, newOne.Id), CT.None);
 				var gotList = new List<PoKv?>();
 				await foreach(var one in got){
 					gotList.Add(one);
@@ -141,13 +141,13 @@ public partial class TestRepo{
 			});
 		});
 
-		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatHardDelById)];
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.OrdHardDelById)];
 		R("BatExistsUpsert_Cleanup_HardDelete", async(o)=>{
 			if(_batExistsUpsertCleanupIds.Count == 0){
 				return NIL;
 			}
 			return await RunInTxnIfNoCtx(async(Ctx)=>{
-				await Repo.BatHardDelById(Ctx, AsyE(_batExistsUpsertCleanupIds.ToArray()), CT.None);
+				await Repo.OrdHardDelById(Ctx, AsyE(_batExistsUpsertCleanupIds.ToArray()), CT.None);
 				return NIL;
 			});
 		});

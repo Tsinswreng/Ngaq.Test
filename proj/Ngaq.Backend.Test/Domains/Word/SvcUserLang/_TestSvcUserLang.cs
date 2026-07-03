@@ -122,7 +122,7 @@ public partial class TestISvcUserLang: ITester{
 			},
 		};
 		await RunNoTxn(async(Ctx)=>{
-			await RepoUserLang.BatAdd(Ctx, AsyE(rows), CT.None);
+			await RepoUserLang.OrdAdd(Ctx, AsyE(rows), CT.None);
 			return NIL;
 		});
 		_userLangIds.AddRange(rows.Select(x=>x.Id));
@@ -133,10 +133,10 @@ public partial class TestISvcUserLang: ITester{
 			var userLangIds = _userLangIds.Distinct().ToArray();
 			var wordIds = _wordIds.Distinct().ToArray();
 			if(userLangIds.Length > 0){
-				await RepoUserLang.BatHardDelById(Ctx, AsyE(userLangIds), CT.None);
+				await RepoUserLang.OrdHardDelById(Ctx, AsyE(userLangIds), CT.None);
 			}
 			if(wordIds.Length > 0){
-				await RepoWord.BatHardDelById(Ctx, AsyE(wordIds), CT.None);
+				await RepoWord.OrdHardDelById(Ctx, AsyE(wordIds), CT.None);
 			}
 			return NIL;
 		});

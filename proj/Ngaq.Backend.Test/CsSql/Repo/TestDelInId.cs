@@ -18,7 +18,7 @@ public partial class TestRepo{
 		);
 		var R = register.Register;
 		
-		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatAdd)];
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.OrdAdd)];
 		R("DelInId_Insert_Multi", async(o)=>{
 			return await RunInTxnIfNoCtx(async(Ctx)=>{
 				var ents = new List<PoKv>();
@@ -34,7 +34,7 @@ public partial class TestRepo{
 					ents.Add(e);
 				}
 
-				var resp = await Repo.BatAdd(Ctx, AsyE(ents.ToArray()), CT.None);
+				var resp = await Repo.OrdAdd(Ctx, AsyE(ents.ToArray()), CT.None);
 				if(resp is null){
 					throw new Exception("BatInsert returned null response");
 				}
@@ -49,7 +49,7 @@ public partial class TestRepo{
 
 		register.TesteeFnNames = [
 			nameof(IRepo<PoKv, IdKv>.SoftDelInId)
-			,nameof(IRepo<PoKv, IdKv>.BatGetByIdWithDel)
+			,nameof(IRepo<PoKv, IdKv>.OrdGetByIdWithDel)
 		];
 		R("SoftDelInId", async(o)=>{
 			if(_delInIdIds.Count == 0){
@@ -60,7 +60,7 @@ public partial class TestRepo{
 				if(resp is null){
 					throw new Exception("SoftDelInId returned null response");
 				}
-				var verify = Repo.BatGetByIdWithDel(Ctx, AsyE(_delInIdIds.ToArray()), CT.None);
+				var verify = Repo.OrdGetByIdWithDel(Ctx, AsyE(_delInIdIds.ToArray()), CT.None);
 				var list = new List<PoKv?>();
 				await foreach(var item in verify) list.Add(item);
 				if(list.Count != _delInIdIds.Count){
@@ -81,7 +81,7 @@ public partial class TestRepo{
 
 		register.TesteeFnNames = [
 			nameof(IRepo<PoKv, IdKv>.HardDelInId)
-			,nameof(IRepo<PoKv, IdKv>.BatGetByIdWithDel)
+			,nameof(IRepo<PoKv, IdKv>.OrdGetByIdWithDel)
 		];
 		R("HardDelInId", async(o)=>{
 			if(_delInIdIds.Count == 0){
@@ -92,7 +92,7 @@ public partial class TestRepo{
 				if(resp is null){
 					throw new Exception("HardDelInId returned null response");
 				}
-				var verify = Repo.BatGetByIdWithDel(Ctx, AsyE(_delInIdIds.ToArray()), CT.None);
+				var verify = Repo.OrdGetByIdWithDel(Ctx, AsyE(_delInIdIds.ToArray()), CT.None);
 				var list = new List<PoKv?>();
 				await foreach(var item in verify) list.Add(item);
 				if(list.Any(x=>x != null)){
@@ -103,19 +103,19 @@ public partial class TestRepo{
 		});
 
 		register.TesteeFnNames = [
-			nameof(IRepo<PoKv, IdKv>.BatHardDelById)
-			,nameof(IRepo<PoKv, IdKv>.BatGetByIdWithDel)
+			nameof(IRepo<PoKv, IdKv>.OrdHardDelById)
+			,nameof(IRepo<PoKv, IdKv>.OrdGetByIdWithDel)
 		];
 		R("DelInId_Cleanup_HardDelete", async(o)=>{
 			if(_delInIdIds.Count == 0){
 				return NIL;
 			}
 			return await RunInTxnIfNoCtx(async(Ctx)=>{
-				var resp = await Repo.BatHardDelById(Ctx, AsyE(_delInIdIds.ToArray()), CT.None);
+				var resp = await Repo.OrdHardDelById(Ctx, AsyE(_delInIdIds.ToArray()), CT.None);
 				if(resp is null){
 					throw new Exception("BatHardDelById returned null response");
 				}
-				var verify = Repo.BatGetByIdWithDel(Ctx, AsyE(_delInIdIds.ToArray()), CT.None);
+				var verify = Repo.OrdGetByIdWithDel(Ctx, AsyE(_delInIdIds.ToArray()), CT.None);
 				var list = new List<PoKv?>();
 				await foreach(var item in verify) list.Add(item);
 				if(list.Any(x=>x != null)){

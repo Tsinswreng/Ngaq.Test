@@ -42,19 +42,19 @@ public partial class TestISvcWordV2{
 			};
 			try{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatAdd(Ctx, AsyE(word), CT.None);
-					await RepoProp.BatAdd(Ctx, AsyE(prop), CT.None);
-					await RepoLearn.BatAdd(Ctx, AsyE(learn), CT.None);
+					await RepoWord.OrdAdd(Ctx, AsyE(word), CT.None);
+					await RepoProp.OrdAdd(Ctx, AsyE(prop), CT.None);
+					await RepoLearn.OrdAdd(Ctx, AsyE(learn), CT.None);
 					return NIL;
 				});
 
 				await SvcWordV2.BatChangeId(MkUserCtx(owner), AsyE((oldId, newId)), CT.None);
 
 				await RunNoTxn(async(Ctx)=>{
-					var oldWord = await ToList(RepoWord.BatGetByIdWithDel(Ctx, AsyE(oldId), CT.None));
+					var oldWord = await ToList(RepoWord.OrdGetByIdWithDel(Ctx, AsyE(oldId), CT.None));
 					Assert.IsTrue(oldWord.Count == 1 && oldWord[0] is null, "BatChangeId should remove old root id");
 
-					var newWord = await ToList(RepoWord.BatGetByIdWithDel(Ctx, AsyE(newId), CT.None));
+					var newWord = await ToList(RepoWord.OrdGetByIdWithDel(Ctx, AsyE(newId), CT.None));
 					Assert.IsTrue(newWord.Count == 1 && newWord[0] is not null && newWord[0]!.Owner == owner, "BatChangeId should create root row with new id");
 
 					var props = (await ToList(RepoProp.GetAll(Ctx, CT.None)))
@@ -72,9 +72,9 @@ public partial class TestISvcWordV2{
 			}
 			finally{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoProp.BatHardDelById(Ctx, AsyE(prop.Id), CT.None);
-					await RepoLearn.BatHardDelById(Ctx, AsyE(learn.Id), CT.None);
-					await RepoWord.BatHardDelById(Ctx, AsyE(oldId, newId), CT.None);
+					await RepoProp.OrdHardDelById(Ctx, AsyE(prop.Id), CT.None);
+					await RepoLearn.OrdHardDelById(Ctx, AsyE(learn.Id), CT.None);
+					await RepoWord.OrdHardDelById(Ctx, AsyE(oldId, newId), CT.None);
 					return NIL;
 				});
 			}

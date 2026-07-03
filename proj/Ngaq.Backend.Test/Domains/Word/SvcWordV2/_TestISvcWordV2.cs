@@ -129,12 +129,12 @@ public partial class TestISvcWordV2: ITester{
 					.ToArray();
 
 				if(propIds.Length > 0){
-					await RepoProp.BatHardDelById(Ctx, AsyE(propIds), CT.None);
+					await RepoProp.OrdHardDelById(Ctx, AsyE(propIds), CT.None);
 				}
 				if(learnIds.Length > 0){
-					await RepoLearn.BatHardDelById(Ctx, AsyE(learnIds), CT.None);
+					await RepoLearn.OrdHardDelById(Ctx, AsyE(learnIds), CT.None);
 				}
-				await RepoWord.BatHardDelById(Ctx, AsyE(wordIds), CT.None);
+				await RepoWord.OrdHardDelById(Ctx, AsyE(wordIds), CT.None);
 				return NIL;
 			});
 		}

@@ -89,8 +89,8 @@ public partial class TestISvcWordV2{
 
 			try{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatAdd(Ctx, AsyE(local), CT.None);
-					await RepoProp.BatAdd(Ctx, AsyE(oldDesc), CT.None);
+					await RepoWord.OrdAdd(Ctx, AsyE(local), CT.None);
+					await RepoProp.OrdAdd(Ctx, AsyE(oldDesc), CT.None);
 					return NIL;
 				});
 
@@ -172,8 +172,8 @@ public partial class TestISvcWordV2{
 
 			try{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatAdd(Ctx, AsyE(local), CT.None);
-					await RepoProp.BatAdd(Ctx, AsyE(oldDesc), CT.None);
+					await RepoWord.OrdAdd(Ctx, AsyE(local), CT.None);
+					await RepoProp.OrdAdd(Ctx, AsyE(oldDesc), CT.None);
 					return NIL;
 				});
 
@@ -236,8 +236,8 @@ public partial class TestISvcWordV2{
 
 			try{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatAdd(Ctx, AsyE(local), CT.None);
-					await RepoProp.BatAdd(Ctx, AsyE(oldDesc), CT.None);
+					await RepoWord.OrdAdd(Ctx, AsyE(local), CT.None);
+					await RepoProp.OrdAdd(Ctx, AsyE(oldDesc), CT.None);
 					return NIL;
 				});
 				await SvcWordV2.SoftDelPoWordInId(MkUserCtx(owner), AsyE(local.Id), CT.None);

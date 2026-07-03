@@ -20,7 +20,7 @@ public partial class TestRepo{
 		);
 		var R = register.Register;
 
-		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatAdd)];
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.OrdAdd)];
 		R("GetAll_Insert_Multi", async(o)=>{
 			return await RunInTxnIfNoCtx(async(Ctx)=>{
 				var ents = new List<PoKv>();
@@ -35,7 +35,7 @@ public partial class TestRepo{
 					});
 				}
 
-				var resp = await Repo.BatAdd(Ctx, AsyE(ents.ToArray()), CT.None);
+				var resp = await Repo.OrdAdd(Ctx, AsyE(ents.ToArray()), CT.None);
 				if(resp is null){
 					throw new Exception("BatAdd returned null response");
 				}
@@ -115,13 +115,13 @@ public partial class TestRepo{
 			});
 		});
 
-		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatHardDelById)];
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.OrdHardDelById)];
 		R("GetAll_Cleanup_HardDelete", async(o)=>{
 			if(_getAllIds.Count == 0){
 				return NIL;
 			}
 			return await RunInTxnIfNoCtx(async(Ctx)=>{
-				await Repo.BatHardDelById(Ctx, AsyE(_getAllIds.ToArray()), CT.None);
+				await Repo.OrdHardDelById(Ctx, AsyE(_getAllIds.ToArray()), CT.None);
 				return NIL;
 			});
 		});

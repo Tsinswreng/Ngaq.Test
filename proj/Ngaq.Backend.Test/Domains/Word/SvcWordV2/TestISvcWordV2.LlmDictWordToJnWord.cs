@@ -55,7 +55,7 @@ public partial class TestISvcWordV2{
 
 			try{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoNormLangToUserLang.BatAdd(Ctx, AsyE(map), CT.None);
+					await RepoNormLangToUserLang.OrdAdd(Ctx, AsyE(map), CT.None);
 					return NIL;
 				});
 
@@ -71,7 +71,7 @@ public partial class TestISvcWordV2{
 			}
 			finally{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoNormLangToUserLang.BatHardDelById(Ctx, AsyE(map.Id), CT.None);
+					await RepoNormLangToUserLang.OrdHardDelById(Ctx, AsyE(map.Id), CT.None);
 					return NIL;
 				});
 			}

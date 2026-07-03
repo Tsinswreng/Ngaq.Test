@@ -26,7 +26,7 @@ public partial class TestISvcNormLang{
 				NativeName = "seed_soft_del",
 			};
 			await RunNoTxn(async(Ctx)=>{
-				await RepoNormLang.BatAdd(Ctx, AsyE(row), CT.None);
+				await RepoNormLang.OrdAdd(Ctx, AsyE(row), CT.None);
 				return NIL;
 			});
 			_ids.Add(row.Id);
@@ -34,7 +34,7 @@ public partial class TestISvcNormLang{
 			await SvcNormLang.BatSoftDelNormLang(MkUserCtx(_ownerA), AsyE(row), CT.None);
 
 			await RunNoTxn(async(Ctx)=>{
-				var got = await RepoNormLang.BatGetByIdWithDel(Ctx, AsyE(row.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var got = await RepoNormLang.OrdGetByIdWithDel(Ctx, AsyE(row.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				if(got is null || !got.IsDeleted()){
 					throw new Exception("BatSoftDelNormLang should soft delete row");
 				}
@@ -61,7 +61,7 @@ public partial class TestISvcNormLang{
 				NativeName = "seed_soft_perm",
 			};
 			await RunNoTxn(async(Ctx)=>{
-				await RepoNormLang.BatAdd(Ctx, AsyE(row), CT.None);
+				await RepoNormLang.OrdAdd(Ctx, AsyE(row), CT.None);
 				return NIL;
 			});
 			_ids.Add(row.Id);

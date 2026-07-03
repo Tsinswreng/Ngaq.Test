@@ -28,7 +28,7 @@ public partial class TestISvcNormLang{
 				BizUpdatedAt = UnixMs.FromUnixMs(2000),
 			};
 			await RunNoTxn(async(Ctx)=>{
-				await RepoNormLang.BatAdd(Ctx, AsyE(row), CT.None);
+				await RepoNormLang.OrdAdd(Ctx, AsyE(row), CT.None);
 				return NIL;
 			});
 			_ids.Add(row.Id);
@@ -44,7 +44,7 @@ public partial class TestISvcNormLang{
 			await SvcNormLang.BatUpdNormLang(MkUserCtx(_ownerA), AsyE(upd), CT.None);
 
 			await RunNoTxn(async(Ctx)=>{
-				var got = await RepoNormLang.BatGetByIdWithDel(Ctx, AsyE(row.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var got = await RepoNormLang.OrdGetByIdWithDel(Ctx, AsyE(row.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				if(got is null){
 					throw new Exception("BatUpdNormLang should keep row");
 				}
@@ -75,7 +75,7 @@ public partial class TestISvcNormLang{
 				NativeName = "before_other",
 			};
 			await RunNoTxn(async(Ctx)=>{
-				await RepoNormLang.BatAdd(Ctx, AsyE(mine, other), CT.None);
+				await RepoNormLang.OrdAdd(Ctx, AsyE(mine, other), CT.None);
 				return NIL;
 			});
 			_ids.Add(mine.Id);
@@ -104,8 +104,8 @@ public partial class TestISvcNormLang{
 			}
 
 			await RunNoTxn(async(Ctx)=>{
-				var gotMine = await RepoNormLang.BatGetByIdWithDel(Ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
-				var gotOther = await RepoNormLang.BatGetByIdWithDel(Ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var gotMine = await RepoNormLang.OrdGetByIdWithDel(Ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var gotOther = await RepoNormLang.OrdGetByIdWithDel(Ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				if(gotMine is null || gotMine.NativeName != "before_mine"){
 					throw new Exception("permission denied should rollback my row update");
 				}
@@ -133,7 +133,7 @@ public partial class TestISvcNormLang{
 				Code = code2,
 			};
 			await RunNoTxn(async(Ctx)=>{
-				await RepoNormLang.BatAdd(Ctx, AsyE(row1, row2), CT.None);
+				await RepoNormLang.OrdAdd(Ctx, AsyE(row1, row2), CT.None);
 				return NIL;
 			});
 			_ids.Add(row1.Id);

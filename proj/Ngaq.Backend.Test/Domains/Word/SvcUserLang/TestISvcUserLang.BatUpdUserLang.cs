@@ -30,7 +30,7 @@ public partial class TestISvcUserLang{
 				BizUpdatedAt = UnixMs.FromUnixMs(1000),
 			};
 			await RunNoTxn(async(Ctx)=>{
-				await RepoUserLang.BatAdd(Ctx, AsyE(row), CT.None);
+				await RepoUserLang.OrdAdd(Ctx, AsyE(row), CT.None);
 				return NIL;
 			});
 			_userLangIds.Add(row.Id);
@@ -47,7 +47,7 @@ public partial class TestISvcUserLang{
 			await SvcUserLang.BatUpdUserLang(MkUserCtx(_ownerA), AsyE(upd), CT.None);
 
 			await RunNoTxn(async(Ctx)=>{
-				var got = await RepoUserLang.BatGetByIdWithDel(Ctx, AsyE(row.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var got = await RepoUserLang.OrdGetByIdWithDel(Ctx, AsyE(row.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				if(got is null){
 					throw new Exception("BatUpdUserLang should keep row");
 				}
@@ -85,7 +85,7 @@ public partial class TestISvcUserLang{
 				BizUpdatedAt = UnixMs.FromUnixMs(1000),
 			};
 			await RunNoTxn(async(Ctx)=>{
-				await RepoUserLang.BatAdd(Ctx, AsyE(mine, other), CT.None);
+				await RepoUserLang.OrdAdd(Ctx, AsyE(mine, other), CT.None);
 				return NIL;
 			});
 			_userLangIds.Add(mine.Id);
@@ -118,8 +118,8 @@ public partial class TestISvcUserLang{
 			}
 
 			await RunNoTxn(async(Ctx)=>{
-				var gotMine = await RepoUserLang.BatGetByIdWithDel(Ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
-				var gotOther = await RepoUserLang.BatGetByIdWithDel(Ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var gotMine = await RepoUserLang.OrdGetByIdWithDel(Ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var gotOther = await RepoUserLang.OrdGetByIdWithDel(Ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				if(gotMine is null || gotMine.Descr != "before_mine" || gotMine.Owner != _ownerA){
 					throw new Exception("permission denied should rollback my row update");
 				}
@@ -149,7 +149,7 @@ public partial class TestISvcUserLang{
 				RelLang = uniq2,
 			};
 			await RunNoTxn(async(Ctx)=>{
-				await RepoUserLang.BatAdd(Ctx, AsyE(row1, row2), CT.None);
+				await RepoUserLang.OrdAdd(Ctx, AsyE(row1, row2), CT.None);
 				return NIL;
 			});
 			_userLangIds.Add(row1.Id);

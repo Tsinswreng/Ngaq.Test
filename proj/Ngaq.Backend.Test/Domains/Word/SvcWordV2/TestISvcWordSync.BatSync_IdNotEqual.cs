@@ -39,7 +39,7 @@ public partial class TestISvcWordV2{
 			var remote = MkRemoteDiffId(owner, local.Head, local.Lang, token + "_d1");
 			try{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatAdd(Ctx, AsyE(local), CT.None);
+					await RepoWord.OrdAdd(Ctx, AsyE(local), CT.None);
 					return NIL;
 				});
 
@@ -71,9 +71,9 @@ public partial class TestISvcWordV2{
 			}
 			finally{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoProp.BatHardDelById(Ctx, AsyE(remote.Props.Select(x=>x.Id).ToArray()), CT.None);
-					await RepoLearn.BatHardDelById(Ctx, AsyE(remote.Learns.Select(x=>x.Id).ToArray()), CT.None);
-					await RepoWord.BatHardDelById(Ctx, AsyE(local.Id, remote.Id), CT.None);
+					await RepoProp.OrdHardDelById(Ctx, AsyE(remote.Props.Select(x=>x.Id).ToArray()), CT.None);
+					await RepoLearn.OrdHardDelById(Ctx, AsyE(remote.Learns.Select(x=>x.Id).ToArray()), CT.None);
+					await RepoWord.OrdHardDelById(Ctx, AsyE(local.Id, remote.Id), CT.None);
 					return NIL;
 				});
 			}

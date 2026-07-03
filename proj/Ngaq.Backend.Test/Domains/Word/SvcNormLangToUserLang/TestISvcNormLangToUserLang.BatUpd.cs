@@ -29,7 +29,7 @@ public partial class TestISvcNormLangToUserLang{
 				BizUpdatedAt = UnixMs.FromUnixMs(2000),
 			};
 			await RunNoTxn(async(Ctx)=>{
-				await RepoNormLangToUserLang.BatAdd(Ctx, AsyE(row), CT.None);
+				await RepoNormLangToUserLang.OrdAdd(Ctx, AsyE(row), CT.None);
 				return NIL;
 			});
 			_ids.Add(row.Id);
@@ -46,7 +46,7 @@ public partial class TestISvcNormLangToUserLang{
 			await SvcNormLangToUserLang.BatUpdNormLangToUserLang(MkUserCtx(_ownerA), AsyE(upd), CT.None);
 
 			await RunNoTxn(async(Ctx)=>{
-				var got = await RepoNormLangToUserLang.BatGetByIdWithDel(Ctx, AsyE(row.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var got = await RepoNormLangToUserLang.OrdGetByIdWithDel(Ctx, AsyE(row.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				if(got is null){
 					throw new Exception("BatUpdNormLangToUserLang should keep row");
 				}
@@ -82,7 +82,7 @@ public partial class TestISvcNormLangToUserLang{
 				Descr = "before_other",
 			};
 			await RunNoTxn(async(Ctx)=>{
-				await RepoNormLangToUserLang.BatAdd(Ctx, AsyE(mine, other), CT.None);
+				await RepoNormLangToUserLang.OrdAdd(Ctx, AsyE(mine, other), CT.None);
 				return NIL;
 			});
 			_ids.Add(mine.Id);
@@ -113,8 +113,8 @@ public partial class TestISvcNormLangToUserLang{
 			}
 
 			await RunNoTxn(async(Ctx)=>{
-				var gotMine = await RepoNormLangToUserLang.BatGetByIdWithDel(Ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
-				var gotOther = await RepoNormLangToUserLang.BatGetByIdWithDel(Ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var gotMine = await RepoNormLangToUserLang.OrdGetByIdWithDel(Ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var gotOther = await RepoNormLangToUserLang.OrdGetByIdWithDel(Ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				if(gotMine is null || gotMine.Descr != "before_mine"){
 					throw new Exception("permission denied should rollback my row update");
 				}
@@ -144,7 +144,7 @@ public partial class TestISvcNormLangToUserLang{
 				UserLang = _token + "_upd_user_conflict_2",
 			};
 			await RunNoTxn(async(Ctx)=>{
-				await RepoNormLangToUserLang.BatAdd(Ctx, AsyE(row1, row2), CT.None);
+				await RepoNormLangToUserLang.OrdAdd(Ctx, AsyE(row1, row2), CT.None);
 				return NIL;
 			});
 			_ids.Add(row1.Id);

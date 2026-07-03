@@ -26,7 +26,7 @@ public partial class TestISvcNormLangToUserLang{
 				UserLang = _token + "_user_es",
 			};
 			await RunNoTxn(async(Ctx)=>{
-				await RepoNormLangToUserLang.BatAdd(Ctx, AsyE(row), CT.None);
+				await RepoNormLangToUserLang.OrdAdd(Ctx, AsyE(row), CT.None);
 				return NIL;
 			});
 			_ids.Add(row.Id);
@@ -34,7 +34,7 @@ public partial class TestISvcNormLangToUserLang{
 			await SvcNormLangToUserLang.BatSoftDelNormLangToUserLang(MkUserCtx(_ownerA), AsyE(row), CT.None);
 
 			await RunNoTxn(async(Ctx)=>{
-				var got = await RepoNormLangToUserLang.BatGetByIdWithDel(Ctx, AsyE(row.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var got = await RepoNormLangToUserLang.OrdGetByIdWithDel(Ctx, AsyE(row.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				if(got is null || !got.IsDeleted()){
 					throw new Exception("BatSoftDelNormLangToUserLang should soft delete row");
 				}
@@ -62,7 +62,7 @@ public partial class TestISvcNormLangToUserLang{
 				UserLang = _token + "_user_soft_del_perm_denied",
 			};
 			await RunNoTxn(async(Ctx)=>{
-				await RepoNormLangToUserLang.BatAdd(Ctx, AsyE(row), CT.None);
+				await RepoNormLangToUserLang.OrdAdd(Ctx, AsyE(row), CT.None);
 				return NIL;
 			});
 			_ids.Add(row.Id);

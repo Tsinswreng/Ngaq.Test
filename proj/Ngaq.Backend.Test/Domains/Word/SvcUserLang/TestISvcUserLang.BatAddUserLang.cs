@@ -33,7 +33,7 @@ public partial class TestISvcUserLang{
 			_userLangIds.Add(row.Id);
 
 			await RunNoTxn(async(Ctx)=>{
-				var got = await RepoUserLang.BatGetByIdWithDel(Ctx, AsyE(row.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var got = await RepoUserLang.OrdGetByIdWithDel(Ctx, AsyE(row.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				if(got is null){
 					throw new Exception("BatAddUserLang should insert row");
 				}
@@ -83,7 +83,7 @@ public partial class TestISvcUserLang{
 				RelLang = uniq,
 			};
 			await RunNoTxn(async(Ctx)=>{
-				await RepoUserLang.BatAdd(Ctx, AsyE(existing), CT.None);
+				await RepoUserLang.OrdAdd(Ctx, AsyE(existing), CT.None);
 				return NIL;
 			});
 			_userLangIds.Add(existing.Id);

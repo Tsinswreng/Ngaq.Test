@@ -37,22 +37,22 @@ public partial class TestISvcWordV2{
 
 			try{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatAdd(Ctx, AsyE(word), CT.None);
-					await RepoProp.BatAdd(Ctx, AsyE(props), CT.None);
-					await RepoLearn.BatAdd(Ctx, AsyE(learns), CT.None);
+					await RepoWord.OrdAdd(Ctx, AsyE(word), CT.None);
+					await RepoProp.OrdAdd(Ctx, AsyE(props), CT.None);
+					await RepoLearn.OrdAdd(Ctx, AsyE(learns), CT.None);
 					return NIL;
 				});
 
 				await SvcWordV2.SoftDelJnWordInId(MkUserCtx(owner), AsyE(word.Id), CT.None);
 
 				await RunNoTxn(async(Ctx)=>{
-					var gotWord = await ToList(RepoWord.BatGetByIdWithDel(Ctx, AsyE(word.Id), CT.None));
+					var gotWord = await ToList(RepoWord.OrdGetByIdWithDel(Ctx, AsyE(word.Id), CT.None));
 					Assert.IsTrue(gotWord.Count == 1 && gotWord[0] is not null && gotWord[0].IsDeleted(), "failed to soft-delete root word");
 
-					var gotProps = await ToList(RepoProp.GetManyInIdWithDel(Ctx, AsyE(props.Select(x=>x.Id).ToArray()), CT.None));
+					var gotProps = await ToList(RepoProp.GetInIdsWithDel(Ctx, AsyE(props.Select(x=>x.Id).ToArray()), CT.None));
 					Assert.IsTrue(gotProps.Count == props.Length && gotProps.All(x => x is not null && x.IsDeleted()), "failed to soft-delete props");
 
-					var gotLearns = await ToList(RepoLearn.GetManyInIdWithDel(Ctx, AsyE(learns.Select(x=>x.Id).ToArray()), CT.None));
+					var gotLearns = await ToList(RepoLearn.GetInIdsWithDel(Ctx, AsyE(learns.Select(x=>x.Id).ToArray()), CT.None));
 					Assert.IsTrue(gotLearns.Count == learns.Length && gotLearns.All(x => x is not null && x.IsDeleted()), "failed to soft-delete learns");
 					return NIL;
 				});
@@ -60,9 +60,9 @@ public partial class TestISvcWordV2{
 			}
 			finally{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoProp.BatHardDelById(Ctx, AsyE(props.Select(x=>x.Id).ToArray()), CT.None);
-					await RepoLearn.BatHardDelById(Ctx, AsyE(learns.Select(x=>x.Id).ToArray()), CT.None);
-					await RepoWord.BatHardDelById(Ctx, AsyE(word.Id), CT.None);
+					await RepoProp.OrdHardDelById(Ctx, AsyE(props.Select(x=>x.Id).ToArray()), CT.None);
+					await RepoLearn.OrdHardDelById(Ctx, AsyE(learns.Select(x=>x.Id).ToArray()), CT.None);
+					await RepoWord.OrdHardDelById(Ctx, AsyE(word.Id), CT.None);
 					return NIL;
 				});
 			}
@@ -80,12 +80,12 @@ public partial class TestISvcWordV2{
 			var word = new PoWord{Id = new IdWord(), Owner = owner, Head = token + "_w", Lang = "en"};
 			try{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatAdd(Ctx, AsyE(word), CT.None);
+					await RepoWord.OrdAdd(Ctx, AsyE(word), CT.None);
 					return NIL;
 				});
 				await SvcWordV2.SoftDelJnWordInId(MkUserCtx(owner), AsyE(word.Id, word.Id), CT.None);
 				await RunNoTxn(async(Ctx)=>{
-					var gotWord = await ToList(RepoWord.BatGetByIdWithDel(Ctx, AsyE(word.Id), CT.None));
+					var gotWord = await ToList(RepoWord.OrdGetByIdWithDel(Ctx, AsyE(word.Id), CT.None));
 					Assert.IsTrue(gotWord.Count == 1 && gotWord[0] is not null && gotWord[0].IsDeleted(), "duplicated ids soft-delete should still delete the word");
 					return NIL;
 				});
@@ -93,7 +93,7 @@ public partial class TestISvcWordV2{
 			}
 			finally{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatHardDelById(Ctx, AsyE(word.Id), CT.None);
+					await RepoWord.OrdHardDelById(Ctx, AsyE(word.Id), CT.None);
 					return NIL;
 				});
 			}

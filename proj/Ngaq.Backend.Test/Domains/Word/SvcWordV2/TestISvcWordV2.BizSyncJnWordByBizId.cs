@@ -74,7 +74,7 @@ public partial class TestISvcWordV2{
 			var localB = new PoWord{Id = new IdWord(), Owner = ownerB, Head = remoteA.Head, Lang = remoteA.Lang};
 			try{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatAdd(Ctx, AsyE(localB), CT.None);
+					await RepoWord.OrdAdd(Ctx, AsyE(localB), CT.None);
 					return NIL;
 				});
 
@@ -94,7 +94,7 @@ public partial class TestISvcWordV2{
 			finally{
 				await TryCleanupByHeadOwner(ownerA, token);
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatHardDelById(Ctx, AsyE(localB.Id), CT.None);
+					await RepoWord.OrdHardDelById(Ctx, AsyE(localB.Id), CT.None);
 					return NIL;
 				});
 			}

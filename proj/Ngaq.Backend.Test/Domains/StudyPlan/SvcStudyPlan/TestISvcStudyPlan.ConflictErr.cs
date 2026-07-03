@@ -121,7 +121,7 @@ public partial class TestISvcStudyPlan{
 				Text = "{\"Version\":\"1.0.0.0\",\"CoreFilter\":[],\"PropFilter\":[]}",
 			};
 			await RunNoTxn(async(ctx)=>{
-				await RepoPreFilter.BatAdd(ctx, AsyE(row1, row2), CT.None);
+				await RepoPreFilter.OrdAdd(ctx, AsyE(row1, row2), CT.None);
 				return NIL;
 			});
 			_preFilterIds.Add(row1.Id);
@@ -156,7 +156,7 @@ public partial class TestISvcStudyPlan{
 				Text = "{\"A\":2}",
 			};
 			await RunNoTxn(async(ctx)=>{
-				await RepoWeightArg.BatAdd(ctx, AsyE(row1, row2), CT.None);
+				await RepoWeightArg.OrdAdd(ctx, AsyE(row1, row2), CT.None);
 				return NIL;
 			});
 			_weightArgIds.Add(row1.Id);
@@ -187,7 +187,7 @@ public partial class TestISvcStudyPlan{
 				Type = EWeightCalculatorType.Builtin,
 			};
 			await RunNoTxn(async(ctx)=>{
-				await RepoWeightCalculator.BatAdd(ctx, AsyE(row1, row2), CT.None);
+				await RepoWeightCalculator.OrdAdd(ctx, AsyE(row1, row2), CT.None);
 				return NIL;
 			});
 			_weightCalculatorIds.Add(row1.Id);
@@ -216,7 +216,7 @@ public partial class TestISvcStudyPlan{
 				UniqName = _token + "_upd_conflict_sp_2",
 			};
 			await RunNoTxn(async(ctx)=>{
-				await RepoStudyPlan.BatAdd(ctx, AsyE(row1, row2), CT.None);
+				await RepoStudyPlan.OrdAdd(ctx, AsyE(row1, row2), CT.None);
 				return NIL;
 			});
 			_studyPlanIds.Add(row1.Id);

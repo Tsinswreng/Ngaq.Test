@@ -19,7 +19,7 @@ public partial class TestRepo{
 		);
 		var R = register.Register;
 
-		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatAdd)];
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.OrdAdd)];
 		R("BatSlctById_Insert_Multi", async(o)=>{
 			return await RunInTxnIfNoCtx(async(Ctx)=>{
 				var ents = new List<PoKv>();
@@ -34,7 +34,7 @@ public partial class TestRepo{
 					});
 				}
 
-				var resp = await Repo.BatAdd(Ctx, AsyE(ents.ToArray()), CT.None);
+				var resp = await Repo.OrdAdd(Ctx, AsyE(ents.ToArray()), CT.None);
 				if(resp is null){
 					throw new Exception("BatAdd returned null response");
 				}
@@ -60,13 +60,13 @@ public partial class TestRepo{
 			});
 		});
 
-		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatGetById)];
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.OrdGetById)];
 		R("BatSlctById_NonWithDel_Should_Return_Null_For_SoftDeleted", async(o)=>{
 			if(_batSlctIds.Count == 0 || _batSlctSoftDeletedId is null){
 				throw new Exception("BatSlctById_Insert_Multi not executed");
 			}
 			return await RunInTxnIfNoCtx(async(Ctx)=>{
-				var result = Repo.BatGetById(Ctx, AsyE(_batSlctIds.ToArray()), CT.None);
+				var result = Repo.OrdGetById(Ctx, AsyE(_batSlctIds.ToArray()), CT.None);
 				var list = new List<PoKv?>();
 				await foreach(var item in result){
 					list.Add(item);
@@ -86,10 +86,10 @@ public partial class TestRepo{
 			});
 		});
 
-		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatGetByIdWithDel)];
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.OrdGetByIdWithDel)];
 		R("BatSlctById_EmptyIds_ReturnsEmpty", async(o)=>{
 			return await RunInTxnIfNoCtx(async(Ctx)=>{
-				var Result = Repo.BatGetByIdWithDel(Ctx, AsyE<IdKv>(), CT.None);
+				var Result = Repo.OrdGetByIdWithDel(Ctx, AsyE<IdKv>(), CT.None);
 				var List = new List<PoKv?>();
 				await foreach(var Item in Result) List.Add(Item);
 				if(List.Count != 0){
@@ -99,13 +99,13 @@ public partial class TestRepo{
 			});
 		});
 
-		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatGetByIdWithDel)];
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.OrdGetByIdWithDel)];
 		R("BatSlctById_WithDel_Should_Return_SoftDeleted", async(o)=>{
 			if(_batSlctIds.Count == 0 || _batSlctSoftDeletedId is null){
 				throw new Exception("BatSlctById_Insert_Multi not executed");
 			}
 			return await RunInTxnIfNoCtx(async(Ctx)=>{
-				var result = Repo.BatGetByIdWithDel(Ctx, AsyE(_batSlctIds.ToArray()), CT.None);
+				var result = Repo.OrdGetByIdWithDel(Ctx, AsyE(_batSlctIds.ToArray()), CT.None);
 				var list = new List<PoKv?>();
 				await foreach(var item in result){
 					list.Add(item);
@@ -129,12 +129,12 @@ public partial class TestRepo{
 			});
 		});
 
-		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatGetByIdWithDel)];
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.OrdGetByIdWithDel)];
 		R("BatSlctById_NonExistIds_ReturnsNulls", async(o)=>{
 			return await RunInTxnIfNoCtx(async(Ctx)=>{
 				var Id1 = new IdKv();
 				var Id2 = new IdKv();
-				var Result = Repo.BatGetByIdWithDel(Ctx, AsyE(Id1, Id2), CT.None);
+				var Result = Repo.OrdGetByIdWithDel(Ctx, AsyE(Id1, Id2), CT.None);
 				var List = new List<PoKv?>();
 				await foreach(var Item in Result) List.Add(Item);
 				if(List.Count != 2){
@@ -147,13 +147,13 @@ public partial class TestRepo{
 			});
 		});
 
-		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.BatHardDelById)];
+		register.TesteeFnNames = [nameof(IRepo<PoKv, IdKv>.OrdHardDelById)];
 		R("BatSlctById_Cleanup_HardDelete", async(o)=>{
 			if(_batSlctIds.Count == 0){
 				return NIL;
 			}
 			return await RunInTxnIfNoCtx(async(Ctx)=>{
-				await Repo.BatHardDelById(Ctx, AsyE(_batSlctIds.ToArray()), CT.None);
+				await Repo.OrdHardDelById(Ctx, AsyE(_batSlctIds.ToArray()), CT.None);
 				return NIL;
 			});
 		});

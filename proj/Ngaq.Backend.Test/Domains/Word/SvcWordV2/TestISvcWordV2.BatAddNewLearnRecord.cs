@@ -35,16 +35,16 @@ public partial class TestISvcWordV2{
 
 			try{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatAdd(Ctx, AsyE(w1, w2), CT.None);
+					await RepoWord.OrdAdd(Ctx, AsyE(w1, w2), CT.None);
 					return NIL;
 				});
 
 				await SvcWordV2.BatAddNewLearnRecord(MkUserCtx(owner), AsyE(learns), CT.None);
 
 				await RunNoTxn(async(Ctx)=>{
-					var gotLearns = await ToList(RepoLearn.BatGetByIdWithDel(Ctx, AsyE(learns.Select(x=>x.Id).ToArray()), CT.None));
+					var gotLearns = await ToList(RepoLearn.OrdGetByIdWithDel(Ctx, AsyE(learns.Select(x=>x.Id).ToArray()), CT.None));
 					Assert.IsTrue(gotLearns.Count == learns.Length && gotLearns.All(x => x is not null), "BatAddNewLearnRecord failed to insert all learn records");
-					var gotWords = await ToList(RepoWord.BatGetByIdWithDel(Ctx, AsyE(w1.Id, w2.Id), CT.None));
+					var gotWords = await ToList(RepoWord.OrdGetByIdWithDel(Ctx, AsyE(w1.Id, w2.Id), CT.None));
 					Assert.IsTrue(gotWords.Count == 2 && gotWords.All(x => x is not null), "failed to load words after BatAddNewLearnRecord");
 					Assert.IsTrue(gotWords.All(x => !x!.BizUpdatedAt.IsNullOrDefault()), "BatAddNewLearnRecord did not touch PoWord.BizUpdatedAt");
 					return NIL;
@@ -53,8 +53,8 @@ public partial class TestISvcWordV2{
 			}
 			finally{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoLearn.BatHardDelById(Ctx, AsyE(learns.Select(x=>x.Id).ToArray()), CT.None);
-					await RepoWord.BatHardDelById(Ctx, AsyE(w1.Id, w2.Id), CT.None);
+					await RepoLearn.OrdHardDelById(Ctx, AsyE(learns.Select(x=>x.Id).ToArray()), CT.None);
+					await RepoWord.OrdHardDelById(Ctx, AsyE(w1.Id, w2.Id), CT.None);
 					return NIL;
 				});
 			}
@@ -66,7 +66,7 @@ public partial class TestISvcWordV2{
 			var word = new PoWord{Id = new IdWord(), Owner = owner, Head = token + "_w", Lang = "en", BizUpdatedAt = UnixMs.Zero};
 			try{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatAdd(Ctx, AsyE(word), CT.None);
+					await RepoWord.OrdAdd(Ctx, AsyE(word), CT.None);
 					return NIL;
 				});
 
@@ -81,7 +81,7 @@ public partial class TestISvcWordV2{
 			}
 			finally{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatHardDelById(Ctx, AsyE(word.Id), CT.None);
+					await RepoWord.OrdHardDelById(Ctx, AsyE(word.Id), CT.None);
 					return NIL;
 				});
 			}

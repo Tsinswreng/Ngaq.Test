@@ -56,7 +56,7 @@ public partial class TestISvcStudyPlan{
 				Text = "{\"Version\":\"1.0.0.0\",\"CoreFilter\":[],\"PropFilter\":[]}",
 			};
 			await RunNoTxn(async(ctx)=>{
-				await RepoPreFilter.BatAdd(ctx, AsyE(mine, other), CT.None);
+				await RepoPreFilter.OrdAdd(ctx, AsyE(mine, other), CT.None);
 				return NIL;
 			});
 			_preFilterIds.Add(mine.Id);
@@ -73,8 +73,8 @@ public partial class TestISvcStudyPlan{
 			}
 
 			await RunNoTxn(async(ctx)=>{
-				var gotMine = await RepoPreFilter.BatGetByIdWithDel(ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
-				var gotOther = await RepoPreFilter.BatGetByIdWithDel(ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var gotMine = await RepoPreFilter.OrdGetByIdWithDel(ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var gotOther = await RepoPreFilter.OrdGetByIdWithDel(ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				if(gotMine is null || gotMine.Descr != "before_mine" || gotMine.Owner != _ownerA){
 					throw new Exception("BatUpdPreFilter should not update any row when permission denied");
 				}
@@ -105,7 +105,7 @@ public partial class TestISvcStudyPlan{
 				Text = "{\"B\":2}",
 			};
 			await RunNoTxn(async(ctx)=>{
-				await RepoWeightArg.BatAdd(ctx, AsyE(mine, other), CT.None);
+				await RepoWeightArg.OrdAdd(ctx, AsyE(mine, other), CT.None);
 				return NIL;
 			});
 			_weightArgIds.Add(mine.Id);
@@ -123,8 +123,8 @@ public partial class TestISvcStudyPlan{
 			}
 
 			await RunNoTxn(async(ctx)=>{
-				var gotMine = await RepoWeightArg.BatGetByIdWithDel(ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
-				var gotOther = await RepoWeightArg.BatGetByIdWithDel(ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var gotMine = await RepoWeightArg.OrdGetByIdWithDel(ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var gotOther = await RepoWeightArg.OrdGetByIdWithDel(ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				if(gotMine is null || gotMine.Descr != "" || gotMine.Owner != _ownerA || gotMine.Text != "{\"A\":1}"){
 					throw new Exception("BatUpdWeightArg should not update any row when permission denied");
 				}
@@ -151,7 +151,7 @@ public partial class TestISvcStudyPlan{
 				Type = EWeightCalculatorType.Builtin,
 			};
 			await RunNoTxn(async(ctx)=>{
-				await RepoWeightCalculator.BatAdd(ctx, AsyE(mine, other), CT.None);
+				await RepoWeightCalculator.OrdAdd(ctx, AsyE(mine, other), CT.None);
 				return NIL;
 			});
 			_weightCalculatorIds.Add(mine.Id);
@@ -168,8 +168,8 @@ public partial class TestISvcStudyPlan{
 			}
 
 			await RunNoTxn(async(ctx)=>{
-				var gotMine = await RepoWeightCalculator.BatGetByIdWithDel(ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
-				var gotOther = await RepoWeightCalculator.BatGetByIdWithDel(ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var gotMine = await RepoWeightCalculator.OrdGetByIdWithDel(ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var gotOther = await RepoWeightCalculator.OrdGetByIdWithDel(ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				if(gotMine is null || gotMine.Descr != "" || gotMine.Owner != _ownerA){
 					throw new Exception("BatUpdWeightCalculator should not update any row when permission denied");
 				}
@@ -196,7 +196,7 @@ public partial class TestISvcStudyPlan{
 				Descr = "before_other",
 			};
 			await RunNoTxn(async(ctx)=>{
-				await RepoStudyPlan.BatAdd(ctx, AsyE(mine, other), CT.None);
+				await RepoStudyPlan.OrdAdd(ctx, AsyE(mine, other), CT.None);
 				return NIL;
 			});
 			_studyPlanIds.Add(mine.Id);
@@ -213,8 +213,8 @@ public partial class TestISvcStudyPlan{
 			}
 
 			await RunNoTxn(async(ctx)=>{
-				var gotMine = await RepoStudyPlan.BatGetByIdWithDel(ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
-				var gotOther = await RepoStudyPlan.BatGetByIdWithDel(ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var gotMine = await RepoStudyPlan.OrdGetByIdWithDel(ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var gotOther = await RepoStudyPlan.OrdGetByIdWithDel(ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				if(gotMine is null || gotMine.Descr != "before_mine" || gotMine.Owner != _ownerA){
 					throw new Exception("BatUpdStudyPlan should not update any row when permission denied");
 				}
@@ -245,7 +245,7 @@ public partial class TestISvcStudyPlan{
 				Text = "{\"Version\":\"1.0.0.0\",\"CoreFilter\":[],\"PropFilter\":[]}",
 			};
 			await RunNoTxn(async(ctx)=>{
-				await RepoPreFilter.BatAdd(ctx, AsyE(mine, other), CT.None);
+				await RepoPreFilter.OrdAdd(ctx, AsyE(mine, other), CT.None);
 				return NIL;
 			});
 			_preFilterIds.Add(mine.Id);
@@ -260,8 +260,8 @@ public partial class TestISvcStudyPlan{
 			}
 
 			await RunNoTxn(async(ctx)=>{
-				var gotMine = await RepoPreFilter.BatGetByIdWithDel(ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
-				var gotOther = await RepoPreFilter.BatGetByIdWithDel(ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var gotMine = await RepoPreFilter.OrdGetByIdWithDel(ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var gotOther = await RepoPreFilter.OrdGetByIdWithDel(ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				if(gotMine is null || gotMine.IsDeleted()){
 					throw new Exception("BatSoftDelPreFilter should not delete any row when permission denied");
 				}
@@ -292,7 +292,7 @@ public partial class TestISvcStudyPlan{
 				Text = "{}",
 			};
 			await RunNoTxn(async(ctx)=>{
-				await RepoWeightArg.BatAdd(ctx, AsyE(mine, other), CT.None);
+				await RepoWeightArg.OrdAdd(ctx, AsyE(mine, other), CT.None);
 				return NIL;
 			});
 			_weightArgIds.Add(mine.Id);
@@ -307,8 +307,8 @@ public partial class TestISvcStudyPlan{
 			}
 
 			await RunNoTxn(async(ctx)=>{
-				var gotMine = await RepoWeightArg.BatGetByIdWithDel(ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
-				var gotOther = await RepoWeightArg.BatGetByIdWithDel(ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var gotMine = await RepoWeightArg.OrdGetByIdWithDel(ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var gotOther = await RepoWeightArg.OrdGetByIdWithDel(ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				if(gotMine is null || gotMine.IsDeleted()){
 					throw new Exception("BatSoftDelWeightArg should not delete any row when permission denied");
 				}
@@ -335,7 +335,7 @@ public partial class TestISvcStudyPlan{
 				Type = EWeightCalculatorType.Builtin,
 			};
 			await RunNoTxn(async(ctx)=>{
-				await RepoWeightCalculator.BatAdd(ctx, AsyE(mine, other), CT.None);
+				await RepoWeightCalculator.OrdAdd(ctx, AsyE(mine, other), CT.None);
 				return NIL;
 			});
 			_weightCalculatorIds.Add(mine.Id);
@@ -350,8 +350,8 @@ public partial class TestISvcStudyPlan{
 			}
 
 			await RunNoTxn(async(ctx)=>{
-				var gotMine = await RepoWeightCalculator.BatGetByIdWithDel(ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
-				var gotOther = await RepoWeightCalculator.BatGetByIdWithDel(ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var gotMine = await RepoWeightCalculator.OrdGetByIdWithDel(ctx, AsyE(mine.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var gotOther = await RepoWeightCalculator.OrdGetByIdWithDel(ctx, AsyE(other.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				if(gotMine is null || gotMine.IsDeleted()){
 					throw new Exception("BatSoftDelWeightCalculator should not delete any row when permission denied");
 				}
@@ -397,10 +397,10 @@ public partial class TestISvcStudyPlan{
 			};
 
 			await RunNoTxn(async(ctx)=>{
-				await RepoPreFilter.BatAdd(ctx, AsyE(preFilter), CT.None);
-				await RepoWeightArg.BatAdd(ctx, AsyE(weightArg), CT.None);
-				await RepoWeightCalculator.BatAdd(ctx, AsyE(weightCalculator), CT.None);
-				await RepoStudyPlan.BatAdd(ctx, AsyE(studyPlan), CT.None);
+				await RepoPreFilter.OrdAdd(ctx, AsyE(preFilter), CT.None);
+				await RepoWeightArg.OrdAdd(ctx, AsyE(weightArg), CT.None);
+				await RepoWeightCalculator.OrdAdd(ctx, AsyE(weightCalculator), CT.None);
+				await RepoStudyPlan.OrdAdd(ctx, AsyE(studyPlan), CT.None);
 				return NIL;
 			});
 			_preFilterIds.Add(preFilter.Id);
@@ -411,10 +411,10 @@ public partial class TestISvcStudyPlan{
 			await SvcStudyPlan.BatSoftDelStudyPlan(userCtx, AsyE(studyPlan), CT.None);
 
 			await RunNoTxn(async(ctx)=>{
-				var gotSp = await RepoStudyPlan.BatGetByIdWithDel(ctx, AsyE(studyPlan.Id), CT.None).FirstOrDefaultAsync(CT.None);
-				var gotPf = await RepoPreFilter.BatGetByIdWithDel(ctx, AsyE(preFilter.Id), CT.None).FirstOrDefaultAsync(CT.None);
-				var gotWa = await RepoWeightArg.BatGetByIdWithDel(ctx, AsyE(weightArg.Id), CT.None).FirstOrDefaultAsync(CT.None);
-				var gotWc = await RepoWeightCalculator.BatGetByIdWithDel(ctx, AsyE(weightCalculator.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var gotSp = await RepoStudyPlan.OrdGetByIdWithDel(ctx, AsyE(studyPlan.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var gotPf = await RepoPreFilter.OrdGetByIdWithDel(ctx, AsyE(preFilter.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var gotWa = await RepoWeightArg.OrdGetByIdWithDel(ctx, AsyE(weightArg.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var gotWc = await RepoWeightCalculator.OrdGetByIdWithDel(ctx, AsyE(weightCalculator.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				if(gotSp is null || !gotSp.IsDeleted()){
 					throw new Exception("BatSoftDelStudyPlan should soft-delete root studyplan");
 				}
@@ -454,9 +454,9 @@ public partial class TestISvcStudyPlan{
 				WeightArgId = oldArg.Id,
 			};
 			await RunNoTxn(async(ctx)=>{
-				await RepoWeightCalculator.BatAdd(ctx, AsyE(oldCalc), CT.None);
-				await RepoWeightArg.BatAdd(ctx, AsyE(oldArg), CT.None);
-				await RepoStudyPlan.BatAdd(ctx, AsyE(oldPlan), CT.None);
+				await RepoWeightCalculator.OrdAdd(ctx, AsyE(oldCalc), CT.None);
+				await RepoWeightArg.OrdAdd(ctx, AsyE(oldArg), CT.None);
+				await RepoStudyPlan.OrdAdd(ctx, AsyE(oldPlan), CT.None);
 				return NIL;
 			});
 			_weightCalculatorIds.Add(oldCalc.Id);
@@ -467,9 +467,9 @@ public partial class TestISvcStudyPlan{
 			await SvcStudyPlan.RestoreBuiltinStudyPlan(userCtx, CT.None);
 
 			await RunNoTxn(async(ctx)=>{
-				var oldCalcGot = await RepoWeightCalculator.BatGetByIdWithDel(ctx, AsyE(oldCalc.Id), CT.None).FirstOrDefaultAsync(CT.None);
-				var oldArgGot = await RepoWeightArg.BatGetByIdWithDel(ctx, AsyE(oldArg.Id), CT.None).FirstOrDefaultAsync(CT.None);
-				var oldPlanGot = await RepoStudyPlan.BatGetByIdWithDel(ctx, AsyE(oldPlan.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var oldCalcGot = await RepoWeightCalculator.OrdGetByIdWithDel(ctx, AsyE(oldCalc.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var oldArgGot = await RepoWeightArg.OrdGetByIdWithDel(ctx, AsyE(oldArg.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var oldPlanGot = await RepoStudyPlan.OrdGetByIdWithDel(ctx, AsyE(oldPlan.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				if(oldCalcGot is null || !oldCalcGot.IsDeleted() || oldArgGot is null || !oldArgGot.IsDeleted() || oldPlanGot is null || !oldPlanGot.IsDeleted()){
 					throw new Exception("RestoreBuiltinStudyPlan should soft-delete old builtin rows");
 				}

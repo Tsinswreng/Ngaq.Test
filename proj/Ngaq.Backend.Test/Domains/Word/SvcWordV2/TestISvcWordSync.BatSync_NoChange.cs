@@ -28,7 +28,7 @@ public partial class TestISvcWordV2{
 			var root = new PoWord{Id = new IdWord(), Owner = owner, Head = token + "_h1", Lang = "en"};
 			try{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatAdd(Ctx, AsyE(root), CT.None);
+					await RepoWord.OrdAdd(Ctx, AsyE(root), CT.None);
 					return NIL;
 				});
 
@@ -40,7 +40,7 @@ public partial class TestISvcWordV2{
 				await sync.BatSync_NoChange(MkUserCtx(owner), AsyE(dto), CT.None);
 
 				await RunNoTxn(async(Ctx)=>{
-					var got = await ToList(RepoWord.BatGetByIdWithDel(Ctx, AsyE(root.Id), CT.None));
+					var got = await ToList(RepoWord.OrdGetByIdWithDel(Ctx, AsyE(root.Id), CT.None));
 					if(got.Count != 1 || got[0] is null || got[0]!.Head != root.Head){
 						throw new Exception("BatSync_NoChange should keep local root unchanged");
 					}
@@ -50,7 +50,7 @@ public partial class TestISvcWordV2{
 			}
 			finally{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatHardDelById(Ctx, AsyE(root.Id), CT.None);
+					await RepoWord.OrdHardDelById(Ctx, AsyE(root.Id), CT.None);
 					return NIL;
 				});
 			}

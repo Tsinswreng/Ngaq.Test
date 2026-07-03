@@ -38,8 +38,8 @@ public partial class TestISvcUserLang{
 			};
 
 			await RunNoTxn(async(Ctx)=>{
-				await RepoWord.BatAdd(Ctx, AsyE(words), CT.None);
-				await RepoUserLang.BatAdd(Ctx, AsyE(existing), CT.None);
+				await RepoWord.OrdAdd(Ctx, AsyE(words), CT.None);
+				await RepoUserLang.OrdAdd(Ctx, AsyE(existing), CT.None);
 				return NIL;
 			});
 			_wordIds.AddRange(words.Select(x=>x.Id));

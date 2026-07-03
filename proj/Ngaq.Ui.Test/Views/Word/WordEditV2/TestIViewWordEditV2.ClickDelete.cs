@@ -51,7 +51,7 @@ public partial class TestIViewWordEditV2{
 				);
 
 				var got = await RunNoTxn(async(Ctx)=>{
-					return await RepoWord.BatGetByIdWithDel(Ctx, AsyE(savedId), CT.None).FirstOrDefaultAsync(CT.None);
+					return await RepoWord.OrdGetByIdWithDel(Ctx, AsyE(savedId), CT.None).FirstOrDefaultAsync(CT.None);
 				});
 
 				Assert.IsTrue(got is not null, "ClickDelete should keep soft-deleted root queryable with-del.");

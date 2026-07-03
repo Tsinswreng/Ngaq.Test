@@ -39,7 +39,7 @@ public partial class TestISvcStudyPlan{
 			};
 
 			await RunNoTxn(async(db)=>{
-				await RepoWeightArg.BatAdd(db, AsyE(upd), CT.None);
+				await RepoWeightArg.OrdAdd(db, AsyE(upd), CT.None);
 				return NIL;
 			});
 			_weightArgIds.Add(add.Id);
@@ -51,7 +51,7 @@ public partial class TestISvcStudyPlan{
 			await SvcStudyPlan.SyncWeightArg(ctx, AsyE(add, upd), CT.None);
 
 			await RunNoTxn(async(db)=>{
-				var got = await ToList(RepoWeightArg.BatGetByIdWithDel(db, AsyE(add.Id, upd.Id), CT.None));
+				var got = await ToList(RepoWeightArg.OrdGetByIdWithDel(db, AsyE(add.Id, upd.Id), CT.None));
 				if(got.Count != 2 || got.Any(x=>x is null)){
 					throw new Exception("SyncWeightArg should keep both insert and update targets");
 				}

@@ -32,7 +32,7 @@ public partial class TestISvcNormLangToUserLang{
 			_ids.Add(row.Id);
 
 			await RunNoTxn(async(Ctx)=>{
-				var got = await RepoNormLangToUserLang.BatGetByIdWithDel(Ctx, AsyE(row.Id), CT.None).FirstOrDefaultAsync(CT.None);
+				var got = await RepoNormLangToUserLang.OrdGetByIdWithDel(Ctx, AsyE(row.Id), CT.None).FirstOrDefaultAsync(CT.None);
 				if(got is null){
 					throw new Exception("BatAddNormLangToUserLang should insert row");
 				}
@@ -82,7 +82,7 @@ public partial class TestISvcNormLangToUserLang{
 				UserLang = _token + "_user_conflict_2",
 			};
 			await RunNoTxn(async(Ctx)=>{
-				await RepoNormLangToUserLang.BatAdd(Ctx, AsyE(existing), CT.None);
+				await RepoNormLangToUserLang.OrdAdd(Ctx, AsyE(existing), CT.None);
 				return NIL;
 			});
 			_ids.Add(existing.Id);

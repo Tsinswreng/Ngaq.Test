@@ -22,8 +22,8 @@ public partial class TestISvcWordV2{
 			var deleted = MkSyncInput(owner, token + "_deleted", "en", token + "_d2");
 			try{
 				await RunNoTxn(async(Ctx)=>{
-					await RepoWord.BatAddAgg(Ctx, AsyE(alive, deleted), CT.None);
-					await RepoWord.BatSoftDelById(Ctx, AsyE(deleted.Word.Id), CT.None);
+					await RepoWord.OrdAddAgg(Ctx, AsyE(alive, deleted), CT.None);
+					await RepoWord.OrdSoftDelById(Ctx, AsyE(deleted.Word.Id), CT.None);
 					return NIL;
 				});
 

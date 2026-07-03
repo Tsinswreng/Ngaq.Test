@@ -130,7 +130,7 @@ public partial class TestISvcKv: ITester{
 		};
 
 		await RunNoTxn(async(Ctx)=>{
-			await RepoKv.BatAdd(
+			await RepoKv.OrdAdd(
 				Ctx,
 				AsyE(
 					_kvA_I64_11,
@@ -162,7 +162,7 @@ public partial class TestISvcKv: ITester{
 	async Task CleanupData(){
 		await RunNoTxn(async(Ctx)=>{
 			if(_ids.Count > 0){
-				await RepoKv.BatHardDelById(Ctx, AsyE(_ids.ToArray()), CT.None);
+				await RepoKv.OrdHardDelById(Ctx, AsyE(_ids.ToArray()), CT.None);
 			}
 			return NIL;
 		});
