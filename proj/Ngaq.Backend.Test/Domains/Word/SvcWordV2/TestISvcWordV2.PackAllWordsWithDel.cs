@@ -13,7 +13,7 @@ public partial class TestISvcWordV2{
 			[]
 		);
 		var R = register.Register;
-		register.TesteeFnNames = [nameof(ISvcWordV2.PackAllWordsWithDel)];
+		register.TesteeFnNames = [nameof(ISvcWordV2.PackAllWordWithDel)];
 
 		R("PackAllWordsWithDel_Should_BeReadableByUnpackJnWords", async(o)=>{
 			var owner = new IdUser();
@@ -27,7 +27,7 @@ public partial class TestISvcWordV2{
 					return NIL;
 				});
 
-				using var stream = await SvcWordV2.PackAllWordsWithDel(MkUserCtx(owner), CT.None);
+				using var stream = await SvcWordV2.PackAllWordWithDel(MkUserCtx(owner), CT.None);
 				var unpacked = await ToList(SvcWordV2.UnpackJnWords(stream, CT.None));
 				var gotHeads = unpacked.Select(x=>x.Word.Head).ToHashSet();
 				Assert.IsTrue(gotHeads.Contains(alive.Word.Head) && gotHeads.Contains(deleted.Word.Head), "PackAllWordsWithDel result should include alive and soft-deleted words.");

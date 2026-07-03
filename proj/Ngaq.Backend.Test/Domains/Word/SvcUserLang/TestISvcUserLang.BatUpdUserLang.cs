@@ -17,7 +17,7 @@ public partial class TestISvcUserLang{
 			,[]
 		);
 		var R = register.Register;
-		register.TesteeFnNames = [nameof(ISvcUserLang.BatUpdUserLang)];
+		register.TesteeFnNames = [nameof(ISvcUserLang.OrdUpdUserLang)];
 
 		R("BatUpdUserLang_Should_UpdateOwnedRow_ForceOwner_AndTouchBizUpdatedAt", async(o)=>{
 			var row = new PoUserLang{
@@ -44,7 +44,7 @@ public partial class TestISvcUserLang{
 				RelLang = row.RelLang,
 				BizUpdatedAt = UnixMs.FromUnixMs(1),
 			};
-			await SvcUserLang.BatUpdUserLang(MkUserCtx(_ownerA), AsyE(upd), CT.None);
+			await SvcUserLang.OrdUpdUserLang(MkUserCtx(_ownerA), AsyE(upd), CT.None);
 
 			await RunNoTxn(async(Ctx)=>{
 				var got = await RepoUserLang.OrdGetByIdWithDel(Ctx, AsyE(row.Id), CT.None).FirstOrDefaultAsync(CT.None);
@@ -110,11 +110,11 @@ public partial class TestISvcUserLang{
 				BizUpdatedAt = other.BizUpdatedAt,
 			};
 			try{
-				await SvcUserLang.BatUpdUserLang(MkUserCtx(_ownerA), AsyE(updMine, updOther), CT.None);
+				await SvcUserLang.OrdUpdUserLang(MkUserCtx(_ownerA), AsyE(updMine, updOther), CT.None);
 				throw new Exception("BatUpdUserLang should throw permission denied");
 			}
 			catch(Exception ex){
-				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcUserLang.BatUpdUserLang));
+				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcUserLang.OrdUpdUserLang));
 			}
 
 			await RunNoTxn(async(Ctx)=>{
@@ -157,11 +157,11 @@ public partial class TestISvcUserLang{
 
 			row1.UniqName = uniq2;
 			try{
-				await SvcUserLang.BatUpdUserLang(MkUserCtx(_ownerA), AsyE(row1), CT.None);
+				await SvcUserLang.OrdUpdUserLang(MkUserCtx(_ownerA), AsyE(row1), CT.None);
 				throw new Exception("BatUpdUserLang conflict should throw");
 			}
 			catch(Exception ex){
-				AssertThrowsErrItem(ex, KeysErr.Common.DataIllegalOrConflict, nameof(ISvcUserLang.BatUpdUserLang));
+				AssertThrowsErrItem(ex, KeysErr.Common.DataIllegalOrConflict, nameof(ISvcUserLang.OrdUpdUserLang));
 			}
 			return NIL;
 		});

@@ -17,7 +17,7 @@ public partial class TestISvcWordV2{
 			[]
 		);
 		var R = register.Register;
-		register.TesteeFnNames = [nameof(ISvcWordSync.BatSync_RemoteIsOlder)];
+		register.TesteeFnNames = [nameof(ISvcWordSync.OrdSync_RemoteIsOlder)];
 
 		R("BatSync_RemoteIsOlder_Should_NoOp", async(o)=>{
 			if(SvcWordV2 is not ISvcWordSync sync){
@@ -39,7 +39,7 @@ public partial class TestISvcWordV2{
 						Word = new PoWord{Id = root.Id, Owner = owner, Head = root.Head, Lang = root.Lang},
 					},
 				};
-				await sync.BatSync_RemoteIsOlder(MkUserCtx(owner), AsyE(dto), CT.None);
+				await sync.OrdSync_RemoteIsOlder(MkUserCtx(owner), AsyE(dto), CT.None);
 
 				await RunNoTxn(async(Ctx)=>{
 					var got = await ToList(RepoWord.OrdGetByIdWithDel(Ctx, AsyE(root.Id), CT.None));

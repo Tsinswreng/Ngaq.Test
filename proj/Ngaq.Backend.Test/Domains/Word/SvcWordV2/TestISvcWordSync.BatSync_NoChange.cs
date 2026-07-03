@@ -17,7 +17,7 @@ public partial class TestISvcWordV2{
 			[]
 		);
 		var R = register.Register;
-		register.TesteeFnNames = [nameof(ISvcWordSync.BatSync_NoChange)];
+		register.TesteeFnNames = [nameof(ISvcWordSync.OrdSync_NoChange)];
 
 		R("BatSync_NoChange_Should_NoOp", async(o)=>{
 			if(SvcWordV2 is not ISvcWordSync sync){
@@ -37,7 +37,7 @@ public partial class TestISvcWordV2{
 					Local = new JnWord{Word = root},
 					Remote = new JnWord{Word = root},
 				};
-				await sync.BatSync_NoChange(MkUserCtx(owner), AsyE(dto), CT.None);
+				await sync.OrdSync_NoChange(MkUserCtx(owner), AsyE(dto), CT.None);
 
 				await RunNoTxn(async(Ctx)=>{
 					var got = await ToList(RepoWord.OrdGetByIdWithDel(Ctx, AsyE(root.Id), CT.None));

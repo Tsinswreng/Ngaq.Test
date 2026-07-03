@@ -15,7 +15,7 @@ public partial class TestISvcNormLang{
 			[]
 		);
 		var R = register.Register;
-		register.TesteeFnNames = [nameof(ISvcNormLang.BatSoftDelNormLang)];
+		register.TesteeFnNames = [nameof(ISvcNormLang.OrdSoftDelNormLang)];
 
 		R("BatSoftDelNormLang_Should_SoftDeleteAndHideFromGet", async(o)=>{
 			var row = new PoNormLang{
@@ -31,7 +31,7 @@ public partial class TestISvcNormLang{
 			});
 			_ids.Add(row.Id);
 
-			await SvcNormLang.BatSoftDelNormLang(MkUserCtx(_ownerA), AsyE(row), CT.None);
+			await SvcNormLang.OrdSoftDelNormLang(MkUserCtx(_ownerA), AsyE(row), CT.None);
 
 			await RunNoTxn(async(Ctx)=>{
 				var got = await RepoNormLang.OrdGetByIdWithDel(Ctx, AsyE(row.Id), CT.None).FirstOrDefaultAsync(CT.None);
@@ -41,7 +41,7 @@ public partial class TestISvcNormLang{
 				return NIL;
 			});
 
-			var gotBySvc = await SvcNormLang.BatGetNormLangByTypeCode(
+			var gotBySvc = await SvcNormLang.OrdGetNormLangByTypeCode(
 				MkUserCtx(_ownerA),
 				AsyE((row.Type, row.Code)),
 				CT.None
@@ -67,11 +67,11 @@ public partial class TestISvcNormLang{
 			_ids.Add(row.Id);
 
 			try{
-				await SvcNormLang.BatSoftDelNormLang(MkUserCtx(_ownerA), AsyE(row), CT.None);
+				await SvcNormLang.OrdSoftDelNormLang(MkUserCtx(_ownerA), AsyE(row), CT.None);
 				throw new Exception("BatSoftDelNormLang should throw permission denied");
 			}
 			catch(Exception Ex){
-				AssertThrowsErrItem(Ex, KeysErr.Common.PermissionDenied, nameof(ISvcNormLang.BatSoftDelNormLang));
+				AssertThrowsErrItem(Ex, KeysErr.Common.PermissionDenied, nameof(ISvcNormLang.OrdSoftDelNormLang));
 			}
 			return NIL;
 		});

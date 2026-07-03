@@ -18,14 +18,14 @@ public partial class TestISvcWordV2{
 			[]
 		);
 		var R = register.Register;
-		register.TesteeFnNames = [nameof(ISvcWordV2.BatSyncJnWordByBizId)];
+		register.TesteeFnNames = [nameof(ISvcWordV2.OrdSyncJnWordByBizId)];
 
 		R("BizSyncJnWordByBizId_WhenLocalNotExist_Should_InsertAndReturnAuditDto", async(o)=>{
 			var owner = new IdUser();
 			var token = "ut_wv2_bizsync_add_" + Guid.NewGuid().ToString("N");
 			var remote = MkSyncInput(owner, token + "_h1", "en", token + "_d1");
 			try{
-				var dtos = await ToList(SvcWordV2.BatSyncJnWordByBizId(MkUserCtx(owner), AsyE(remote), CT.None));
+				var dtos = await ToList(SvcWordV2.OrdSyncJnWordByBizId(MkUserCtx(owner), AsyE(remote), CT.None));
 				Assert.IsTrue(dtos.Count == 1, "BizSyncJnWordByBizId should return one dto for one input item");
 				Assert.IsTrue(ReferenceEquals(dtos[0].DiffResult, EDiffByBizIdResultForSync.LocalNotExist), "BizSyncJnWordByBizId should mark fresh remote as LocalNotExist");
 
@@ -48,8 +48,8 @@ public partial class TestISvcWordV2{
 			var token = "ut_wv2_bizsync_resync_" + Guid.NewGuid().ToString("N");
 			var remote = MkSyncInput(owner, token + "_h1", "en", token + "_d1");
 			try{
-				_ = await ToList(SvcWordV2.BatSyncJnWordByBizId(MkUserCtx(owner), AsyE(remote), CT.None));
-				var dtos2 = await ToList(SvcWordV2.BatSyncJnWordByBizId(MkUserCtx(owner), AsyE(remote), CT.None));
+				_ = await ToList(SvcWordV2.OrdSyncJnWordByBizId(MkUserCtx(owner), AsyE(remote), CT.None));
+				var dtos2 = await ToList(SvcWordV2.OrdSyncJnWordByBizId(MkUserCtx(owner), AsyE(remote), CT.None));
 				Assert.IsTrue(dtos2.Count == 1, "BizSyncJnWordByBizId should still return one dto on re-sync");
 
 				await RunNoTxn(async(Ctx)=>{
@@ -78,7 +78,7 @@ public partial class TestISvcWordV2{
 					return NIL;
 				});
 
-				_ = await ToList(SvcWordV2.BatSyncJnWordByBizId(MkUserCtx(ownerA), AsyE(remoteA), CT.None));
+				_ = await ToList(SvcWordV2.OrdSyncJnWordByBizId(MkUserCtx(ownerA), AsyE(remoteA), CT.None));
 				await RunNoTxn(async(Ctx)=>{
 					var wordsA = (await ToList(RepoWord.GetAll(Ctx, CT.None)))
 						.Where(x=>x.Owner == ownerA && x.Head == remoteA.Head && x.Lang == remoteA.Lang)

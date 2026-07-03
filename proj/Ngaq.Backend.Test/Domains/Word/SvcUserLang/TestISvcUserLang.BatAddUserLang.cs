@@ -17,7 +17,7 @@ public partial class TestISvcUserLang{
 			,[]
 		);
 		var R = register.Register;
-		register.TesteeFnNames = [nameof(ISvcUserLang.BatAddUserLang)];
+		register.TesteeFnNames = [nameof(ISvcUserLang.OrdAddUserLang)];
 
 		R("BatAddUserLang_Should_CheckOwner_AndTouchBizUpdatedAt", async(o)=>{
 			var row = new PoUserLang{
@@ -29,7 +29,7 @@ public partial class TestISvcUserLang{
 				RelLang = _token + "_add_a_1",
 				BizUpdatedAt = UnixMs.FromUnixMs(1),
 			};
-			await SvcUserLang.BatAddUserLang(MkUserCtx(_ownerA), AsyE(row), CT.None);
+			await SvcUserLang.OrdAddUserLang(MkUserCtx(_ownerA), AsyE(row), CT.None);
 			_userLangIds.Add(row.Id);
 
 			await RunNoTxn(async(Ctx)=>{
@@ -57,11 +57,11 @@ public partial class TestISvcUserLang{
 				RelLang = _token + "_add_perm_denied",
 			};
 			try{
-				await SvcUserLang.BatAddUserLang(MkUserCtx(_ownerA), AsyE(row), CT.None);
+				await SvcUserLang.OrdAddUserLang(MkUserCtx(_ownerA), AsyE(row), CT.None);
 				throw new Exception("BatAddUserLang should throw permission denied");
 			}
 			catch(Exception ex){
-				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcUserLang.BatAddUserLang));
+				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcUserLang.OrdAddUserLang));
 			}
 			return NIL;
 		});
@@ -90,11 +90,11 @@ public partial class TestISvcUserLang{
 			_userLangIds.Add(neo.Id);
 
 			try{
-				await SvcUserLang.BatAddUserLang(MkUserCtx(_ownerA), AsyE(neo), CT.None);
+				await SvcUserLang.OrdAddUserLang(MkUserCtx(_ownerA), AsyE(neo), CT.None);
 				throw new Exception("BatAddUserLang conflict should throw");
 			}
 			catch(Exception ex){
-				AssertThrowsErrItem(ex, KeysErr.Common.DataIllegalOrConflict, nameof(ISvcUserLang.BatAddUserLang));
+				AssertThrowsErrItem(ex, KeysErr.Common.DataIllegalOrConflict, nameof(ISvcUserLang.OrdAddUserLang));
 			}
 			return NIL;
 		});

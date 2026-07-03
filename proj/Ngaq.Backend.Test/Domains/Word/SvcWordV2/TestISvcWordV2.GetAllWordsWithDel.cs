@@ -13,7 +13,7 @@ public partial class TestISvcWordV2{
 			[]
 		);
 		var R = register.Register;
-		register.TesteeFnNames = [nameof(ISvcWordV2.GetAllWordsWithDel)];
+		register.TesteeFnNames = [nameof(ISvcWordV2.GetAllWordWithDel)];
 
 		R("GetAllWordsWithDel_Should_ReturnAliveAndSoftDeletedWords", async(o)=>{
 			var owner = new IdUser();
@@ -27,7 +27,7 @@ public partial class TestISvcWordV2{
 					return NIL;
 				});
 
-				var got = await ToList(SvcWordV2.GetAllWordsWithDel(MkUserCtx(owner), CT.None));
+				var got = await ToList(SvcWordV2.GetAllWordWithDel(MkUserCtx(owner), CT.None));
 				var gotHeads = got.Select(x=>x.Word.Head).ToHashSet();
 				Assert.IsTrue(gotHeads.Contains(alive.Word.Head) && gotHeads.Contains(deleted.Word.Head), "GetAllWordsWithDel should include both alive and soft-deleted words.");
 				return NIL;

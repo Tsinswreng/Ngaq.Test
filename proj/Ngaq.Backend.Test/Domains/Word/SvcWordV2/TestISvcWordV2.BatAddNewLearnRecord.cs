@@ -20,7 +20,7 @@ public partial class TestISvcWordV2{
 			,[]
 		);
 		var R = register.Register;
-		register.TesteeFnNames = [nameof(ISvcWordV2.BatAddNewLearnRecord)];
+		register.TesteeFnNames = [nameof(ISvcWordV2.OrdAddNewLearnRecord)];
 
 		R("BatAddNewLearnRecord_Should_InsertLearns_And_TouchWordBizUpdatedAt", async(o)=>{
 			var owner = new IdUser();
@@ -39,7 +39,7 @@ public partial class TestISvcWordV2{
 					return NIL;
 				});
 
-				await SvcWordV2.BatAddNewLearnRecord(MkUserCtx(owner), AsyE(learns), CT.None);
+				await SvcWordV2.OrdAddNewLearnRecord(MkUserCtx(owner), AsyE(learns), CT.None);
 
 				await RunNoTxn(async(Ctx)=>{
 					var gotLearns = await ToList(RepoLearn.OrdGetByIdWithDel(Ctx, AsyE(learns.Select(x=>x.Id).ToArray()), CT.None));
@@ -70,7 +70,7 @@ public partial class TestISvcWordV2{
 					return NIL;
 				});
 
-				await SvcWordV2.BatAddNewLearnRecord(MkUserCtx(owner), AsyE<PoWordLearn>(), CT.None);
+				await SvcWordV2.OrdAddNewLearnRecord(MkUserCtx(owner), AsyE<PoWordLearn>(), CT.None);
 
 				await RunNoTxn(async(Ctx)=>{
 					var learns = await ToList(RepoLearn.GetAll(Ctx, CT.None));

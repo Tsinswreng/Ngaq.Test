@@ -24,14 +24,14 @@ public partial class TestISvcStudyPlan{
 		);
 		var R = register.Register;
 		register.TesteeFnNames = [
-			nameof(ISvcStudyPlan.BatUpdPreFilter)
-			,nameof(ISvcStudyPlan.BatUpdWeightArg)
-			,nameof(ISvcStudyPlan.BatUpdWeightCalculator)
-			,nameof(ISvcStudyPlan.BatUpdStudyPlan)
-			,nameof(ISvcStudyPlan.BatSoftDelPreFilter)
-			,nameof(ISvcStudyPlan.BatSoftDelWeightArg)
-			,nameof(ISvcStudyPlan.BatSoftDelWeightCalculator)
-			,nameof(ISvcStudyPlan.BatSoftDelStudyPlan)
+			nameof(ISvcStudyPlan.OrdUpdPreFilter)
+			,nameof(ISvcStudyPlan.OrdUpdWeightArg)
+			,nameof(ISvcStudyPlan.OrdUpdWeightCalculator)
+			,nameof(ISvcStudyPlan.OrdUpdStudyPlan)
+			,nameof(ISvcStudyPlan.OrdSoftDelPreFilter)
+			,nameof(ISvcStudyPlan.OrdSoftDelWeightArg)
+			,nameof(ISvcStudyPlan.OrdSoftDelWeightCalculator)
+			,nameof(ISvcStudyPlan.OrdSoftDelStudyPlan)
 			,nameof(ISvcStudyPlan.RestoreBuiltinStudyPlan)
 		];
 
@@ -66,10 +66,10 @@ public partial class TestISvcStudyPlan{
 			other.Owner = _ownerA; // forged owner should still be denied by db ownership check
 			other.Descr = "after_other_should_not_apply";
 			try{
-				await SvcStudyPlan.BatUpdPreFilter(userCtx, AsyE(mine, other), CT.None);
+				await SvcStudyPlan.OrdUpdPreFilter(userCtx, AsyE(mine, other), CT.None);
 				throw new Exception("BatUpdPreFilter should throw permission denied");
 			}catch(Exception ex){
-				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatUpdPreFilter));
+				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcStudyPlan.OrdUpdPreFilter));
 			}
 
 			await RunNoTxn(async(ctx)=>{
@@ -116,10 +116,10 @@ public partial class TestISvcStudyPlan{
 			other.Owner = _ownerA; // forged owner should still be denied by db ownership check
 			other.Descr = "after_other_should_not_apply";
 			try{
-				await SvcStudyPlan.BatUpdWeightArg(userCtx, AsyE(mine, other), CT.None);
+				await SvcStudyPlan.OrdUpdWeightArg(userCtx, AsyE(mine, other), CT.None);
 				throw new Exception("BatUpdWeightArg should throw permission denied");
 			}catch(Exception ex){
-				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatUpdWeightArg));
+				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcStudyPlan.OrdUpdWeightArg));
 			}
 
 			await RunNoTxn(async(ctx)=>{
@@ -161,10 +161,10 @@ public partial class TestISvcStudyPlan{
 			other.Owner = _ownerA; // forged owner should still be denied by db ownership check
 			other.Descr = "after_other_should_not_apply";
 			try{
-				await SvcStudyPlan.BatUpdWeightCalculator(userCtx, AsyE(mine, other), CT.None);
+				await SvcStudyPlan.OrdUpdWeightCalculator(userCtx, AsyE(mine, other), CT.None);
 				throw new Exception("BatUpdWeightCalculator should throw permission denied");
 			}catch(Exception ex){
-				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatUpdWeightCalculator));
+				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcStudyPlan.OrdUpdWeightCalculator));
 			}
 
 			await RunNoTxn(async(ctx)=>{
@@ -206,10 +206,10 @@ public partial class TestISvcStudyPlan{
 			other.Owner = _ownerA; // forged owner should still be denied by db ownership check
 			other.Descr = "after_other_should_not_apply";
 			try{
-				await SvcStudyPlan.BatUpdStudyPlan(userCtx, AsyE(mine, other), CT.None);
+				await SvcStudyPlan.OrdUpdStudyPlan(userCtx, AsyE(mine, other), CT.None);
 				throw new Exception("BatUpdStudyPlan should throw permission denied");
 			}catch(Exception ex){
-				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatUpdStudyPlan));
+				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcStudyPlan.OrdUpdStudyPlan));
 			}
 
 			await RunNoTxn(async(ctx)=>{
@@ -253,10 +253,10 @@ public partial class TestISvcStudyPlan{
 
 			other.Owner = _ownerA; // forged owner should still be denied by db ownership check
 			try{
-				await SvcStudyPlan.BatSoftDelPreFilter(userCtx, AsyE(mine, other), CT.None);
+				await SvcStudyPlan.OrdSoftDelPreFilter(userCtx, AsyE(mine, other), CT.None);
 				throw new Exception("BatSoftDelPreFilter should throw permission denied");
 			}catch(Exception ex){
-				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatSoftDelPreFilter));
+				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcStudyPlan.OrdSoftDelPreFilter));
 			}
 
 			await RunNoTxn(async(ctx)=>{
@@ -300,10 +300,10 @@ public partial class TestISvcStudyPlan{
 
 			other.Owner = _ownerA; // forged owner should still be denied by db ownership check
 			try{
-				await SvcStudyPlan.BatSoftDelWeightArg(userCtx, AsyE(mine, other), CT.None);
+				await SvcStudyPlan.OrdSoftDelWeightArg(userCtx, AsyE(mine, other), CT.None);
 				throw new Exception("BatSoftDelWeightArg should throw permission denied");
 			}catch(Exception ex){
-				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatSoftDelWeightArg));
+				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcStudyPlan.OrdSoftDelWeightArg));
 			}
 
 			await RunNoTxn(async(ctx)=>{
@@ -343,10 +343,10 @@ public partial class TestISvcStudyPlan{
 
 			other.Owner = _ownerA; // forged owner should still be denied by db ownership check
 			try{
-				await SvcStudyPlan.BatSoftDelWeightCalculator(userCtx, AsyE(mine, other), CT.None);
+				await SvcStudyPlan.OrdSoftDelWeightCalculator(userCtx, AsyE(mine, other), CT.None);
 				throw new Exception("BatSoftDelWeightCalculator should throw permission denied");
 			}catch(Exception ex){
-				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcStudyPlan.BatSoftDelWeightCalculator));
+				AssertThrowsErrItem(ex, KeysErr.Common.PermissionDenied, nameof(ISvcStudyPlan.OrdSoftDelWeightCalculator));
 			}
 
 			await RunNoTxn(async(ctx)=>{
@@ -408,7 +408,7 @@ public partial class TestISvcStudyPlan{
 			_weightCalculatorIds.Add(weightCalculator.Id);
 			_studyPlanIds.Add(studyPlan.Id);
 
-			await SvcStudyPlan.BatSoftDelStudyPlan(userCtx, AsyE(studyPlan), CT.None);
+			await SvcStudyPlan.OrdSoftDelStudyPlan(userCtx, AsyE(studyPlan), CT.None);
 
 			await RunNoTxn(async(ctx)=>{
 				var gotSp = await RepoStudyPlan.OrdGetByIdWithDel(ctx, AsyE(studyPlan.Id), CT.None).FirstOrDefaultAsync(CT.None);

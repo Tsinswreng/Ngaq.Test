@@ -11,7 +11,7 @@ public partial class TestISvcStudyPlan{
 	void RegisterBatAddPreFilter(ITestNode Node){
 		var register = Node.MkTestFnRegister(typeof(TestISvcStudyPlan), [typeof(Ngaq.Core.Shared.StudyPlan.Svc.ISvcStudyPlan)], []);
 		var R = register.Register;
-		register.TesteeFnNames = [nameof(Ngaq.Core.Shared.StudyPlan.Svc.ISvcStudyPlan.BatAddPreFilter)];
+		register.TesteeFnNames = [nameof(Ngaq.Core.Shared.StudyPlan.Svc.ISvcStudyPlan.OrdAddPreFilter)];
 
 		R("BatAddPreFilter_Should_ForceOwner_FromUser", async(o)=>{
 			var userCtx = MkUserCtx(_ownerA);
@@ -19,7 +19,7 @@ public partial class TestISvcStudyPlan{
 				new PoPreFilter{Id = new IdPreFilter(), Owner = _ownerB, UniqName = _token + "_svc_add_pf_1", Descr = "svc_pf_1", BizUpdatedAt = 9101},
 				new PoPreFilter{Id = new IdPreFilter(), Owner = _ownerB, UniqName = _token + "_svc_add_pf_2", Descr = "svc_pf_2", BizUpdatedAt = 9102},
 			};
-			await SvcStudyPlan.BatAddPreFilter(userCtx, AsyE(rows), CT.None);
+			await SvcStudyPlan.OrdAddPreFilter(userCtx, AsyE(rows), CT.None);
 			_preFilterIds.AddRange(rows.Select(x=>x.Id));
 
 			var page = await SvcStudyPlan.PagePreFilter(userCtx, new ReqPagePreFilter{
@@ -37,7 +37,7 @@ public partial class TestISvcStudyPlan{
 	void RegisterBatAddWeightArg(ITestNode Node){
 		var register = Node.MkTestFnRegister(typeof(TestISvcStudyPlan), [typeof(Ngaq.Core.Shared.StudyPlan.Svc.ISvcStudyPlan)], []);
 		var R = register.Register;
-		register.TesteeFnNames = [nameof(Ngaq.Core.Shared.StudyPlan.Svc.ISvcStudyPlan.BatAddWeightArg)];
+		register.TesteeFnNames = [nameof(Ngaq.Core.Shared.StudyPlan.Svc.ISvcStudyPlan.OrdAddWeightArg)];
 
 		R("BatAddWeightArg_Should_ForceOwner_FromUser", async(o)=>{
 			var userCtx = MkUserCtx(_ownerA);
@@ -45,7 +45,7 @@ public partial class TestISvcStudyPlan{
 				new PoWeightArg{Id = new IdWeightArg(), Owner = _ownerB, UniqName = _token + "_svc_add_wa_1", Descr = "svc_wa_1", BizUpdatedAt = 9201},
 				new PoWeightArg{Id = new IdWeightArg(), Owner = _ownerB, UniqName = _token + "_svc_add_wa_2", Descr = "svc_wa_2", BizUpdatedAt = 9202},
 			};
-			await SvcStudyPlan.BatAddWeightArg(userCtx, AsyE(rows), CT.None);
+			await SvcStudyPlan.OrdAddWeightArg(userCtx, AsyE(rows), CT.None);
 			_weightArgIds.AddRange(rows.Select(x=>x.Id));
 
 			var page = await SvcStudyPlan.PageWeightArg(userCtx, new ReqPageWeightArg{
@@ -63,7 +63,7 @@ public partial class TestISvcStudyPlan{
 	void RegisterBatAddWeightCalculator(ITestNode Node){
 		var register = Node.MkTestFnRegister(typeof(TestISvcStudyPlan), [typeof(Ngaq.Core.Shared.StudyPlan.Svc.ISvcStudyPlan)], []);
 		var R = register.Register;
-		register.TesteeFnNames = [nameof(Ngaq.Core.Shared.StudyPlan.Svc.ISvcStudyPlan.BatAddWeightCalculator)];
+		register.TesteeFnNames = [nameof(Ngaq.Core.Shared.StudyPlan.Svc.ISvcStudyPlan.OrdAddWeightCalculator)];
 
 		R("BatAddWeightCalculator_Should_ForceOwner_FromUser", async(o)=>{
 			var userCtx = MkUserCtx(_ownerA);
@@ -71,7 +71,7 @@ public partial class TestISvcStudyPlan{
 				new PoWeightCalculator{Id = new IdWeightCalculator(), Owner = _ownerB, UniqName = _token + "_svc_add_wc_1", Descr = "svc_wc_1"},
 				new PoWeightCalculator{Id = new IdWeightCalculator(), Owner = _ownerB, UniqName = _token + "_svc_add_wc_2", Descr = "svc_wc_2"},
 			};
-			await SvcStudyPlan.BatAddWeightCalculator(userCtx, AsyE(rows), CT.None);
+			await SvcStudyPlan.OrdAddWeightCalculator(userCtx, AsyE(rows), CT.None);
 			_weightCalculatorIds.AddRange(rows.Select(x=>x.Id));
 
 			var page = await SvcStudyPlan.PageWeightCalculator(userCtx, new ReqPageWeightCalculator{

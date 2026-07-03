@@ -22,7 +22,7 @@ public partial class TestISvcWordV2{
 			[]
 		);
 		var R = register.Register;
-		register.TesteeFnNames = [nameof(ISvcWordSync.BatSync_LocalNotExist)];
+		register.TesteeFnNames = [nameof(ISvcWordSync.OrdSync_LocalNotExist)];
 
 		R("BatSync_LocalNotExist_Should_InsertRemoteWordAndAssets", async(o)=>{
 			if(SvcWordV2 is not ISvcWordSync sync){
@@ -37,7 +37,7 @@ public partial class TestISvcWordV2{
 					Remote = remote,
 					SyncedRoot = remote,
 				};
-				await sync.BatSync_LocalNotExist(MkUserCtx(owner), AsyE(dto), CT.None);
+				await sync.OrdSync_LocalNotExist(MkUserCtx(owner), AsyE(dto), CT.None);
 
 				await RunNoTxn(async(Ctx)=>{
 					var roots = (await ToList(RepoWord.GetAll(Ctx, CT.None)))

@@ -49,10 +49,10 @@ public partial class TestISvcWordV2{
 					var gotWord = await ToList(RepoWord.OrdGetByIdWithDel(Ctx, AsyE(word.Id), CT.None));
 					Assert.IsTrue(gotWord.Count == 1 && gotWord[0] is not null && gotWord[0].IsDeleted(), "failed to soft-delete root word");
 
-					var gotProps = await ToList(RepoProp.GetInIdsWithDel(Ctx, AsyE(props.Select(x=>x.Id).ToArray()), CT.None));
+					var gotProps = await ToList(RepoProp.GetInIdWithDel(Ctx, AsyE(props.Select(x=>x.Id).ToArray()), CT.None));
 					Assert.IsTrue(gotProps.Count == props.Length && gotProps.All(x => x is not null && x.IsDeleted()), "failed to soft-delete props");
 
-					var gotLearns = await ToList(RepoLearn.GetInIdsWithDel(Ctx, AsyE(learns.Select(x=>x.Id).ToArray()), CT.None));
+					var gotLearns = await ToList(RepoLearn.GetInIdWithDel(Ctx, AsyE(learns.Select(x=>x.Id).ToArray()), CT.None));
 					Assert.IsTrue(gotLearns.Count == learns.Length && gotLearns.All(x => x is not null && x.IsDeleted()), "failed to soft-delete learns");
 					return NIL;
 				});

@@ -22,7 +22,7 @@ public partial class TestISvcWordV2{
 			[]
 		);
 		var R = register.Register;
-		register.TesteeFnNames = [nameof(ISvcWordSync.BatSync_IdNotEqual)];
+		register.TesteeFnNames = [nameof(ISvcWordSync.OrdSync_IdNotEqual)];
 
 		R("BatSync_IdNotEqual_Should_KeepSingleBizIdWord_AndSyncAssets", async(o)=>{
 			if(SvcWordV2 is not ISvcWordSync sync){
@@ -49,7 +49,7 @@ public partial class TestISvcWordV2{
 					Remote = remote,
 					SyncedRoot = remote,
 				};
-				await sync.BatSync_IdNotEqual(MkUserCtx(owner), AsyE(dto), CT.None);
+				await sync.OrdSync_IdNotEqual(MkUserCtx(owner), AsyE(dto), CT.None);
 
 				await RunNoTxn(async(Ctx)=>{
 					var words = (await ToList(RepoWord.GetAll(Ctx, CT.None)))

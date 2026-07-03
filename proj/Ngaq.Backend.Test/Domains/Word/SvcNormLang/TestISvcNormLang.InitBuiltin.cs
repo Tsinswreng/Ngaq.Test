@@ -21,7 +21,7 @@ public partial class TestISvcNormLang{
 			await SvcNormLang.InitBuiltinNormLang(MkUserCtx(_ownerInit), CT.None);
 			await SvcNormLang.InitBuiltinNormLang(MkUserCtx(_ownerInit), CT.None);
 
-			var rows = await ToList(SvcNormLang.BatGetNormLangByTypeCode(
+			var rows = await ToList(SvcNormLang.OrdGetNormLangByTypeCode(
 				MkUserCtx(_ownerInit),
 				AsyE(
 					(ELangIdentType.Bcp47, "en"),

@@ -22,7 +22,7 @@ public partial class TestISvcWordV2{
 			[]
 		);
 		var R = register.Register;
-		register.TesteeFnNames = [nameof(ISvcWordV2.BatSyncByDto)];
+		register.TesteeFnNames = [nameof(ISvcWordV2.OrdSyncByDto)];
 
 		R("BatSyncByDto_Should_Handle_AllDiffCategoriesInOneBatch", async(o)=>{
 			var owner = new IdUser();
@@ -66,7 +66,7 @@ public partial class TestISvcWordV2{
 					SyncedRoot = idNotEqualRemote,
 				};
 
-				await SvcWordV2.BatSyncByDto(
+				await SvcWordV2.OrdSyncByDto(
 					MkUserCtx(owner),
 					AsyE(dtoNoChange, dtoRemoteOlder, dtoLocalNotExist, dtoIdNotEqual),
 					CT.None

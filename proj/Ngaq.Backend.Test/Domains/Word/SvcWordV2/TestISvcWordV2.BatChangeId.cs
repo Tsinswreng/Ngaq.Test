@@ -19,7 +19,7 @@ public partial class TestISvcWordV2{
 			[]
 		);
 		var R = register.Register;
-		register.TesteeFnNames = [nameof(ISvcWordV2.BatChangeId)];
+		register.TesteeFnNames = [nameof(ISvcWordV2.OrdChangeId)];
 
 		R("BatChangeId_Should_ChangeRootId_And_MoveAssetForeignKeys", async(o)=>{
 			var owner = new IdUser();
@@ -48,7 +48,7 @@ public partial class TestISvcWordV2{
 					return NIL;
 				});
 
-				await SvcWordV2.BatChangeId(MkUserCtx(owner), AsyE((oldId, newId)), CT.None);
+				await SvcWordV2.OrdChangeId(MkUserCtx(owner), AsyE((oldId, newId)), CT.None);
 
 				await RunNoTxn(async(Ctx)=>{
 					var oldWord = await ToList(RepoWord.OrdGetByIdWithDel(Ctx, AsyE(oldId), CT.None));
@@ -81,7 +81,7 @@ public partial class TestISvcWordV2{
 		});
 
 		R("BatChangeId_WhenEmptyInput_Should_NoThrow", async(o)=>{
-			await SvcWordV2.BatChangeId(MkUserCtx(new IdUser()), AsyE<(IdWord Old, IdWord New)>(), CT.None);
+			await SvcWordV2.OrdChangeId(MkUserCtx(new IdUser()), AsyE<(IdWord Old, IdWord New)>(), CT.None);
 			return NIL;
 		});
 	}

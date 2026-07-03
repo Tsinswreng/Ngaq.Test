@@ -12,10 +12,10 @@ public partial class TestISvcNormLang{
 			[]
 		);
 		var R = register.Register;
-		register.TesteeFnNames = [nameof(ISvcNormLang.BatGetNormLangByTypeCode)];
+		register.TesteeFnNames = [nameof(ISvcNormLang.OrdGetNormLangByTypeCode)];
 
 		R("BatGetNormLangByTypeCode_Should_ReturnRowsByOwnerAndKeepInputOrder", async(o)=>{
-			var got = SvcNormLang.BatGetNormLangByTypeCode(
+			var got = SvcNormLang.OrdGetNormLangByTypeCode(
 				MkUserCtx(_ownerA),
 				AsyE(
 					(ELangIdentType.Bcp47, _token + "_zh_hant_tw"),
@@ -41,7 +41,7 @@ public partial class TestISvcNormLang{
 		});
 
 		R("BatGetNormLangByTypeCode_Should_IsolateByOwner", async(o)=>{
-			var got = await SvcNormLang.BatGetNormLangByTypeCode(
+			var got = await SvcNormLang.OrdGetNormLangByTypeCode(
 				MkUserCtx(_ownerA),
 				AsyE((ELangIdentType.Bcp47, _token + "_de_de")),
 				CT.None

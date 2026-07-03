@@ -81,14 +81,14 @@ public partial class TestISvcWordV2{
 					var deletedWord = await ToList(RepoWord.OrdGetByIdWithDel(Ctx, AsyE(deleted.Id), CT.None));
 					Assert.IsTrue(deletedWord.Count == 1 && deletedWord[0] is null, "soft-deleted root should be hard-deleted");
 
-					var alivePropGot = await ToList(RepoProp.GetInIdsWithDel(Ctx, AsyE(aliveProp.Id), CT.None));
+					var alivePropGot = await ToList(RepoProp.GetInIdWithDel(Ctx, AsyE(aliveProp.Id), CT.None));
 					Assert.IsTrue(alivePropGot.Count == 1 && alivePropGot[0] is not null, "alive word prop should remain");
-					var deletedPropGot = await ToList(RepoProp.GetInIdsWithDel(Ctx, AsyE(deletedProp.Id), CT.None));
+					var deletedPropGot = await ToList(RepoProp.GetInIdWithDel(Ctx, AsyE(deletedProp.Id), CT.None));
 					Assert.IsTrue(deletedPropGot.Count == 1 && deletedPropGot[0] is not null, "non-soft-deleted prop of deleted word should remain (orphan is allowed)");
 
-					var aliveLearnGot = await ToList(RepoLearn.GetInIdsWithDel(Ctx, AsyE(aliveLearn.Id), CT.None));
+					var aliveLearnGot = await ToList(RepoLearn.GetInIdWithDel(Ctx, AsyE(aliveLearn.Id), CT.None));
 					Assert.IsTrue(aliveLearnGot.Count == 1 && aliveLearnGot[0] is not null, "alive word learn should remain");
-					var deletedLearnGot = await ToList(RepoLearn.GetInIdsWithDel(Ctx, AsyE(deletedLearn.Id), CT.None));
+					var deletedLearnGot = await ToList(RepoLearn.GetInIdWithDel(Ctx, AsyE(deletedLearn.Id), CT.None));
 					Assert.IsTrue(deletedLearnGot.Count == 1 && deletedLearnGot[0] is not null, "non-soft-deleted learn of deleted word should remain (orphan is allowed)");
 					return NIL;
 				});
@@ -156,14 +156,14 @@ public partial class TestISvcWordV2{
 					var wordGot = await ToList(RepoWord.OrdGetByIdWithDel(Ctx, AsyE(word.Id), CT.None));
 					Assert.IsTrue(wordGot.Count == 1 && wordGot[0] is not null && !wordGot[0]!.IsDeleted(), "alive root should remain");
 
-					var alivePropGot = await ToList(RepoProp.GetInIdsWithDel(Ctx, AsyE(aliveProp.Id), CT.None));
+					var alivePropGot = await ToList(RepoProp.GetInIdWithDel(Ctx, AsyE(aliveProp.Id), CT.None));
 					Assert.IsTrue(alivePropGot.Count == 1 && alivePropGot[0] is not null, "alive prop should remain");
-					var softPropGot = await ToList(RepoProp.GetInIdsWithDel(Ctx, AsyE(softProp.Id), CT.None));
+					var softPropGot = await ToList(RepoProp.GetInIdWithDel(Ctx, AsyE(softProp.Id), CT.None));
 					Assert.IsTrue(softPropGot.Count == 0 || softPropGot.All(x=>x is null), "soft-deleted prop should be hard-deleted");
 
-					var aliveLearnGot = await ToList(RepoLearn.GetInIdsWithDel(Ctx, AsyE(aliveLearn.Id), CT.None));
+					var aliveLearnGot = await ToList(RepoLearn.GetInIdWithDel(Ctx, AsyE(aliveLearn.Id), CT.None));
 					Assert.IsTrue(aliveLearnGot.Count == 1 && aliveLearnGot[0] is not null, "alive learn should remain");
-					var softLearnGot = await ToList(RepoLearn.GetInIdsWithDel(Ctx, AsyE(softLearn.Id), CT.None));
+					var softLearnGot = await ToList(RepoLearn.GetInIdWithDel(Ctx, AsyE(softLearn.Id), CT.None));
 					Assert.IsTrue(softLearnGot.Count == 0 || softLearnGot.All(x=>x is null), "soft-deleted learn should be hard-deleted");
 					return NIL;
 				});

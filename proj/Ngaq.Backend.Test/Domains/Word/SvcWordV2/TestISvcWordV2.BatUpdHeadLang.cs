@@ -24,7 +24,7 @@ public partial class TestISvcWordV2{
 			[]
 		);
 		var R = register.Register;
-		register.TesteeFnNames = [nameof(ISvcWordV2.BatUpdHeadLang)];
+		register.TesteeFnNames = [nameof(ISvcWordV2.OrdUpdHeadLang)];
 
 		R("BatUpdHeadLang_WhenHeadLangUnchanged_Should_ReturnNullAndNoMove", async(o)=>{
 			var owner = new IdUser();
@@ -37,7 +37,7 @@ public partial class TestISvcWordV2{
 				});
 
 				var args = new PoWord{Id = word.Id, Owner = owner, Head = word.Head, Lang = word.Lang};
-				var rtn = await ToList(SvcWordV2.BatUpdHeadLang(MkUserCtx(owner), AsyE(args), CT.None));
+				var rtn = await ToList(SvcWordV2.OrdUpdHeadLang(MkUserCtx(owner), AsyE(args), CT.None));
 				Assert.IsTrue(rtn.Count == 1 && rtn[0] is not null && rtn[0]!.FinalId == word.Id && rtn[0]!.Result == EUpdBizIdResult.BizIdAlreadyEqual, "BatUpdHeadLang should return null when (Head,Lang) not changed");
 				return NIL;
 			}
@@ -60,7 +60,7 @@ public partial class TestISvcWordV2{
 				});
 
 				var arg = new PoWord{Id = word.Id, Owner = owner, Head = token + "_new", Lang = "en"};
-				var rtn = await ToList(SvcWordV2.BatUpdHeadLang(MkUserCtx(owner), AsyE(arg), CT.None));
+				var rtn = await ToList(SvcWordV2.OrdUpdHeadLang(MkUserCtx(owner), AsyE(arg), CT.None));
 				Assert.IsTrue(rtn.Count == 1 && rtn[0] is not null && rtn[0]!.FinalId == word.Id && rtn[0]!.Result == EUpdBizIdResult.DataOfBizIdNotExist, "BatUpdHeadLang should return null when id remains unchanged");
 
 				await RunNoTxn(async(Ctx)=>{
@@ -105,7 +105,7 @@ public partial class TestISvcWordV2{
 				});
 
 				var arg = new PoWord{Id = src.Id, Owner = owner, Head = dst.Head, Lang = dst.Lang};
-				var rtn = await ToList(SvcWordV2.BatUpdHeadLang(MkUserCtx(owner), AsyE(arg), CT.None));
+				var rtn = await ToList(SvcWordV2.OrdUpdHeadLang(MkUserCtx(owner), AsyE(arg), CT.None));
 				Assert.IsTrue(rtn.Count == 1 && rtn[0] is not null && rtn[0]!.FinalId == dst.Id && rtn[0]!.Result == EUpdBizIdResult.BizIdNotEqual, "BatUpdHeadLang should return target id when merged");
 
 				await RunNoTxn(async(Ctx)=>{
@@ -136,7 +136,7 @@ public partial class TestISvcWordV2{
 			var owner = new IdUser();
 			var po = new PoWord{Id = new IdWord(), Owner = owner, Head = "ut_wv2_updhl_nf_" + Guid.NewGuid().ToString("N"), Lang = "en"};
 			try{
-				_ = await ToList(SvcWordV2.BatUpdHeadLang(MkUserCtx(owner), AsyE(po), CT.None));
+				_ = await ToList(SvcWordV2.OrdUpdHeadLang(MkUserCtx(owner), AsyE(po), CT.None));
 				throw new Exception("BatUpdHeadLang should throw when PoWord.Id not found");
 			}
 			catch(Exception ex){

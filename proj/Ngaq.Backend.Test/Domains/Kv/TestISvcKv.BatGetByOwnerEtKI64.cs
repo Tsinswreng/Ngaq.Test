@@ -13,7 +13,7 @@ public partial class TestISvcKv{
 		var register = Node.MkTestFnRegister(
 			typeof(TestISvcKv),
 			[typeof(ISvcKv)],
-			[nameof(ISvcKv.BatGetByOwnerEtKI64)],
+			[nameof(ISvcKv.OrdGetByOwnerEtKI64)],
 			nameof(TestISvcKv)
 		);
 		var R = register.Register;
@@ -27,7 +27,7 @@ public partial class TestISvcKv{
 			);
 
 			var got = await ToList(
-				SvcKv.BatGetByOwnerEtKI64(null, input, CT.None)
+				SvcKv.OrdGetByOwnerEtKI64(null, input, CT.None)
 			);
 
 			if(got.Count != 4){

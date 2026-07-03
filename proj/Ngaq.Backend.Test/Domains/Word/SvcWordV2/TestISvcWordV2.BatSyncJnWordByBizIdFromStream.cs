@@ -20,7 +20,7 @@ public partial class TestISvcWordV2{
 			[]
 		);
 		var R = register.Register;
-		register.TesteeFnNames = [nameof(ISvcWordV2.BatSyncJnWordByBizIdFromStream)];
+		register.TesteeFnNames = [nameof(ISvcWordV2.OrdSyncJnWordByBizIdFromStream)];
 
 		R("BatSyncJnWordByBizIdFromStream_Should_InsertRemoteWords", async(o)=>{
 			var owner = new IdUser();
@@ -36,7 +36,7 @@ public partial class TestISvcWordV2{
 
 			try{
 				using var stream = packer.Pack(AsyE(remote1, remote2), packInfo, CT.None).ToStream();
-				var dtos = await ToList(SvcWordV2.BatSyncJnWordByBizIdFromStream(MkUserCtx(owner), stream, CT.None));
+				var dtos = await ToList(SvcWordV2.OrdSyncJnWordByBizIdFromStream(MkUserCtx(owner), stream, CT.None));
 				Assert.IsTrue(dtos.Count == 2, "BatSyncJnWordByBizIdFromStream should return one dto per remote word.");
 				Assert.IsTrue(dtos.All(x => x.DiffResult == EDiffByBizIdResultForSync.LocalNotExist), "BatSyncJnWordByBizIdFromStream should mark fresh remotes as LocalNotExist.");
 
