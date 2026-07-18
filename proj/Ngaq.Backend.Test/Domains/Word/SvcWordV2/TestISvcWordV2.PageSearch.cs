@@ -30,4 +30,6 @@ public partial class TestISvcWordV2{
 	public partial Task<nil> PageSearchWhenRawStrMatchesIdAndHeadShouldReturnOnlyIdTier(obj? O);
 	/// 驗證返回聚合詞不含其他已軟刪除資產。
 	public partial Task<nil> PageSearchWhenExactPropHitReturnedJnWordShouldExcludeOtherSoftDeletedAssets(obj? O);
+	/// 驗證詞頭分頁返回的聚合不含已軟刪除資產。
+	public partial Task<nil> PageSearchWhenPrefixMatchedShouldExcludeSoftDeletedAssets(obj? O);
 }

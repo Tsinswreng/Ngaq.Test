@@ -39,6 +39,8 @@ public partial class TestISvcWordV2 {
 		R(nameof(PageSearchWhenRawStrMatchesIdAndHeadShouldReturnOnlyIdTier), PageSearchWhenRawStrMatchesIdAndHeadShouldReturnOnlyIdTier!);
 
 		R(nameof(PageSearchWhenExactPropHitReturnedJnWordShouldExcludeOtherSoftDeletedAssets), PageSearchWhenExactPropHitReturnedJnWordShouldExcludeOtherSoftDeletedAssets!);
+
+		R(nameof(PageSearchWhenPrefixMatchedShouldExcludeSoftDeletedAssets), PageSearchWhenPrefixMatchedShouldExcludeSoftDeletedAssets!);
 	}
 
 	/// 驗證詞 ID 的精確命中。
@@ -336,6 +338,84 @@ public partial class TestISvcWordV2 {
 				MkUserCtx(Owner),
 				MkPageQry(0, 10, true),
 				new ReqSearchWord{RawStr = ActiveProp.Id + ""},
+				CT.None
+			);
+			var Hit = Page.Data?.SingleOrDefault();
+			Assert.IsTrue(
+				Hit is not null
+				&& Hit.JnWord.Props.Any(x=>x.Id == ActiveProp.Id)
+				&& Hit.JnWord.Props.All(x=>x.Id != DeletedProp.Id)
+				&& Hit.JnWord.Learns.Any(x=>x.Id == ActiveLearn.Id)
+				&& Hit.JnWord.Learns.All(x=>x.Id != DeletedLearn.Id)
+			);
+			return NIL;
+		}finally{
+			await RunNoTxn(async(Ctx)=>{
+				await RepoProp.OrdHardDelById(
+					Ctx,
+					AsyE(ActiveProp.Id, DeletedProp.Id),
+					CT.None
+				);
+				await RepoLearn.OrdHardDelById(
+					Ctx,
+					AsyE(ActiveLearn.Id, DeletedLearn.Id),
+					CT.None
+				);
+				await RepoWord.OrdHardDelById(Ctx, AsyE(Word.Id), CT.None);
+				return NIL;
+			});
+		}
+	}
+
+	/// 驗證詞頭分頁裝配聚合時，IncludeDeleted=false 會落實到資產查詢 SQL。
+	public async partial Task<nil> PageSearchWhenPrefixMatchedShouldExcludeSoftDeletedAssets(obj? O){
+		var Owner = new IdUser();
+		var Token = "ut_pagesearch_prefix_deleted_" + Guid.NewGuid().ToString("N");
+		var Word = new PoWord{
+			Id = new IdWord(),
+			Owner = Owner,
+			Head = Token,
+			Lang = "en",
+		};
+		var ActiveProp = new PoWordProp{
+			Id = new IdWordProp(),
+			WordId = Word.Id,
+			KStr = KeysProp.Inst.note,
+			VType = EKvType.Str,
+			VStr = Token,
+		};
+		var DeletedProp = new PoWordProp{
+			Id = new IdWordProp(),
+			WordId = Word.Id,
+			KStr = KeysProp.Inst.tag,
+			VType = EKvType.Str,
+			VStr = Token,
+		};
+		var ActiveLearn = new PoWordLearn{
+			Id = new IdWordLearn(),
+			WordId = Word.Id,
+			LearnResult = ELearn.Add,
+		};
+		var DeletedLearn = new PoWordLearn{
+			Id = new IdWordLearn(),
+			WordId = Word.Id,
+			LearnResult = ELearn.Fgt,
+		};
+
+		try{
+			await RunNoTxn(async(Ctx)=>{
+				await RepoWord.OrdAdd(Ctx, AsyE(Word), CT.None);
+				await RepoProp.OrdAdd(Ctx, AsyE(ActiveProp, DeletedProp), CT.None);
+				await RepoLearn.OrdAdd(Ctx, AsyE(ActiveLearn, DeletedLearn), CT.None);
+				await RepoProp.SoftDelInId(Ctx, AsyE(DeletedProp.Id), CT.None);
+				await RepoLearn.SoftDelInId(Ctx, AsyE(DeletedLearn.Id), CT.None);
+				return NIL;
+			});
+
+			var Page = await SvcWordV2.PageSearch(
+				MkUserCtx(Owner),
+				MkPageQry(0, 10, true),
+				new ReqSearchWord{RawStr = Token},
 				CT.None
 			);
 			var Hit = Page.Data?.SingleOrDefault();

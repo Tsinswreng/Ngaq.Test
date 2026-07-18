@@ -58,6 +58,8 @@ public partial class TestISvcWordV2: ITester{
 		RegisterBatAddNewLearnRecord(Node);
 		RegisterSoftDelJnWordInId(Node);
 		RegisterSoftDelPoWordInId(Node);
+		RegisterDelWordPropInId(Node);
+		RegisterDelWordLearnInId(Node);
 		RegisterHardDelSoftDeleted(Node);
 		RegisterLlmDictWordToJnWord(Node);
 		RegisterBatUpdHeadLang(Node);
