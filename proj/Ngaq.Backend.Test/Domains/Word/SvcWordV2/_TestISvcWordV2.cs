@@ -74,6 +74,7 @@ public partial class TestISvcWordV2: ITester{
 		RegisterSyncRemoteIsOlder(Node);
 		RegisterSyncLocalNotExist(Node);
 		RegisterSyncIdNotEqual(Node);
+		RegisterPageSearch(Node);
 
 		return Node;
 	}

@@ -1,4 +1,4 @@
-﻿#if false
+#if false
 測試方法:
 + 直接在Ngaq.Windows.Test中執行 dotnet run (非AOT編譯)
 + 執行以下腳本 在AOT還境下測試

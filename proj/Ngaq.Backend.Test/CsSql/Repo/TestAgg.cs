@@ -334,6 +334,134 @@ public partial class TestRepo{
 			});
 		});
 
+		register.TesteeFnNames = [nameof(IRepo<PoWord, IdWord>.OrdGetAggById)];
+		R("Agg_BatGet_By_Id_NonWithDel_Should_Exclude_SoftDeleted_Includes_When_Root_Is_Alive", async(o)=>{
+			return await RunInTxnIfNoCtx(async(Ctx)=>{
+				var owner = new IdUser();
+				var word = new PoWord{
+					Id = new IdWord(),
+					Owner = owner,
+					Head = "agg_nonwithdel_include_" + System.Guid.NewGuid().ToString("N"),
+					Lang = "en",
+				};
+				var keepProp = new PoWordProp{
+					Id = new IdWordProp(),
+					WordId = word.Id,
+					KType = EKvType.Str,
+					KStr = "keep_prop",
+					VType = EKvType.Str,
+					VStr = "keep_" + System.Guid.NewGuid().ToString("N"),
+				};
+				var delProp = new PoWordProp{
+					Id = new IdWordProp(),
+					WordId = word.Id,
+					KType = EKvType.Str,
+					KStr = "del_prop",
+					VType = EKvType.Str,
+					VStr = "del_" + System.Guid.NewGuid().ToString("N"),
+				};
+				var keepLearn = new PoWordLearn{
+					Id = new IdWordLearn(),
+					WordId = word.Id,
+					LearnResult = ELearn.Add,
+				};
+				var delLearn = new PoWordLearn{
+					Id = new IdWordLearn(),
+					WordId = word.Id,
+					LearnResult = ELearn.Rmb,
+				};
+				try{
+					await RepoWord.OrdAdd(Ctx, AsyE(word), CT.None);
+					await RepoProp.OrdAdd(Ctx, AsyE(keepProp, delProp), CT.None);
+					await RepoLearn.OrdAdd(Ctx, AsyE(keepLearn, delLearn), CT.None);
+					await RepoProp.SoftDelInId(Ctx, AsyE(delProp.Id), CT.None);
+					await RepoLearn.SoftDelInId(Ctx, AsyE(delLearn.Id), CT.None);
+
+					var got = await RepoWord.OrdGetAggById<JnWord>(Ctx, AsyE(word.Id), CT.None).FirstOrDefaultAsync(CT.None);
+					if(got is null){
+						throw new Exception("OrdGetAggById should return alive root");
+					}
+					if(got.Props.Any(x=>x.Id == delProp.Id)){
+						throw new Exception("OrdGetAggById should exclude soft-deleted props from aggregate includes");
+					}
+					if(got.Learns.Any(x=>x.Id == delLearn.Id)){
+						throw new Exception("OrdGetAggById should exclude soft-deleted learns from aggregate includes");
+					}
+					if(!got.Props.Any(x=>x.Id == keepProp.Id)){
+						throw new Exception("OrdGetAggById should keep non-deleted props");
+					}
+					if(!got.Learns.Any(x=>x.Id == keepLearn.Id)){
+						throw new Exception("OrdGetAggById should keep non-deleted learns");
+					}
+					return NIL;
+				}
+				finally{
+					await RepoWord.HardDelAggInId<JnWord>(Ctx, AsyE(word.Id), CT.None);
+				}
+			});
+		});
+
+		register.TesteeFnNames = [nameof(IRepo<PoWord, IdWord>.OrdGetAggByIdWithDel)];
+		R("Agg_BatGet_By_Id_WithDel_Should_Include_SoftDeleted_Includes_When_Root_Is_Alive", async(o)=>{
+			return await RunInTxnIfNoCtx(async(Ctx)=>{
+				var owner = new IdUser();
+				var word = new PoWord{
+					Id = new IdWord(),
+					Owner = owner,
+					Head = "agg_withdel_include_" + System.Guid.NewGuid().ToString("N"),
+					Lang = "en",
+				};
+				var keepProp = new PoWordProp{
+					Id = new IdWordProp(),
+					WordId = word.Id,
+					KType = EKvType.Str,
+					KStr = "keep_prop",
+					VType = EKvType.Str,
+					VStr = "keep_" + System.Guid.NewGuid().ToString("N"),
+				};
+				var delProp = new PoWordProp{
+					Id = new IdWordProp(),
+					WordId = word.Id,
+					KType = EKvType.Str,
+					KStr = "del_prop",
+					VType = EKvType.Str,
+					VStr = "del_" + System.Guid.NewGuid().ToString("N"),
+				};
+				var keepLearn = new PoWordLearn{
+					Id = new IdWordLearn(),
+					WordId = word.Id,
+					LearnResult = ELearn.Add,
+				};
+				var delLearn = new PoWordLearn{
+					Id = new IdWordLearn(),
+					WordId = word.Id,
+					LearnResult = ELearn.Rmb,
+				};
+				try{
+					await RepoWord.OrdAdd(Ctx, AsyE(word), CT.None);
+					await RepoProp.OrdAdd(Ctx, AsyE(keepProp, delProp), CT.None);
+					await RepoLearn.OrdAdd(Ctx, AsyE(keepLearn, delLearn), CT.None);
+					await RepoProp.SoftDelInId(Ctx, AsyE(delProp.Id), CT.None);
+					await RepoLearn.SoftDelInId(Ctx, AsyE(delLearn.Id), CT.None);
+
+					var got = await RepoWord.OrdGetAggByIdWithDel<JnWord>(Ctx, AsyE(word.Id), CT.None).FirstOrDefaultAsync(CT.None);
+					if(got is null){
+						throw new Exception("OrdGetAggByIdWithDel should return alive root");
+					}
+					if(!got.Props.Any(x=>x.Id == delProp.Id && x.IsDeleted())){
+						throw new Exception("OrdGetAggByIdWithDel should include soft-deleted props in aggregate includes");
+					}
+					if(!got.Learns.Any(x=>x.Id == delLearn.Id && x.IsDeleted())){
+						throw new Exception("OrdGetAggByIdWithDel should include soft-deleted learns in aggregate includes");
+					}
+					return NIL;
+				}
+				finally{
+					await RepoWord.HardDelAggInId<JnWord>(Ctx, AsyE(word.Id), CT.None);
+				}
+			});
+		});
+
 		register.TesteeFnNames = [nameof(IRepo<PoWord, IdWord>.GetAllAgg)];
 		R("Agg_GetAllAgg_NonWithDel_Should_Exclude_SoftDeleted", async(o)=>{
 			if(_aggWordIds.Count == 0){
