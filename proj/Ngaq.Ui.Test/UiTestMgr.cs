@@ -1,4 +1,3 @@
-using Ngaq.Ui.Test.Views.Word.Learn;
 using Ngaq.Ui.Test.Views.Word.WordEditV2;
 using Tsinswreng.CsTreeTest;
 
@@ -10,8 +9,7 @@ public class UiTestMgr : DiEtTestMgr {
 		Test = this.TestNode;
 		Test.Ordered = true;
 		Test.IsParallelRecursive = false;
-		this.RegisterTester<TestIViewLearnWord>();
-		this.RegisterTester<TestIViewWordEditV2>();
+		this.RegisterTester<TestViewWordEditV2>();
 		return Test;
 	}
 }

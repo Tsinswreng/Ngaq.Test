@@ -46,12 +46,18 @@ public static class UiTestTools{
 
 	/// 把委託切到 Avalonia UI 線程執行，並返回其結果。
 	/// 供測試安全讀取控件屬性或操作 UI 對象。
+	[Obsolete("函數聲明不合規範")]
 	public static async Task<T> RunOnUiAsync<T>(Func<T> Fn){
+		return await Dispatcher.UIThread.InvokeAsync(Fn);
+	}
+	
+	public static async Task<T> RunOnUi<T>(Func<T> Fn, CT Ct){
 		return await Dispatcher.UIThread.InvokeAsync(Fn);
 	}
 
 	/// 輪詢等待 UI 條件成立。
 	/// 適用於目前尚未建立穩定事件信號、只能從最終可觀測狀態判斷完成的場景。
+	[Obsolete()]
 	public static async Task WaitUntilUiAsync(
 		Func<bool> Pred
 		,str FailMsg
@@ -60,6 +66,24 @@ public static class UiTestTools{
 		var startAt = Environment.TickCount64;
 		while(true){
 			if(await RunOnUiAsync(Pred)){
+				return;
+			}
+			if(Environment.TickCount64 - startAt >= TimeoutMs){
+				throw new TimeoutException(FailMsg);
+			}
+			await Task.Delay(20);
+		}
+	}
+	
+	public static async Task WaitUntilUi(
+		Func<bool> Pred
+		,str FailMsg
+		,i64 TimeoutMs = 3000
+		,CT Ct
+	){
+		var startAt = Environment.TickCount64;
+		while(true){
+			if(await RunOnUi(Pred, Ct)){
 				return;
 			}
 			if(Environment.TickCount64 - startAt >= TimeoutMs){
