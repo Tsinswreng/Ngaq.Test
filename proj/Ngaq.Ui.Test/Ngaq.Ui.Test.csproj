@@ -1,16 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Library</OutputType>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="../../../Ngaq.Core/Ngaq.Core.csproj" />
-    <ProjectReference Include="../../../Ngaq.Frontend/proj/Ngaq.Ui/Ngaq.Ui.csproj" />
-    <ProjectReference Include="../../../Tsinswreng.CsSql/proj/Tsinswreng.CsSql/Tsinswreng.CsSql.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="../../../Ngaq.Core/Ngaq.Core.csproj" />
+		<ProjectReference Include="../../../Ngaq.Frontend/proj/Ngaq.Ui/Ngaq.Ui.csproj" />
+		<ProjectReference Include="../../../Tsinswreng.CsSql/proj/Tsinswreng.CsSql/Tsinswreng.CsSql.csproj" />
+	</ItemGroup>
 
 </Project>
