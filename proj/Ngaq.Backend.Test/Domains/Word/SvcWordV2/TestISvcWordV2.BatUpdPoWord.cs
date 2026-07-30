@@ -18,7 +18,7 @@ public partial class TestISvcWordV2{
 			[]
 		);
 		var R = register.Register;
-		register.TesteeFnNames = [nameof(ISvcWordV2.BatUpdPoWord)];
+		register.TesteeFnNames = [nameof(ISvcWordV2.OrdUpdPoWord)];
 
 		R("BatUpdPoWord_WhenHeadLangUnchanged_Should_UpdateOtherFields_AndReturnOriginalId", async(o)=>{
 			var owner = new IdUser();
@@ -43,7 +43,7 @@ public partial class TestISvcWordV2{
 					Lang = word.Lang,
 					StoredAt = UnixMs.FromUnixMs(2000),
 				};
-				var rtn = await SvcWordV2.BatUpdPoWord(MkUserCtx(owner), AsyE(upd), CT.None);
+				var rtn = await SvcWordV2.OrdUpdPoWord(MkUserCtx(owner), AsyE(upd), CT.None);
 				var rows = await ToList(rtn);
 				Assert.IsTrue(rows.Count == 1 && rows[0] is not null && rows[0]!.FinalId == word.Id, "BatUpdPoWord should return original id when (Id,Head,Lang) unchanged");
 
@@ -92,7 +92,7 @@ public partial class TestISvcWordV2{
 					Lang = dst.Lang,
 					StoredAt = UnixMs.FromUnixMs(3000),
 				};
-				var rows = await ToList(await SvcWordV2.BatUpdPoWord(MkUserCtx(owner), AsyE(upd), CT.None));
+				var rows = await ToList(await SvcWordV2.OrdUpdPoWord(MkUserCtx(owner), AsyE(upd), CT.None));
 				Assert.IsTrue(rows.Count == 1 && rows[0] is not null && rows[0]!.FinalId == dst.Id, "BatUpdPoWord should return merged target id when (Head,Lang) conflicts");
 
 				await RunNoTxn(async(Ctx)=>{

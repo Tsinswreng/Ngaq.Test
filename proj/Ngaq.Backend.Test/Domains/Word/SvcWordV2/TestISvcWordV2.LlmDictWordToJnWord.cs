@@ -33,7 +33,7 @@ public partial class TestISvcWordV2{
 			};
 			var req = new ReqLlmDict{
 				Query = new Query{
-					Term = "hello",
+					InputText = "hello",
 				},
 				OptLang = new OptLang{
 					SrcLang = new NormLangDetail{
@@ -82,7 +82,7 @@ public partial class TestISvcWordV2{
 			var token = "ut_wv2_llm_unmap_" + Guid.NewGuid().ToString("N");
 			var req = new ReqLlmDict{
 				Query = new Query{
-					Term = "hello",
+					InputText = "hello",
 				},
 				OptLang = new OptLang{
 					SrcLang = new NormLangDetail{
